@@ -1,4 +1,4 @@
-package com.sokoban.test;
+package tests;
 
 import static org.junit.Assert.*;
 
@@ -7,12 +7,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import model.ECell;
+import model.Map;
+import model.Position;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sokoban.model.ECell;
-import com.sokoban.model.Map;
-import com.sokoban.model.Position;
 
 public class MapTest 
 {
@@ -35,7 +36,7 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map1.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map1.txt"));
 			
 			Map map2 = new Map(br);
 			
@@ -50,7 +51,7 @@ public class MapTest
 			assertEquals(map2.getGoals().size(), 2);
 			
 			// Test on a more tricky map
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map9.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map9.txt"));
 			
 			Map map3 = new Map(br);
 			
@@ -80,7 +81,7 @@ public class MapTest
 		
 		try {
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map2.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map2.txt"));
 			Map map = new Map(br);
 			
 			Map map2 = map.clone();
@@ -126,7 +127,7 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map2.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map2.txt"));
 			
 			Map map = new Map(br);
 			Position position = new Position(1,2);
@@ -170,7 +171,7 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map3.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map3.txt"));
 			
 			Map map = new Map(br);
 			
@@ -212,13 +213,13 @@ public class MapTest
 				
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map4.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map4.txt"));
 			Map map1 = new Map(br);
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map5.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map5.txt"));
 			Map map2 = new Map(br);
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map6.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map6.txt"));
 			Map map3 = new Map(br);
 			
 			assertTrue(map1.getPlayerPosition().getI() == 0);

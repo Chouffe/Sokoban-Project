@@ -1,14 +1,15 @@
-package com.sokoban.test;
+package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import model.EMove;
+import model.Moves;
+import model.Position;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sokoban.model.EMove;
-import com.sokoban.model.Moves;
-import com.sokoban.model.Position;
 
 public class MovesTest 
 {

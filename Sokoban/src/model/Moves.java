@@ -1,4 +1,4 @@
-package com.sokoban.model;
+package model;
 
 import java.util.ArrayList;
 

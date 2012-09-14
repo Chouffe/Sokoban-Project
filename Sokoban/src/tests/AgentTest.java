@@ -1,4 +1,4 @@
-package com.sokoban.test;
+package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,14 +8,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Agent;
+import model.ECell;
+import model.Map;
+import model.Moves;
+import model.Position;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sokoban.model.Agent;
-import com.sokoban.model.ECell;
-import com.sokoban.model.Map;
-import com.sokoban.model.Moves;
-import com.sokoban.model.Position;
 
 public class AgentTest {
 	
@@ -108,7 +109,7 @@ public class AgentTest {
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map2.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map2.txt"));
 			
 			Map map = new Map(br);
 			Position position = new Position(1,2);
@@ -120,13 +121,13 @@ public class AgentTest {
 			assertEquals(3, agent.findEmptySpacesAround(position3, map).size());
 			
 			// TODO : test the Goals!!!
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map6.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map6.txt"));
 			Map map2 = new Map(br);
 			
 			Position position4 = map2.getPlayerPosition();
 			assertEquals(1, agent.findEmptySpacesAround(position4, map2).size());
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map8.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map8.txt"));
 			
 			Map map3 = new Map(br);
 			assertEquals(1, agent.findEmptySpacesAround(map3.getPlayerPosition(), map3).size());
@@ -153,7 +154,7 @@ public class AgentTest {
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map7.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map7.txt"));
 			
 			Map map = new Map(br);
 			
@@ -200,61 +201,61 @@ public class AgentTest {
 		try
 		{
 			// Test easy Pathfinding
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map1.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map1.txt"));
 			agent.setMap(br);
 			assertEquals(agent.findPathToGoal(new Moves()), "DDD");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map2.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map2.txt"));
 			agent.setMap(br);
 			assertEquals(agent.findPathToGoal(new Moves()), "UUU");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map3.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map3.txt"));
 			agent.setMap(br);
 			assertEquals(agent.findPathToGoal( new Moves()), "RRRR");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map4.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map4.txt"));
 			agent.setMap(br);
 			assertEquals(agent.findPathToGoal(new Moves()), "LLLL");
 			
 			// Test hardPathfinding
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map5.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map5.txt"));
 			Map map5 = new Map(br);
 			
 			assertEquals(agent.findPathToGoal(map5, new Moves()), "DDRRRRR");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map6.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map6.txt"));
 			Map map6 = new Map(br);
 			
 			assertEquals(agent.findPathToGoal(map6, new Moves()), "DDRRRRRDDD");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/map7.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/map7.txt"));
 			Map map7 = new Map(br);
 			
 			assertEquals(agent.findPathToGoal(map7, new Moves()), "DDRRRRRUU");
 			
 			
 			// Test on a more tricky map
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/map9.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map9.txt"));
 			
 			Map map8 = new Map(br);
 			assertEquals(agent.findPathToGoal(map8, new Moves()), "DDRRRRR");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/test-server1.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/test-server1.txt"));
 			
 			Map map9 = new Map(br);
 			System.out.println(agent.findPathToGoal(map9, new Moves()));
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/test-server2.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/test-server2.txt"));
 			
 			Map map10 = new Map(br);
 			assertEquals(agent.findPathToGoal(map10, new Moves()), "");
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/test-server3.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/test-server3.txt"));
 			
 			Map map11 = new Map(br);
 			System.out.println(agent.findPathToGoal(map11, new Moves()));
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/com/sokoban/test/maps/path/test-server5.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/path/test-server5.txt"));
 			
 			Map map12 = new Map(br);
 			System.out.println(agent.findPathToGoal(map12, new Moves()));

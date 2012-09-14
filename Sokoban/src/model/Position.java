@@ -1,4 +1,4 @@
-package com.sokoban.model;
+package model;
 
 /**
  * Represents the position on a map

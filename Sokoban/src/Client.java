@@ -1,11 +1,12 @@
-package com.sokoban;
 import java.io.*;
 import java.net.Socket;
 //import java.net.*;
 //import java.util.Date;
 import java.util.ArrayList;
 
-import com.sokoban.model.*;
+import model.Agent;
+import model.Moves;
+
 
 
 /**

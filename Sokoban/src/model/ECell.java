@@ -1,4 +1,4 @@
-package com.sokoban.model;
+package model;
 
 /**
  * Represents the Sokoban's cells

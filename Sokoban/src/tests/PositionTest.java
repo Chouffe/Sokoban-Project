@@ -1,4 +1,4 @@
-package com.sokoban.test;
+package tests;
 
 
 import static org.junit.Assert.*;
@@ -7,10 +7,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import model.Map;
+import model.Position;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sokoban.model.*;
 
 public class PositionTest 
 {
@@ -83,7 +84,7 @@ public class PositionTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/HMW1/src/com/sokoban/test/maps/map3.txt"));
+			br = new BufferedReader(new FileReader("/home/chouffe/workspace/HMW1/src/tests/maps/map3.txt"));
 			
 			Map map = new Map(br);
 			
