@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import com.sokoban.model.*;
 
 
+/**
+ * Remote connection
+ *
+ */
 public class Client {
 	
 	
