@@ -84,7 +84,7 @@ public class PositionTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/HMW1/src/tests/maps/map3.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map3.txt"));
 			
 			Map map = new Map(br);
 			

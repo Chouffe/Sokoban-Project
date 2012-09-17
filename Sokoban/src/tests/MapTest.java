@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.ECell;
+import model.Cell;
 import model.Map;
 import model.Position;
 
@@ -36,28 +36,28 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map1.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map1.txt"));
 			
 			Map map2 = new Map(br);
 			
 			assertEquals(map2.getMap().size(), 4);
-			assertEquals(map2.getMap().get(0).get(0), ECell.VISITED);
-			assertEquals(map2.getMap().get(1).get(0), ECell.WALL);
-			assertEquals(map2.getMap().get(2).get(0), ECell.PLAYER);
-			assertEquals(map2.getMap().get(2).get(1), ECell.PLAYER_ON_GOAL_SQUARE);
-			assertEquals(map2.getMap().get(2).get(2), ECell.BOX);
-			assertEquals(map2.getMap().get(2).get(3), ECell.BOX_ON_GOAL);
+			assertEquals(map2.getMap().get(0).get(0).getType(), Cell.ECell.VISITED);
+			assertEquals(map2.getMap().get(1).get(0).getType(), Cell.ECell.WALL);
+			assertEquals(map2.getMap().get(2).get(0).getType(), Cell.ECell.PLAYER);
+			assertEquals(map2.getMap().get(2).get(1).getType(), Cell.ECell.PLAYER_ON_GOAL_SQUARE);
+			assertEquals(map2.getMap().get(2).get(2).getType(), Cell.ECell.BOX);
+			assertEquals(map2.getMap().get(2).get(3).getType(), Cell.ECell.BOX_ON_GOAL);
 			
 			assertEquals(map2.getGoals().size(), 2);
 			
 			// Test on a more tricky map
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map9.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map9.txt"));
 			
 			Map map3 = new Map(br);
 			
 			assertEquals(map3.isPositionOnTheMap(new Position(3, 3)), true);
 			assertEquals(map3.isPositionOnTheMap(new Position(1, 4)), true);
-			assertEquals(map3.getCellFromPosition(new Position(3, 3)), ECell.EMPTY_FLOOR);
+			assertEquals(map3.getCellFromPosition(new Position(3, 3)).getType(), Cell.ECell.EMPTY_FLOOR);
 			
 			
 		}
@@ -81,7 +81,7 @@ public class MapTest
 		
 		try {
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map2.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map2.txt"));
 			Map map = new Map(br);
 			
 			Map map2 = map.clone();
@@ -102,15 +102,15 @@ public class MapTest
 			// Test Cells
 			
 			Position pos = new Position(1, 1);
-			map2.set(ECell.VISITED, pos);
+			map2.set(Cell.ECell.VISITED, pos);
 			
-			assertTrue(map2.getMap().get(pos.getI()).get(pos.getJ()).equals(ECell.VISITED));
+			assertTrue(map2.getMap().get(pos.getI()).get(pos.getJ()).getType().equals(Cell.ECell.VISITED));
 			
 			pos.setI(2);
 			pos.setJ(2);
-			map2.set(ECell.GOAL_SQUARE, pos);
+			map2.set(Cell.ECell.GOAL_SQUARE, pos);
 			
-			assertTrue(map2.getMap().get(pos.getI()).get(pos.getJ()).equals(ECell.GOAL_SQUARE));
+			assertTrue(map2.getMap().get(pos.getI()).get(pos.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE));
 			
 		} 
 		catch (CloneNotSupportedException e) {
@@ -127,7 +127,7 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map2.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map2.txt"));
 			
 			Map map = new Map(br);
 			Position position = new Position(1,2);
@@ -141,9 +141,9 @@ public class MapTest
 			assertEquals(false, map.isPositionOnTheMap(position4));
 				
 			assertEquals(map.getCellFromPosition(position4), null);
-			assertEquals(map.getCellFromPosition(position3), ECell.EMPTY_FLOOR);
-			assertEquals(map.getCellFromPosition(position2), ECell.EMPTY_FLOOR);
-			assertEquals(map.getCellFromPosition(position), ECell.EMPTY_FLOOR);
+			assertEquals(map.getCellFromPosition(position3).getType(), Cell.ECell.EMPTY_FLOOR);
+			assertEquals(map.getCellFromPosition(position2).getType(), Cell.ECell.EMPTY_FLOOR);
+			assertEquals(map.getCellFromPosition(position).getType(), Cell.ECell.EMPTY_FLOOR);
 			
 			// TODO : test the others cells
 			
@@ -171,7 +171,7 @@ public class MapTest
 		
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map3.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map3.txt"));
 			
 			Map map = new Map(br);
 			
@@ -213,13 +213,13 @@ public class MapTest
 				
 		try
 		{
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map4.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map4.txt"));
 			Map map1 = new Map(br);
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map5.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map5.txt"));
 			Map map2 = new Map(br);
 			
-			br = new BufferedReader(new FileReader("/home/chouffe/workspace/Sokoban/src/tests/maps/map6.txt"));
+			br = new BufferedReader(new FileReader("src/tests/maps/map6.txt"));
 			Map map3 = new Map(br);
 			
 			assertTrue(map1.getPlayerPosition().getI() == 0);
@@ -235,8 +235,8 @@ public class MapTest
 			Position visited = new Position(8,11);
 			map3.movePlayer(position);
 			
-			assertEquals(map3.getCellFromPosition(position), ECell.PLAYER);
-			assertEquals(map3.getCellFromPosition(visited), ECell.VISITED);
+			assertEquals(map3.getCellFromPosition(position).getType(), Cell.ECell.PLAYER);
+			assertEquals(map3.getCellFromPosition(visited).getType(), Cell.ECell.VISITED);
 		
 		}
 		catch (IOException e) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Map implements Cloneable
 {
-	protected ArrayList<ArrayList<ECell>> map = null;
+	protected ArrayList<ArrayList<Cell>> map = null;
 	protected ArrayList<Position> goals = null;
 	
 	// Todo : model with a Player, not only a position
@@ -21,7 +21,7 @@ public class Map implements Cloneable
 	
 	public Map()
 	{
-		map = new ArrayList<ArrayList<ECell>>();
+		map = new ArrayList<ArrayList<Cell>>();
 		goals = new ArrayList<Position>();
 		playerPosition = new Position();
 		height = 0;
@@ -60,37 +60,37 @@ public class Map implements Cloneable
 		
 		// Clone the map
 		copie.map = null;
-		copie.map = new ArrayList<ArrayList<ECell>>();
+		copie.map = new ArrayList<ArrayList<Cell>>();
 		copie.map.clear();
 		
 		
-		for(ArrayList<ECell> rowCells : map)
+		for(ArrayList<Cell> rowCells : map)
 		{
-			ArrayList<ECell> cloneRow = new ArrayList<ECell>();
-			for(ECell cell : rowCells)
+			ArrayList<Cell> cloneRow = new ArrayList<Cell>();
+			for(Cell cell : rowCells)
 			{
-				switch(cell)
+				switch(cell.getType())
 				{
 					case WALL:
-						cloneRow.add(ECell.WALL);
+						cloneRow.add(new Cell(Cell.ECell.WALL));
 						break;
 					case PLAYER:
-						cloneRow.add(ECell.PLAYER);
+						cloneRow.add(new Cell(Cell.ECell.PLAYER));
 						break;
 					case BOX:
-						cloneRow.add(ECell.BOX);
+						cloneRow.add(new Cell(Cell.ECell.BOX));
 						break;
 					case BOX_ON_GOAL:
-						cloneRow.add(ECell.BOX_ON_GOAL);
+						cloneRow.add(new Cell(Cell.ECell.BOX_ON_GOAL));
 						break;
 					case GOAL_SQUARE:
-						cloneRow.add(ECell.GOAL_SQUARE);
+						cloneRow.add(new Cell(Cell.ECell.GOAL_SQUARE));
 						break;
 					case EMPTY_FLOOR:
-						cloneRow.add(ECell.EMPTY_FLOOR);
+						cloneRow.add(new Cell(Cell.ECell.EMPTY_FLOOR));
 						break;
 					case VISITED:
-						cloneRow.add(ECell.VISITED);
+						cloneRow.add(new Cell(Cell.ECell.VISITED));
 						break;
 				}
 				
@@ -107,16 +107,16 @@ public class Map implements Cloneable
 	public void movePlayer(Position position) throws CloneNotSupportedException
 	{
 		
-		if(getCellFromPosition(position).equals(ECell.GOAL_SQUARE))
+		if(getCellFromPosition(position).getType().equals(Cell.ECell.GOAL_SQUARE))
 		{
-			set(ECell.PLAYER_ON_GOAL_SQUARE, position);
-			set(ECell.VISITED, playerPosition);
+			set(Cell.ECell.PLAYER_ON_GOAL_SQUARE, position);
+			set(Cell.ECell.VISITED, playerPosition);
 			playerPosition = position.clone();
 		}
-		else if(getCellFromPosition(position).equals(ECell.EMPTY_FLOOR))
+		else if(getCellFromPosition(position).getType().equals(Cell.ECell.EMPTY_FLOOR))
 		{
-			set(ECell.PLAYER, position);
-			set(ECell.VISITED, playerPosition);
+			set(Cell.ECell.PLAYER, position);
+			set(Cell.ECell.VISITED, playerPosition);
 			playerPosition = position.clone();
 		}
 	}
@@ -125,37 +125,37 @@ public class Map implements Cloneable
 	{
 		String result = "";
 		
-		for(ArrayList<ECell> rowCell : map)
+		for(ArrayList<Cell> rowCell : map)
 		{
-			for(ECell cell : rowCell)
+			for(Cell cell : rowCell)
 			{
-				result += cellToChar(cell);
+				result += Cell.cellToChar(cell.getType());
 			}
 			result += "\n";
 		}
 		return result;
 	}
 	
-	public void set(ECell cell, Position position)
+	public void set(Cell.ECell cell, Position position)
 	{
 		if(isPositionOnTheMap(position))
 		{
-			ArrayList<ECell> row = new ArrayList<ECell>();
+			ArrayList<Cell> row = new ArrayList<Cell>();
 			row = map.get(position.getI());
-			row.set(position.getJ(), cell);
+			row.set(position.getJ(), new Cell(cell));
 			
 			map.set(position.getI(), row);
 		}
 	}
 	
-	protected ArrayList<ArrayList<ECell>> extractString(ArrayList<String> sList)
+	protected ArrayList<ArrayList<Cell>> extractString(ArrayList<String> sList)
 	{
 		
 		int i = 0;
 		for(String s : sList)
 		{
 			
-			ArrayList<ECell> mapRow = new ArrayList<ECell>();
+			ArrayList<Cell> mapRow = new ArrayList<Cell>();
 			
 			if(s.length() > width)
 			{
@@ -164,11 +164,11 @@ public class Map implements Cloneable
 			
 			for(int j = 0; j < s.length(); j++)
 			{
-				if(charToCell(s.charAt(j)) != null)
+				if(Cell.charToCell(s.charAt(j)) != null)
 				{
-					ECell cell = charToCell(s.charAt(j));
+					Cell cell = new Cell(Cell.charToCell(s.charAt(j)));
 									
-					switch(cell)
+					switch(cell.getType())
 					{
 						case GOAL_SQUARE:
 							addGoal(new Position(i,j));
@@ -192,18 +192,18 @@ public class Map implements Cloneable
 		return map;
 	}
 	
-	protected ArrayList<ArrayList<ECell>> extractBuffer(BufferedReader bf)
+	protected ArrayList<ArrayList<Cell>> extractBuffer(BufferedReader bf)
 	{
 		try
 		{
-			map = new ArrayList<ArrayList<ECell>>();
+			map = new ArrayList<ArrayList<Cell>>();
 			
 			int i = 0;
 			String currentLine;
 			
 			while ((currentLine = bf.readLine()) != null) {
 				
-				ArrayList<ECell> mapRow = new ArrayList<ECell>();
+				ArrayList<Cell> mapRow = new ArrayList<Cell>();
 				
 				if(currentLine.length() > width)
 				{
@@ -212,11 +212,11 @@ public class Map implements Cloneable
 				
 				for(int j = 0; j < currentLine.length(); j++)
 				{
-					if(charToCell(currentLine.charAt(j)) != null)
+					if(Cell.charToCell(currentLine.charAt(j)) != null)
 					{
-						ECell cell = charToCell(currentLine.charAt(j));
+						Cell cell = new Cell(Cell.charToCell(currentLine.charAt(j)));
 										
-						switch(cell)
+						switch(cell.getType())
 						{
 							case GOAL_SQUARE:
 								addGoal(new Position(i,j));
@@ -257,43 +257,43 @@ public class Map implements Cloneable
 	
 	protected void fillTheMapWithEmptyFloor()
 	{
-		ArrayList<ArrayList<ECell>> filledMap = new ArrayList<ArrayList<ECell>>();			
+		ArrayList<ArrayList<Cell>> filledMap = new ArrayList<ArrayList<Cell>>();			
 		
-		for(ArrayList<ECell> rowCellsInit : map)
+		for(ArrayList<Cell> rowCellsInit : map)
 		{
-			ArrayList<ECell> row = new ArrayList<ECell>();
+			ArrayList<Cell> row = new ArrayList<Cell>();
 			for(int j = 0; j < width; j++)
 			{
-				row.add(ECell.EMPTY_FLOOR);
+				row.add(new Cell(Cell.ECell.EMPTY_FLOOR));
 			}
 			int k = 0;
-			for(ECell cell : rowCellsInit)
+			for(Cell cell : rowCellsInit)
 			{
-				switch(cell)
+				switch(cell.getType())
 				{
 				case WALL:
-					row.set(k, ECell.WALL);
+					row.set(k, new Cell(Cell.ECell.WALL));
 					break;
 				case PLAYER:
-					row.set(k, ECell.PLAYER);
+					row.set(k, new Cell(Cell.ECell.PLAYER));
 					break;
 				case PLAYER_ON_GOAL_SQUARE:
-					row.set(k, ECell.PLAYER_ON_GOAL_SQUARE);
+					row.set(k, new Cell(Cell.ECell.PLAYER_ON_GOAL_SQUARE));
 					break;
 				case BOX:
-					row.set(k, ECell.BOX);
+					row.set(k, new Cell(Cell.ECell.BOX));
 					break;
 				case BOX_ON_GOAL:
-					row.set(k, ECell.BOX_ON_GOAL);
+					row.set(k, new Cell(Cell.ECell.BOX_ON_GOAL));
 					break;
 				case GOAL_SQUARE:
-					row.set(k, ECell.GOAL_SQUARE);
+					row.set(k, new Cell(Cell.ECell.GOAL_SQUARE));
 					break;
 				case EMPTY_FLOOR:
-					row.set(k, ECell.EMPTY_FLOOR);
+					row.set(k, new Cell(Cell.ECell.EMPTY_FLOOR));
 					break;
 				case VISITED:
-					row.set(k, ECell.VISITED);
+					row.set(k, new Cell(Cell.ECell.VISITED));
 					break;
 				}
 				k++;
@@ -313,7 +313,7 @@ public class Map implements Cloneable
 				&& position.getJ() < width);
 	}
 	
-	public ECell getCellFromPosition(Position position)
+	public Cell getCellFromPosition(Position position)
 	{
 		if(isPositionOnTheMap(position))
 		{
@@ -325,71 +325,71 @@ public class Map implements Cloneable
 		}
 	}
 	
-	public Character cellToChar(ECell cell)
-	{
-		switch(cell)
-		{
-		case WALL:
-			return '#';
-		case PLAYER:
-			return '@';
-		case PLAYER_ON_GOAL_SQUARE:
-			return '+';
-		case BOX:
-			return '$';
-		case BOX_ON_GOAL:
-			return '*';
-		case EMPTY_FLOOR:
-			return ' ';
-		case GOAL_SQUARE:
-			return '.';
-		case VISITED:
-			return ':';
-		default:
-			return null;
-		}
-		
-	}
-	
-	public ECell charToCell(Character c)
-	{
-		if(c.equals('#'))
-		{
-			return ECell.WALL;
-		}
-		else if(c.equals('@'))
-		{
-			return ECell.PLAYER;
-		}
-		else if(c.equals('+'))
-		{
-			return ECell.PLAYER_ON_GOAL_SQUARE;
-		}
-		else if(c.equals('$'))
-		{
-			return ECell.BOX;
-		}
-		else if(c.equals('*'))
-		{
-			return ECell.BOX_ON_GOAL;
-		}
-		else if(c.equals('.'))
-		{
-			return ECell.GOAL_SQUARE;
-		}
-		else if(c.equals(' '))
-		{
-			return ECell.EMPTY_FLOOR;
-		}
-		else if(c.equals(':'))
-		{
-			return ECell.VISITED;
-		}
-		else
-		{
-			return null;
-		}
-	}
+//	public Character cellToChar(Cell cell)
+//	{
+//		switch(cell)
+//		{
+//		case WALL:
+//			return '#';
+//		case PLAYER:
+//			return '@';
+//		case PLAYER_ON_GOAL_SQUARE:
+//			return '+';
+//		case BOX:
+//			return '$';
+//		case BOX_ON_GOAL:
+//			return '*';
+//		case EMPTY_FLOOR:
+//			return ' ';
+//		case GOAL_SQUARE:
+//			return '.';
+//		case VISITED:
+//			return ':';
+//		default:
+//			return null;
+//		}
+//		
+//	}
+//	
+//	public Cell charToCell(Character c)
+//	{
+//		if(c.equals('#'))
+//		{
+//			return Cell.WALL;
+//		}
+//		else if(c.equals('@'))
+//		{
+//			return Cell.PLAYER;
+//		}
+//		else if(c.equals('+'))
+//		{
+//			return Cell.PLAYER_ON_GOAL_SQUARE;
+//		}
+//		else if(c.equals('$'))
+//		{
+//			return Cell.BOX;
+//		}
+//		else if(c.equals('*'))
+//		{
+//			return Cell.BOX_ON_GOAL;
+//		}
+//		else if(c.equals('.'))
+//		{
+//			return Cell.GOAL_SQUARE;
+//		}
+//		else if(c.equals(' '))
+//		{
+//			return Cell.EMPTY_FLOOR;
+//		}
+//		else if(c.equals(':'))
+//		{
+//			return Cell.VISITED;
+//		}
+//		else
+//		{
+//			return null;
+//		}
+//	}
 
 	public ArrayList<Position> getGoals() {
 		return goals;
@@ -404,11 +404,11 @@ public class Map implements Cloneable
 		goals.add(position);
 	}
 
-	public ArrayList<ArrayList<ECell>> getMap() {
+	public ArrayList<ArrayList<Cell>> getMap() {
 		return map;
 	}
 
-	public void setMap(ArrayList<ArrayList<ECell>> map) {
+	public void setMap(ArrayList<ArrayList<Cell>> map) {
 		this.map = map;
 	}
 
