@@ -511,6 +511,19 @@ public class Agent {
 //				return result;
 //	}
 
+	public String[] matchBoxesWithGoals(Map boxmap) {
+		boxPaths = new String[map.getNumberOfBoxes()];
+	}
+
+	private String getBoxPathToGoal(Box box, Position position) {
+		try {
+			return findPath(box.getPosition(), position);
+		}
+		catch {
+			return null
+		}
+	}
+
 	public Map getMap() {
 		return map;
 	}
