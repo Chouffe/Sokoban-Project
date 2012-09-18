@@ -1,6 +1,7 @@
-import model;
+package model;
 
 public class Block {
+	
 	protected Map map;
 	protected Position position;
 	protected boolean onGoal;
@@ -8,7 +9,7 @@ public class Block {
 	Block(Map m, Position pos) {
 		map = m;
 		position = pos;
-		if (m.getGoals().contains(pos) {
+		if (m.getGoals().contains(pos)) {
 			onGoal = true;
 		}
 	}
