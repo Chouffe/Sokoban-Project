@@ -13,7 +13,7 @@ public class Map implements Cloneable
 {
 	protected ArrayList<ArrayList<Cell>> map = null;
 	protected ArrayList<Position> goals = null;
-	protected ArrayList<Block> blocks;
+	protected ArrayList<Box> boxes;
 	
 	// Todo : model with a Player, not only a position
 	protected Position playerPosition = null;
@@ -179,6 +179,12 @@ public class Map implements Cloneable
 							break;
 						case PLAYER_ON_GOAL_SQUARE:
 							setPlayerPosition(new Position(i,j));
+							break;
+						case BOX:
+							boxes.add(new Box(this, new Position(i,j), false));
+							break;
+						case BOX_ON_GOAL:
+							boxes.add(new Box(this, new Position(i,j), true));
 							break;
 					}
 				
