@@ -261,7 +261,42 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
 			agent.setMap(br);
 			//Map map12 = new Map(br);
-			//System.out.println(agent.findPathToGoal(new Moves()));
+			System.out.println(agent.findPathToGoal(new Moves()));
+			
+		
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	@Test
+	public final void testFindPath() throws CloneNotSupportedException
+	{
+		try
+		{
+			// Test easy Pathfinding
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
+			agent.setMap(br);
+			
+			assertEquals(agent.findPath(new Position(1,1), new Position(4,1)).toString(), "DDD");
+			assertEquals(agent.findPath(new Position(1,2), new Position(1,2)).toString(), "");
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
+			agent.setMap(br);
+			
+			assertEquals(agent.findPath(new Position(1,1), new Position(6,6)).toString(), "DDDDDRRRRRDDD");
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
+			agent.setMap(br);
+			
+			assertEquals(agent.findPath(new Position(1,3), new Position(12,17)).toString(), "DDDDDRRRRRDDD");
 			
 		
 		}

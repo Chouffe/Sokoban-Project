@@ -194,4 +194,14 @@ public class PositionTest
 		}
 	}
 	
+	@Test
+	public final void testEquals()
+	{
+		Position position4 = new Position(position1.getI(), position1.getJ());
+		assertTrue(position4.equals(position1));
+		assertEquals(position4, position1);
+		
+		assertFalse(position2 == position4);
+	}
+	
 }
