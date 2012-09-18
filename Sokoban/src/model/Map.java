@@ -24,6 +24,7 @@ public class Map implements Cloneable
 	{
 		map = new ArrayList<ArrayList<Cell>>();
 		goals = new ArrayList<Position>();
+		boxes = new ArrayList<Box>();
 		playerPosition = new Position();
 		height = 0;
 		width = 0;
@@ -181,10 +182,14 @@ public class Map implements Cloneable
 							setPlayerPosition(new Position(i,j));
 							break;
 						case BOX:
-							boxes.add(new Box(this, new Position(i,j), false));
+							boxes.add(new Box(new Position(i,j), false));
 							break;
 						case BOX_ON_GOAL:
-							boxes.add(new Box(this, new Position(i,j), true));
+							boxes.add(new Box(new Position(i,j), true));
+							addBox(new Position(i,j), false);
+							break;
+						case BOX_ON_GOAL:
+							addBox(new Position(i,j), true);
 							break;
 					}
 				
@@ -234,6 +239,7 @@ public class Map implements Cloneable
 							case PLAYER_ON_GOAL_SQUARE:
 								setPlayerPosition(new Position(i,j));
 								break;
+							case BOX
 						}
 					
 						mapRow.add(cell);
@@ -402,8 +408,15 @@ public class Map implements Cloneable
 		return goals;
 	}
 
+	public int getNumberOfBoxes() {
+		return boxes.size();
+	}
 	public void setGoals(ArrayList<Position> goals) {
 		this.goals = goals;
+	}
+
+	protected void addBox(Position position, boolean onGoal) {
+		boxes.add(new Box(this, position, onGoal);
 	}
 	
 	protected void addGoal(Position position)
