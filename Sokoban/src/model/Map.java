@@ -13,6 +13,7 @@ public class Map implements Cloneable
 {
 	protected ArrayList<ArrayList<Cell>> map = null;
 	protected ArrayList<Position> goals = null;
+	protected ArrayList<Block> blocks;
 	
 	// Todo : model with a Player, not only a position
 	protected Position playerPosition = null;
