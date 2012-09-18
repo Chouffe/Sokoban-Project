@@ -363,9 +363,9 @@ public class Agent {
 			
 			// We put the 
 			
-			if(positions == null || positions.size() == 0)
+			if(positions == null || positions.isEmpty())
 			{
-				//System.out.println("No more positions...");
+				System.out.println("No more positions...");
 				// No empty spaces around : we backtrack in the tree
 				return "";
 			}
