@@ -7,6 +7,7 @@ package model;
 public class Cell 
 {
 	protected Cell.ECell type;
+	protected boolean isAccessible;
 	
 	/**
 	 * Represents the Sokoban's cell type
@@ -97,6 +98,14 @@ public class Cell
 
 	public Cell.ECell getType() {
 		return type;
+	}
+
+	public boolean isAccessible() {
+		return isAccessible;
+	}
+
+	public void setAccessible(boolean accessible) {
+		isAccessible = accessible;
 	}
 
 	public void setType(Cell.ECell type) {
