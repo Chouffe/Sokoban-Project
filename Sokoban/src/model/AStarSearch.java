@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.Cell.ECell;
+
+import exception.PathNotFoundException;
+
 public class AStarSearch 
 {
 	
@@ -16,6 +20,7 @@ public class AStarSearch
 	protected List<Node> openedList = new LinkedList<Node>();
 	protected List<Node> closedList = new LinkedList<Node>();
 	
+	protected Moves movesResult = new Moves();
 	
 	public AStarSearch()
 	{
@@ -45,20 +50,26 @@ public class AStarSearch
 		this.start.setH(this.start.goalDistanceEstimate(goal));
 		this.start.setF(this.start.getG() + this.start.getH());
 		
+		this.movesResult = new Moves();
+		
 		// We add the start node into the open List
 		openedList.add(start);
 		
 	}
 	
-	public void search()
+	public Moves search() throws PathNotFoundException
 	{
 		while(!openedList.isEmpty())
 		{
 			Collections.sort(openedList);
-			Node current = (Node) ((LinkedList<Node>) openedList).getLast();
+			Node current = (Node) ((LinkedList<Node>) openedList).getFirst();
 			
 			if(current.isGoal(goal))
 			{
+//				System.out.println(goal);
+//				System.out.println("FOUND");
+				return reconstructPath(current);
+//				return;
 				//return reconstructPath(current);
 			}
 			
@@ -68,6 +79,12 @@ public class AStarSearch
 			// We add current to closedList
 			closedList.add(current);
 			
+//			System.out.println("OPENED");
+//			System.out.println(openedList);
+//			System.out.println("CLOSED");
+//			System.out.println(closedList);
+			
+			//System.out.println(getNodesFromPosition(findEmptySpacesAround(current.getPosition())));
 			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition())))
 			{
 				if(closedList.contains(n))
@@ -76,7 +93,7 @@ public class AStarSearch
 				}
 				// We compute a new g tentative
 				int tentativeGScore = current.getG() + current.distance(current.getPosition(), n.getPosition());
-				
+				//System.out.println("Tentative : " + tentativeGScore);
 				
 				if(!openedList.contains(n) || tentativeGScore < n.getG())
 				{
@@ -88,21 +105,39 @@ public class AStarSearch
 					n.setG(tentativeGScore);
 					n.setH(n.goalDistanceEstimate(goal));
 					n.setF(n.getG() + n.getH());
+					map.set(ECell.VISITED, n.getPosition());
+					System.out.println(map);
 				}
 			}
 		}
+		
+		System.out.println("END OF THE OPENED");
+		throw new PathNotFoundException();
+		//return null;
 	}
 	
-	public void reconstructPath(Node currentNode)
+	public Moves reconstructPath(Node currentNode)
 	{
 		if(currentNode.getParent() != null)
 		{
-			reconstructPath(currentNode.getParent());
-			System.out.println(currentNode);
+			//System.out.println(currentNode);
+			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
+			return reconstructPath(currentNode.getParent());
+			
+			
+			
 		}
 		else
 		{
-			System.out.println(currentNode.toString());
+			if(movesResult.getMoves().size() == 0)
+			{
+				return new Moves();
+			}
+			movesResult.reverse();
+			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
+			return movesResult;
+//			System.out.println(movesResult);
+//			System.out.println(currentNode.toString());
 		}
 	}
 	

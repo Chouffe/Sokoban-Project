@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * 
@@ -147,5 +148,31 @@ public class Moves implements Cloneable
 		return clone;
 	}
 	
+	public void reverse()
+	{
+		ArrayList<EMove> reversedMoves = new ArrayList<EMove>();
+		Collections.reverse(moves);
+		
+		for(EMove m : moves)
+		{
+			switch(m)
+			{
+			case UP:
+				reversedMoves.add(EMove.DOWN);
+				break;
+			case DOWN:
+				reversedMoves.add(EMove.UP);
+				break;
+			case RIGHT:
+				reversedMoves.add(EMove.LEFT);
+				break;
+			case LEFT:
+				reversedMoves.add(EMove.RIGHT);
+				break;
+			}
+		}
+		
+		moves = reversedMoves;
+	}
 	
 }

@@ -117,8 +117,8 @@ public class Position implements Cloneable
 			return true;
 		if (obj == null)
 			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		Position other = (Position) obj;
 		if (i != other.i)
 			return false;
@@ -126,6 +126,12 @@ public class Position implements Cloneable
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Position [i=" + i + ", j=" + j + "]";
+	}
+	
 	
 	
 	

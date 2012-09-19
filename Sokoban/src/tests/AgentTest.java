@@ -17,6 +17,8 @@ import model.Position;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.PathNotFoundException;
+
 
 public class AgentTest {
 	
@@ -277,31 +279,32 @@ public class AgentTest {
 	}
 	
 	@Test
-	public final void testFindPath() throws CloneNotSupportedException
+	public final void testFindPath() throws CloneNotSupportedException, PathNotFoundException
 	{
 		try
 		{
 			// Test easy Pathfinding
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
-			agent.setMap(br);
+			Map map = new Map(br);
+			//agent.setMap(br);
 			
-			assertEquals(agent.findPath(new Position(1,1), new Position(4,1)).toString(), "DDD");
-			assertEquals(agent.findPath(new Position(1,2), new Position(1,2)).toString(), "");
+			assertEquals(agent.findPath(map, new Position(1,1), new Position(4,1)).toString(), "DDD");
+			assertEquals(agent.findPath(map, new Position(1,2), new Position(1,2)).toString(), "");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
-			agent.setMap(br);
+			//agent = new Agent();
+			map = new Map(br);
 			
-			assertEquals(agent.findPath(new Position(1,1), new Position(6,6)).toString(), "DDRRRRRDDD");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			agent.setMap(br);
+			assertEquals(agent.findPath(map, new Position(1,1), new Position(6,6)).toString(), "DDRRRRRDDD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			Map map = new Map(br);
+			//agent = new Agent();
+			agent.setMap(br);
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
+			//agent = new Agent();
+			map = new Map(br);
 			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
-			
-			//assertEquals(agent.findPath(new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
-			
 		
 		}
 		catch (IOException e) {

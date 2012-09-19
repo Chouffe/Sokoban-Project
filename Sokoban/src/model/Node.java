@@ -105,9 +105,10 @@ public class Node implements Comparable<Node>
 		this.position = position;
 	}
 
+
 	@Override
 	public String toString() {
-		return "Node [f=" + f + "]";
+		return "Node [position=" + position + ", f=" + f + "]";
 	}
 
 	@Override
