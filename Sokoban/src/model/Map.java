@@ -337,71 +337,6 @@ public class Map implements Cloneable
 		}
 	}
 	
-//	public Character cellToChar(Cell cell)
-//	{
-//		switch(cell)
-//		{
-//		case WALL:
-//			return '#';
-//		case PLAYER:
-//			return '@';
-//		case PLAYER_ON_GOAL_SQUARE:
-//			return '+';
-//		case BOX:
-//			return '$';
-//		case BOX_ON_GOAL:
-//			return '*';
-//		case EMPTY_FLOOR:
-//			return ' ';
-//		case GOAL_SQUARE:
-//			return '.';
-//		case VISITED:
-//			return ':';
-//		default:
-//			return null;
-//		}
-//		
-//	}
-//	
-//	public Cell charToCell(Character c)
-//	{
-//		if(c.equals('#'))
-//		{
-//			return Cell.WALL;
-//		}
-//		else if(c.equals('@'))
-//		{
-//			return Cell.PLAYER;
-//		}
-//		else if(c.equals('+'))
-//		{
-//			return Cell.PLAYER_ON_GOAL_SQUARE;
-//		}
-//		else if(c.equals('$'))
-//		{
-//			return Cell.BOX;
-//		}
-//		else if(c.equals('*'))
-//		{
-//			return Cell.BOX_ON_GOAL;
-//		}
-//		else if(c.equals('.'))
-//		{
-//			return Cell.GOAL_SQUARE;
-//		}
-//		else if(c.equals(' '))
-//		{
-//			return Cell.EMPTY_FLOOR;
-//		}
-//		else if(c.equals(':'))
-//		{
-//			return Cell.VISITED;
-//		}
-//		else
-//		{
-//			return null;
-//		}
-//	}
 
 	public ArrayList<Position> getGoals() {
 		return goals;
@@ -456,6 +391,23 @@ public class Map implements Cloneable
 		return width;
 	}
 	
-	
+	public void toStringAccessible()
+	{
+		for(ArrayList<Cell> lCells : map)
+		{
+			for(Cell c : lCells)
+			{
+				if(c.isAccessible())
+				{
+					System.out.print(" ");
+				}
+				else
+				{
+					System.out.print("#");
+				}
+			}
+			System.out.print('\n');
+		}
+	}
 	
 }

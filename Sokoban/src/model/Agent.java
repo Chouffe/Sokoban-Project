@@ -2,7 +2,6 @@ package model;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,8 +9,6 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import exception.PathNotFoundException;
-
-import model.Cell.ECell;
 
 
 /**
@@ -160,55 +157,51 @@ public class Agent {
 		return result;
 	}
 	
-	public ArrayList<Position> heuristic2(ArrayList<Position> positionsStart, ArrayList<Position> positionsGoal)
+	public Map setCellAccessible(Map map)
 	{
-		TreeMap<Integer, ArrayList<Position>> hashMap = new TreeMap<Integer, ArrayList<Position>>();
 		
+		List<Node> lNodes = new LinkedList<Node>();
+		List<Node> lNodesVisited = new LinkedList<Node>();
 		
-		for(Position position : positionsStart)
+		if(map.getPlayerPosition().equals(null))
 		{
-			int distance = distance(position, positionsGoal);
-			if(hashMap.containsKey(distance))
+			// TODO : throw an exception instead
+			return null;
+		}
+		lNodes.add(new Node(map.getPlayerPosition()));
+		map.getCellFromPosition(map.getPlayerPosition()).setAccessible(true);
+		//System.out.println("Nodes : "+ lNodes);
+		
+		Position current;
+		
+		while(!lNodes.isEmpty())
+		{
+			current = ((LinkedList<Node>)lNodes).getFirst().getPosition();
+			//System.out.println(current);
+			
+			
+			for(Position p : findEmptySpacesAround(current, map))
 			{
-				ArrayList<Position> oldList = hashMap.get(distance);
-				oldList.add(position);
-				hashMap.put(distance, oldList);
+				Node n = new Node(p);
 				
+				//System.out.println("visited : "+ lNodesVisited);
+				if(!lNodesVisited.contains(n))
+				{
+					//System.out.println("test" + p);
+					map.getCellFromPosition(p).setAccessible(true);
+					
+					lNodes.add(n);
+				}	
 			}
-			else
-			{
-				ArrayList<Position> newList = new ArrayList<Position>();
-				newList.add(position);
-				hashMap.put(distance, newList);
-			}
+			
+			lNodesVisited.add(new Node(current));
+			lNodes.remove(new Node(current));
 		}
 		
-		
-		// We construct the final ArrayList
-		ArrayList<Position> result = new ArrayList<Position>();
-		
-		Iterator<Entry<Integer, ArrayList<Position>>> it = hashMap.descendingMap().entrySet().iterator();
-		while(it.hasNext())
-		{
-			Entry<Integer, ArrayList<Position>> entry = it.next();
-			if(entry.getValue().size() > 1)
-			{
-				for(Position position : entry.getValue())
-				{
-					result.add(position);
-				}
-			}
-			else
-			{
-				if(entry.getValue().size() != 0)
-				{
-					result.add(entry.getValue().get(0));
-				}
-			}
-		}
-		
-		return result;
+		//map.toStringAccessible();
+		return map;
 	}
+	
 	
 	public ArrayList<Position> findEmptySpacesAround(Position position)
 	{
@@ -381,7 +374,7 @@ public class Agent {
 				//Position position =  nodes.removeLast();
 				//Position position = null;
 				//while((position = nodes.removeLast()) != null)
-				for(Position position : findEmptySpacesAround(map.getPlayerPosition(), map))
+				for(Position position : heuristic(findEmptySpacesAround(map.getPlayerPosition(), map), map.getGoals()))
 				//for(Position position : findEmptySpacesAround(map.getPlayerPosition(), map))
 				{
 					moves.addMove(map.getPlayerPosition(), position);
@@ -426,6 +419,16 @@ public class Agent {
 		return findPath(map, position1, position2);
 	}
 	
+	/**
+	 * 
+	 * @author arthur
+	 * @param map
+	 * @param position1
+	 * @param position2
+	 * @return The moves that the player has to do to complete the path
+	 * @throws CloneNotSupportedException
+	 * @throws PathNotFoundException
+	 */
 	public String findPath(Map map, Position position1, Position position2) throws CloneNotSupportedException, PathNotFoundException
 	{
 		clean();
@@ -435,82 +438,8 @@ public class Agent {
 		
 		return astar.search().toString();
 		
-		//return findPathAuxiliary(map, position1, position2);
 	}
 	
-//	protected String findPathAuxiliary(Map map, Position position1, Position position2) throws CloneNotSupportedException, PathNotFoundException
-//	{
-//			// End point : we've found a goal!
-//				if(position1.equals(position2))
-//				{
-//					//System.out.println(map);
-//					if(nodes.size() == 0)
-//					{
-//						return "";
-//						//throw new PathNotFoundException();
-//					}
-//					else
-//					{
-//						
-//						System.out.println(nodes.getLast().getMoves());
-//						System.out.println(moves);
-//						return nodes.getLast().getMoves().toString();
-//					}
-//				}
-//				else
-//				{
-//					System.out.println(map);
-//					//System.out.println("Node Size : " + nodes.size());
-//					ArrayList<Position> positions = findEmptySpacesAround(position1, map);
-//					System.out.println("Add"+positions.size());
-//					
-//					if(positions == null || positions.size() == 0)
-//					{
-//						// No empty spaces around : we backtrack in the tree
-//						//System.out.println("tzqt");
-//						return "";
-//					}
-//					else
-//					{
-//						ArrayList<Position> pos = new ArrayList<Position>();
-//						pos.add(position2);
-//						//map.set(ECell.VISITED, position1);
-//						for(Position position : heuristic(findEmptySpacesAround(position1, map), pos))
-//						//for(Position position : findEmptySpacesAround(map.getPlayerPosition(), map))
-//						{
-//							moves.addMove(position1, position);
-//							map.set(ECell.VISITED, position);
-//							//Moves newMoves = moves.clone();
-//							//newMoves.addMove(map.getPlayerPosition(), position);
-//							nodes.add(new Node(moves.clone()));
-//							//System.out.println(moves);
-//							
-//							//Cell c = new Cell(ECell.VISITED);
-//							
-//							//System.out.println("Visited"+position.getI()+":"+position.getJ());
-//							String result = findPathAuxiliary(map, position, position2);
-//							
-//							// If we are in a dead end : we backtrack!!
-//							if(!result.equals(""))
-//							{
-//								// No solution for the problem
-//								return result;
-//							}
-//							else
-//							{
-//								// We pop the last move
-//								moves.pop();
-//								nodes.removeLast();
-//							}
-//						}
-//					}
-//				}
-//				
-//				// Useless : only for the errors generated by Eclipse
-//				String result = "";
-//				return result;
-//	}
-
 	/**
 	* Finds a box-to-goal path for each box.
 	*
@@ -578,6 +507,17 @@ public class Agent {
 			return false;
 		}
 	}
+	
+	/**
+	 * Clean the agent variables
+	 */
+	protected void clean()
+	{
+		map = null;
+		moves = new Moves();
+		nodes = new LinkedList<Node>();
+		astar = new AStarSearch();
+	}
 
 	public Map getMap() {
 		return map;
@@ -603,11 +543,7 @@ public class Agent {
 		this.moves = moves;
 	}
 	
-	public void clean()
-	{
-		map = null;
-		moves = new Moves();
-		nodes = new LinkedList<Node>();
-		astar = new AStarSearch();
-	}
+	
+	
+	
 }
