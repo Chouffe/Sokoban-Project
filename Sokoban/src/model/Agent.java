@@ -518,7 +518,6 @@ public class Agent {
 	* order in which they are stored in the String array.
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
-	* @param map 
 	*/
 	public String[] getBoxToGoalPaths(Map map) {
 		Map safeToAlterMap = map.clone();
