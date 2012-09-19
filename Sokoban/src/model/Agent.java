@@ -518,11 +518,14 @@ public class Agent {
 	* order in which they are stored in the String array.
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
+	 * @throws CloneNotSupportedException 
 	*/
-	public String[] getBoxToGoalPaths(Map map) {
+	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
 		Map safeToAlterMap = map.clone();
 		String[] paths = new String[map.getNumberOfBoxes()];
 		findBoxToGoalPaths(safeToAlterMap, paths, 0);
+		
+		return paths;
 	}
 
 	/**
@@ -538,16 +541,18 @@ public class Agent {
 	* @param map Should be a clone, as it is altered
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
+	 * @throws CloneNotSupportedException 
 	*/
-	private boolean findBoxToGoalPaths(Map map, String[] paths, int boxIndx) {
+	private boolean findBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException {
+		
 		if (map.getBoxes().isEmpty()) return true;
 		else {
-			isSolved = false;
+			boolean isSolved = false;
 			for (int g=0; g<map.getNumberOfGoals(); g++) {
-				if (pathExists(map,paths,boxIndx)) {
+				if (pathExists(map,paths,boxIndx, g)) {
 					Map newMap = map.clone();
-					newMap.set(Cell.WALL, map.getGoals().get(g));
-					newMap.set(Cell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition);
+					newMap.set(Cell.ECell.WALL, map.getGoals().get(g));
+					newMap.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
 					newMap.getGoals().remove(g);
 					newMap.getBoxes().remove(0);
 					isSolved = isSolved || findBoxToGoalPaths(newMap, paths, boxIndx++);
@@ -555,17 +560,19 @@ public class Agent {
 				}
 			return isSolved;
 			}
+		return false;	
 		}
 	}
 
 	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
+	 * @throws CloneNotSupportedException 
 	*
 	*
 	*/
-	private boolean pathExists(Map m, String[] paths, int boxIndx) {
+	private boolean pathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException {
 		try {
-			paths[boxIndx] = findPath(map, map.getBoxes().get(0), map.getGoals().get(g));
+			paths[boxIndx] = findPath(map, map.getBoxes().get(0).getPosition(), map.getGoals().get(g));
 			return true;
 		} catch (PathNotFoundException e) {
 			return false;

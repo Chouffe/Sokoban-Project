@@ -54,7 +54,7 @@ public class Map implements Cloneable
 		
 		// Clone the goals
 		copie.goals = new ArrayList<Position>();
-		copie.boxes = new ArrayList<Boxes>();
+		copie.boxes = new ArrayList<Box>();
 
 		for(Position position : goals)
 		{
@@ -189,10 +189,6 @@ public class Map implements Cloneable
 							boxes.add(new Box(new Position(i,j), false));
 							break;
 						case BOX_ON_GOAL:
-							boxes.add(new Box(new Position(i,j), true));
-							addBox(new Position(i,j), false);
-							break;
-						case BOX_ON_GOAL:
 							addBox(new Position(i,j), true);
 							break;
 					}
@@ -243,7 +239,6 @@ public class Map implements Cloneable
 							case PLAYER_ON_GOAL_SQUARE:
 								setPlayerPosition(new Position(i,j));
 								break;
-							case BOX
 						}
 					
 						mapRow.add(cell);
@@ -429,7 +424,7 @@ public class Map implements Cloneable
 	}
 
 	protected void addBox(Position position, boolean onGoal) {
-		boxes.add(new Box(position, onGoal);
+		boxes.add(new Box(position, onGoal));
 	}
 	
 	protected void addGoal(Position position)

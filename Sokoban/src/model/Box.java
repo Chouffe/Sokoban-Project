@@ -21,5 +21,6 @@ public class Box {
 		
 		Box copy = (Box)super.clone();
 		copy.position = position.clone();
+		return copy;
 	}
 }
