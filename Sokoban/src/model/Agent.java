@@ -422,10 +422,17 @@ public class Agent {
 	{
 		nodes = new LinkedList<Agent.Node>();
 		moves = new Moves();
-		return findPath(map, position1, position2);
+		return findPathAuxiliary(map, position1, position2);
 	}
 	
 	public String findPath(Map map, Position position1, Position position2) throws CloneNotSupportedException
+	{
+		nodes = new LinkedList<Agent.Node>();
+		moves = new Moves();
+		return findPathAuxiliary(map, position1, position2);
+	}
+	
+	protected String findPathAuxiliary(Map map, Position position1, Position position2) throws CloneNotSupportedException
 	{
 			// End point : we've found a goal!
 				if(position1.equals(position2))
@@ -449,29 +456,14 @@ public class Agent {
 					//System.out.println("Node Size : " + nodes.size());
 					ArrayList<Position> positions = findEmptySpacesAround(position1, map);
 					System.out.println("Add"+positions.size());
-//					for(Position position : heuristic2(findEmptySpacesAround(map.getPlayerPosition(), map), map.getGoals()))
-//					{
-//						//Map newMap = createMapWithVisitedOnThePostion(map, map.getPlayerPosition(), position);
-//						Moves newMoves = moves.clone();
-//						newMoves.addMove(map.getPlayerPosition(), position);
-//						
-//						nodes.add(new Node(newMoves));
-//					}
-					//nodes.addAll(heuristic2(findEmptySpacesAround(map.getPlayerPosition(), map), map.getGoals()));
-					
-					// We put the 
 					
 					if(positions == null || positions.size() == 0)
 					{
-						//System.out.println("No more positions...");
 						// No empty spaces around : we backtrack in the tree
 						return "";
 					}
 					else
 					{
-						//Position position =  nodes.removeLast();
-						//Position position = null;
-						//while((position = nodes.removeLast()) != null)
 						ArrayList<Position> pos = new ArrayList<Position>();
 						pos.add(position2);
 						//map.set(ECell.VISITED, position1);
@@ -488,7 +480,7 @@ public class Agent {
 							//Cell c = new Cell(ECell.VISITED);
 							
 							//System.out.println("Visited"+position.getI()+":"+position.getJ());
-							String result = findPath(map, position, position2);
+							String result = findPathAuxiliary(map, position, position2);
 							
 							// If we are in a dead end : we backtrack!!
 							if(!result.equals(""))

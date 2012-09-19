@@ -296,7 +296,11 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			agent.setMap(br);
 			
-			assertEquals(agent.findPath(new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
+			Map map = new Map(br);
+			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+			
+			//assertEquals(agent.findPath(new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 			
 		
 		}
