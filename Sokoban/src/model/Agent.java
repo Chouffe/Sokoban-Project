@@ -514,6 +514,21 @@ public class Agent {
 	/**
 	* Finds a box-to-goal path for each box.
 	*
+	* Result is only guaranteed to be accurate if the strings are accessed in the 
+	* order in which they are stored in the String array.
+	*
+	* @author Alden Coots <ialden.coots@gmail.com>
+	* @param map 
+	*/
+	public String[] getBoxToGoalPaths(Map map) {
+		Map safeToAlterMap = map.clone();
+		String[] paths = new String[map.getNumberOfBoxes()];
+		findBoxToGoalPaths(safeToAlterMap, paths, 0);
+	}
+
+	/**
+	* Finds a box-to-goal path for each box.
+	*
 	* Populates a String array with box-to-goal paths and returns true if a valid
 	* solution is found for all boxes.
 	*
@@ -525,7 +540,7 @@ public class Agent {
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	*/
-	private boolean getBoxToGoalPaths(Map map, String[] paths, int boxIndx) {
+	private boolean findBoxToGoalPaths(Map map, String[] paths, int boxIndx) {
 		if (map.getBoxes().isEmpty()) return true;
 		else {
 			isSolved = false;
@@ -536,7 +551,7 @@ public class Agent {
 					newMap.set(Cell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition);
 					newMap.getGoals().remove(g);
 					newMap.getBoxes().remove(0);
-					isSolved = isSolved || getBoxToGoalPaths(newMap, paths, boxIndx++);
+					isSolved = isSolved || findBoxToGoalPaths(newMap, paths, boxIndx++);
 					if (isSolved) break;
 				}
 			return isSolved;
