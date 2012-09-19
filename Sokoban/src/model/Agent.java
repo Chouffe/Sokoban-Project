@@ -278,7 +278,81 @@ public class Agent {
 		
 		return positions;
 	}
-	
+
+        	public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell myCell)
+	{
+		ArrayList<Position> positions = new ArrayList<Position>();
+		
+		Position upPosition = new Position(position.getI(), position.getJ());
+		upPosition.up(map);
+		Position downPosition = new Position(position.getI(), position.getJ());
+		downPosition.down(map);
+		Position leftPosition = new Position(position.getI(), position.getJ());
+		leftPosition.left(map);
+		Position rightPosition = new Position(position.getI(), position.getJ());
+		rightPosition.right(map);
+		
+		if(
+                    // It is not the same position.
+                    (upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
+                    && 
+                    // And it is an empty floor.
+                    (map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR) 
+                            || 
+                    // Or a goal.
+                    map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+                    )                     
+		)
+		{
+                    if (myCell.getType()==Cell.ECell.PLAYER)
+                        // Then add the position.
+			positions.add(upPosition);
+                    else if (myCell.getType()==Cell.ECell.BOX)
+                    {
+                        //if position.
+                        System.out.println("");
+                    }
+                                            
+                          
+		}
+		if(
+				(downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
+				&& 
+				(map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+					||
+				map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+				)
+		)
+		{
+			positions.add(downPosition);
+		}
+		if(
+				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
+				&& 
+				(map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+					||
+				map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+				)
+		)
+		{
+			positions.add(rightPosition);
+		}
+		if(
+				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
+				&& 
+				(map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+					||
+				map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+				)
+		)
+		{
+			positions.add(leftPosition);
+		}
+		
+		return positions;
+	}
+
+        
 	/**
 	 * 
 	 * Creates a new Map based on the previous map and simulates a move of the player
