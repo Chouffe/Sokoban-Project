@@ -90,6 +90,8 @@ public class Position implements Cloneable
 			if(j + 1 < map.getMap().get(1).size())
 			{
 				j += 1;
+				
+
 			}
 		}
 		

@@ -4,10 +4,9 @@ public class Box {
 	protected Position position;
 	protected boolean onGoal;
 
-	Box(Map m, Position pos, boolean goal) {
-		map = m;
+	Box(Position pos, boolean onGoal) {
 		position = pos;
-		onGoal = goal;
+		this.onGoal = onGoal;
 	}
 
 	public boolean isOnGoal() {
@@ -16,5 +15,11 @@ public class Box {
 
 	public Position getPosition() {
 		return position;
+	}
+
+	public Box clone() throws CloneNotSupportedException {
+		
+		Box copy = (Box)super.clone();
+		copy.position = position.clone();
 	}
 }

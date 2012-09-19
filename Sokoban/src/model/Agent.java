@@ -511,16 +511,50 @@ public class Agent {
 //				return result;
 //	}
 
-	public String[] matchBoxesWithGoals(Map boxmap) {
-		boxPaths = new String[map.getNumberOfBoxes()];
+	/**
+	* Finds a box-to-goal path for each box.
+	*
+	* Populates a String array with box-to-goal paths and returns true if a valid
+	* solution is found for all boxes.
+	*
+	* Result is only guaranteed to be accurate if the strings are accessed in the 
+	* order in which they are stored in the String array.
+	*
+	* @author Alden Coots <ialden.coots@gmail.com>
+	* @param map Should be a clone, as it is altered
+	* @param paths String array where box-to-goal paths are stored
+	* @param boxIndx index of initial box in map's box array (should be 0 initially)
+	*/
+	private boolean getBoxToGoalPaths(Map map, String[] paths, int boxIndx) {
+		if (map.getBoxes().isEmpty()) return true;
+		else {
+			isSolved = false;
+			for (int g=0; g<map.getNumberOfGoals(); g++) {
+				if (pathExists(map,paths,boxIndx)) {
+					Map newMap = map.clone();
+					newMap.set(Cell.WALL, map.getGoals().get(g));
+					newMap.set(Cell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition);
+					newMap.getGoals().remove(g);
+					newMap.getBoxes().remove(0);
+					isSolved = isSolved || getBoxToGoalPaths(newMap, paths, boxIndx++);
+					if (isSolved) break;
+				}
+			return isSolved;
+			}
+		}
 	}
 
-	private String getBoxPathToGoal(Box box, Position position) {
+	/**
+	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
+	*
+	*
+	*/
+	private boolean pathExists(Map m, String[] paths, int boxIndx) {
 		try {
-			return findPath(box.getPosition(), position);
-		}
-		catch {
-			return null
+			paths[boxIndx] = findPath(map, map.getBoxes().get(0), map.getGoals().get(g));
+			return true;
+		} catch (PathNotFoundException e) {
+			return false;
 		}
 	}
 

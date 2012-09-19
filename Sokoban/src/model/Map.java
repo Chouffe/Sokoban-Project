@@ -54,14 +54,18 @@ public class Map implements Cloneable
 		
 		// Clone the goals
 		copie.goals = new ArrayList<Position>();
+		copie.boxes = new ArrayList<Boxes>();
 
 		for(Position position : goals)
 		{
-			copie.goals.add(position);
+			copie.goals.add(position.clone());
+		}
+
+		for(Box box: boxes) {
+			copie.boxes.add(box.clone());
 		}
 		
 		// Clone the map
-		copie.map = null;
 		copie.map = new ArrayList<ArrayList<Cell>>();
 		copie.map.clear();
 		
@@ -408,15 +412,24 @@ public class Map implements Cloneable
 		return goals;
 	}
 
+	public ArrayList<Box> getBoxes() {
+		return boxes;
+	}
+
 	public int getNumberOfBoxes() {
 		return boxes.size();
 	}
+
 	public void setGoals(ArrayList<Position> goals) {
 		this.goals = goals;
 	}
 
+	public int getNumberOfGoals() {
+		return goals.size();
+	}
+
 	protected void addBox(Position position, boolean onGoal) {
-		boxes.add(new Box(this, position, onGoal);
+		boxes.add(new Box(position, onGoal);
 	}
 	
 	protected void addGoal(Position position)
