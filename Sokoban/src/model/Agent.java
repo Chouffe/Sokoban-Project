@@ -671,7 +671,7 @@ public class Agent {
 		char lastdir=' ';
 		Position newPlayerPos=new Position();
 		for(int i=0;i<BoxPath.length();i++){
-			char newdir=BoxPath.charAt(i);			
+			char newdir=BoxPath.charAt(i);
 			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
 				PlayerPath=PlayerPath+newdir;
 				if(newdir=='U'){PlayerPos.up(StartMap);}
