@@ -420,13 +420,13 @@ public class Agent {
 	*/
 	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
 		String[] paths = new String[map.getNumberOfBoxes()];
-		ArrayList<Box> orderedBoxes = new ArrayList<Box>;
-		findBoxToGoalPaths(orderedBoxes, map, paths, 0);
+		ArrayList<Box> orderedBoxes = new ArrayList<Box>();
+		findBoxToGoalPaths(orderedBoxes, map, paths);
 		
 		return paths;
 	}
 
-	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) {
+	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException {
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
 			if (findSequentialBoxToGoalPaths(map, paths, 0)) return true;
@@ -434,11 +434,15 @@ public class Agent {
 		else {
 			boolean isSolved = false;
 			for (int b=0; b<map.getNumberOfBoxes(); b++) {
-				isSolved = isSolved || findBoxToGoalPaths(orderedBoxes.add(map.getBoxes().get(b), map.getBoxes().remove(b), paths)); 
+				orderedBoxes.add(map.getBoxes().get(b));
+				map.getBoxes().remove(b);
+				isSolved = isSolved || findBoxToGoalPaths(orderedBoxes, map, paths); 
 				if (isSolved) break;
 			}
 		return isSolved;
 		}
+		
+		return false;
 	}
 
 	/**
@@ -463,7 +467,7 @@ public class Agent {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					System.out.println("G : " + g);
-					if (getCellFromPosition(map.getBoxes().get(g)) != Cell.ECell.BOX_ON_GOAL) {
+					if (map.getCellFromPosition(map.getBoxes().get(g).getPosition()).getType() != Cell.ECell.BOX_ON_GOAL) {
 						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
 							Map newMap = map.clone();
 							updateMapWithBoxOnGoal(newMap, g);
@@ -472,10 +476,10 @@ public class Agent {
 						}
 					}
 				}
+				return isSolved;
 			}
-			return isSolved;
+	
 		}
-	}
 
 	private void updateMapWithBoxOnGoal(Map map, int goalIndx) {
 			map.set(Cell.ECell.WALL, map.getGoals().get(goalIndx));
