@@ -9,6 +9,7 @@ import java.util.List;
 import model.Cell.ECell;
 
 import exception.PathNotFoundException;
+import java.io.IOException;
 
 
 /**
@@ -732,6 +733,48 @@ public class Agent {
 	public void setMoves(Moves moves) {
 		this.moves = moves;
 	}
+        /*
+         * @author: Luis
+         * Prints the moves we get for an answer.
+         */
+        public void SolveBoardMoves(String moves, Map map) throws IOException
+        {            
+            Position start_position = map.getPlayerPosition();
+            
+            // Separate the box and player moves.
+            for(char a: moves.toCharArray())
+            {
+                // Only Player moves in Upper case
+                    switch (a)
+                    {
+                        case 'U':   map.setPlayerPosition(start_position.up(map));
+                                    break;
+                        case 'D':   map.setPlayerPosition(start_position.down(map));
+                                    break;
+                        case 'L':   map.setPlayerPosition(start_position.left(map));
+                                    break;
+                        case 'R':   map.setPlayerPosition(start_position.right(map));
+                                    break;
+                        case 'u':   map.set(Cell.ECell.BOX,start_position);
+                                    map.setPlayerPosition(start_position.up(map));
+                                    break;
+                        case 'd':   map.set(Cell.ECell.BOX,start_position);
+                                    map.setPlayerPosition(start_position.down(map));
+                                    break;
+                        case 'l':   map.set(Cell.ECell.BOX,start_position);
+                                    map.setPlayerPosition(start_position.left(map));
+                                    break;
+                        case 'r':   map.set(Cell.ECell.BOX,start_position);
+                                    map.setPlayerPosition(start_position.right(map));
+                                    break;
+                    }
+                    System.out.println(map);
+                    System.in.read();
+            }
+          
+        
+        
+        }
 	
 	
 	
