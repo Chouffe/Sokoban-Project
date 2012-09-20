@@ -51,10 +51,10 @@ public class Client {
             Agent agent = new Agent(bufferToString);
 
             //we've found our solution
-            String lMySol = agent.findPathToGoal(new Moves());
+            //String lMySol = agent.findPathToGoal(new Moves());
 
             // send the solution to the server
-            lOut.println(lMySol);
+            //lOut.println(lMySol);
             lOut.flush();
     
             //read answer from the server

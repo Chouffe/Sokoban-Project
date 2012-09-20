@@ -1,14 +1,13 @@
 package model;
 
 /**
+ * @author arthur
  * Represents the position on a map
  */
 public class Position implements Cloneable
 {
 	protected int i;
 	protected int j;
-	
-	//protected Map map;
 	
 	public Position() {
 		i = 0;

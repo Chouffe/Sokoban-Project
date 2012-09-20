@@ -17,7 +17,6 @@ public class AStarSearch
 	
 	protected Node start, goal;
 	protected Map map;
-	protected int maxNodes;
 	
 	protected List<Node> openedList = new LinkedList<Node>();
 	protected List<Node> closedList = new LinkedList<Node>();
@@ -27,12 +26,6 @@ public class AStarSearch
 	public AStarSearch()
 	{
 		map = null;
-	}
-	
-	public AStarSearch(int maxNodes)
-	{
-		this();
-		this.maxNodes = maxNodes;
 	}
 	
 	public AStarSearch(Map map)
