@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import model.Cell.ECell;
+
 import exception.PathNotFoundException;
 
 
@@ -249,7 +251,7 @@ public class Agent {
 				)
 		)
 		{
-                    System.out.println("FAIL.");
+                    //System.out.println("FAIL.");
 			positions.add(downPosition);
 		}
 		if(
@@ -586,10 +588,10 @@ public class Agent {
 	 * @throws CloneNotSupportedException 
 	 * @throws PathNotFoundException 
 	 */
-	public String findPath(Position position1, Position position2) throws CloneNotSupportedException, PathNotFoundException
+	public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
 	{
 		moves = new Moves();
-		return findPath(map, position1, position2);
+		return findPath(map, position1, position2, cellType);
 	}
 	
 	/**
@@ -602,14 +604,14 @@ public class Agent {
 	 * @throws CloneNotSupportedException
 	 * @throws PathNotFoundException
 	 */
-	public String findPath(Map map, Position position1, Position position2) throws CloneNotSupportedException, PathNotFoundException
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
 	{
 		clean();
 		
 		astar.setMap(map.clone());
 		astar.setStartAndGoalNode(new Node(position1), new Node(position2));
 		
-		return astar.search().toString();
+		return astar.search(cellType).toString();
 		
 	}
 	
@@ -625,6 +627,9 @@ public class Agent {
 	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
 		Map safeToAlterMap = map.clone();
 		String[] paths = new String[map.getNumberOfBoxes()];
+		//System.out.println(paths.length);
+		//pathExists(map, paths, 0, 0, ECell.BOX);
+		//System.out.println(paths[0]);
 		findBoxToGoalPaths(safeToAlterMap, paths, 0);
 		
 		return paths;
@@ -650,14 +655,15 @@ public class Agent {
 		if (map.getBoxes().isEmpty()) return true;
 		else {
 			boolean isSolved = false;
-			for (int g=0; g<map.getNumberOfGoals(); g++) {
-				if (pathExists(map,paths,boxIndx, g)) {
+			for (int g = 0; g<map.getNumberOfGoals(); g++) {
+				System.out.println("G : " + g);
+				if (pathExists(map,paths,boxIndx, g, Cell.ECell.BOX)) {
 					Map newMap = map.clone();
 					newMap.set(Cell.ECell.WALL, map.getGoals().get(g));
 					newMap.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
 					newMap.getGoals().remove(g);
 					newMap.getBoxes().remove(0);
-					isSolved = isSolved || findBoxToGoalPaths(newMap, paths, boxIndx++);
+					isSolved = isSolved || findBoxToGoalPaths(newMap, paths, ++boxIndx);
 					if (isSolved) break;
 				}
 			return isSolved;
@@ -710,11 +716,17 @@ public class Agent {
 	*
 	*
 	*/
-	private boolean pathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException {
+	private boolean pathExists(Map m, String[] paths, int boxIndx, int g, Cell.ECell cellType) throws CloneNotSupportedException {
 		try {
-			paths[boxIndx] = findPath(map, map.getBoxes().get(0).getPosition(), map.getGoals().get(g));
+			
+			//System.out.println(m.getBoxes());
+			System.out.println(" Box Index : " +boxIndx);
+			paths[boxIndx] = findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), cellType);
+			System.out.println("path:" + paths[boxIndx]);
+			
 			return true;
 		} catch (PathNotFoundException e) {
+			System.out.print("some sort of fucking exception");
 			return false;
 		}
 	}

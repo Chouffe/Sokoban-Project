@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.AStarSearch;
+import model.Cell.ECell;
 import model.Map;
 import model.Node;
 import model.Position;
@@ -110,7 +111,7 @@ public class AStarTest
 			Position pos2 = new Position(3,1);
 			
 			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search().toString(), "DD");
+			assertEquals(astar.search(ECell.PLAYER).toString(), "DD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
 			map = new Map(br);
@@ -119,7 +120,7 @@ public class AStarTest
 			
 			astar = new AStarSearch(map);
 			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search().toString(), "DDRRRRRDDD");
+			assertEquals(astar.search(ECell.PLAYER).toString(), "DDRRRRRDDD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			map = new Map(br);
@@ -128,7 +129,7 @@ public class AStarTest
 			
 			astar = new AStarSearch(map);
 			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search().toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+			assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			map = new Map(br);
@@ -139,7 +140,7 @@ public class AStarTest
 			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
 			try
 			{
-				assertEquals(astar.search().toString(), "");
+				assertEquals(astar.search(ECell.PLAYER).toString(), "");
 				fail("Should have thrown an exception");
 			}
 			catch(PathNotFoundException e)

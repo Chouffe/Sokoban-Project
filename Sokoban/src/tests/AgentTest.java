@@ -13,6 +13,7 @@ import model.Cell;
 import model.Map;
 import model.Moves;
 import model.Position;
+import model.Cell.ECell;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -118,21 +119,45 @@ public class AgentTest {
 			Position position2 = new Position(1,3);
 			Position position3 = new Position(2,4);
 			
+			// test with a Player
 			assertEquals(1, agent.findEmptySpacesAround(position, map).size());
+			assertEquals(1, agent.findEmptySpacesAround(position, map, ECell.PLAYER).size());
 			assertEquals(2, agent.findEmptySpacesAround(position2, map).size());
+			assertEquals(2, agent.findEmptySpacesAround(position2, map, ECell.PLAYER).size());
 			assertEquals(3, agent.findEmptySpacesAround(position3, map).size());
+			assertEquals(3, agent.findEmptySpacesAround(position3, map, ECell.PLAYER).size());
 			
-			// TODO : test the Goals!!!
+			// Test with a Box
+			Position positionBox1 = new Position(1,2);
+			Position positionBox2 = new Position(1,3);
+			Position positionBox3 = new Position(2,4);
+			Position positionBox4 = new Position(3,4);
+			Position positionBox5 = new Position(4,4);
+			Position positionBox6 = new Position(4,2);
+			
+			assertEquals(0, agent.findEmptySpacesAround(positionBox1, map, ECell.BOX).size());
+			assertEquals(2, agent.findEmptySpacesAround(positionBox2, map, ECell.BOX).size());
+			assertEquals(2, agent.findEmptySpacesAround(positionBox3, map, ECell.BOX).size());
+			assertEquals(2, agent.findEmptySpacesAround(positionBox4, map, ECell.BOX).size());
+			assertEquals(0, agent.findEmptySpacesAround(positionBox5, map, ECell.BOX).size());
+			assertEquals(0, agent.findEmptySpacesAround(positionBox6, map, ECell.BOX).size());
+			
 			br = new BufferedReader(new FileReader("src/tests/maps/map6.txt"));
 			Map map2 = new Map(br);
 			
 			Position position4 = map2.getPlayerPosition();
 			assertEquals(1, agent.findEmptySpacesAround(position4, map2).size());
+			assertEquals(1, agent.findEmptySpacesAround(map2.getPlayerPosition(), map2, ECell.PLAYER).size());
+			
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/map8.txt"));
 			
 			Map map3 = new Map(br);
 			assertEquals(1, agent.findEmptySpacesAround(map3.getPlayerPosition(), map3).size());
+			assertEquals(1, agent.findEmptySpacesAround(map3.getPlayerPosition(), map3, ECell.PLAYER).size());
+			
+			
+			
 			
 		}
 		catch (IOException e) {
@@ -192,91 +217,93 @@ public class AgentTest {
 		}
 	}
 	
+	
+	
 	/**
 	 * Tests the pathfinding of the Agent
 	 * @throws CloneNotSupportedException
 	 */
-	@Test
-	public final void testfindPathToGoal() throws CloneNotSupportedException
-	{
-		
-		try
-		{
-			// Test easy Pathfinding
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
-			agent.setMap(br);
-			assertEquals(agent.findPathToGoal(new Moves()), "DDD");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map2.txt"));
-			agent.setMap(br);
-			assertEquals(agent.findPathToGoal(new Moves()), "UUU");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map3.txt"));
-			agent.setMap(br);
-			assertEquals(agent.findPathToGoal( new Moves()), "RRRR");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map4.txt"));
-			agent.setMap(br);
-			assertEquals(agent.findPathToGoal(new Moves()), "LLLL");
-			
-			// Test hardPathfinding
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map5.txt"));
-			agent.setMap(br);
-			//Map map5 = new Map(br);
-			
-			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRR");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map6.txt"));
-			agent.setMap(br);
-			//Map map6 = new Map(br);
-			
-			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRRDDD");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
-			agent.setMap(br);
-			//Map map7 = new Map(br);
-			
-			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRRUU");
-			
-			
-			// Test on a more tricky map
-			br = new BufferedReader(new FileReader("src/tests/maps/map9.txt"));
-			agent.setMap(br);
-//			Map map8 = new Map(br);
-			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRR");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server1.txt"));
-			agent.setMap(br);
-	//		Map map9 = new Map(br);
-			System.out.println(agent.findPathToGoal(new Moves()));
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server2.txt"));
-			agent.setMap(br);
-		//	Map map10 = new Map(br);
-			assertEquals(agent.findPathToGoal(new Moves()), "");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server3.txt"));
-			agent.setMap(br);
-			//Map map11 = new Map(br);
-			System.out.println(agent.findPathToGoal(new Moves()));
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
-			agent.setMap(br);
-			//Map map12 = new Map(br);
-			System.out.println(agent.findPathToGoal(new Moves()));
-			
-		
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
+//	@Test
+//	public final void testfindPathToGoal() throws CloneNotSupportedException
+//	{
+//		
+//		try
+//		{
+//			// Test easy Pathfinding
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
+//			agent.setMap(br);
+//			assertEquals(agent.findPathToGoal(new Moves()), "DDD");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map2.txt"));
+//			agent.setMap(br);
+//			assertEquals(agent.findPathToGoal(new Moves()), "UUU");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map3.txt"));
+//			agent.setMap(br);
+//			assertEquals(agent.findPathToGoal( new Moves()), "RRRR");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map4.txt"));
+//			agent.setMap(br);
+//			assertEquals(agent.findPathToGoal(new Moves()), "LLLL");
+//			
+//			// Test hardPathfinding
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map5.txt"));
+//			agent.setMap(br);
+//			//Map map5 = new Map(br);
+//			
+//			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRR");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map6.txt"));
+//			agent.setMap(br);
+//			//Map map6 = new Map(br);
+//			
+//			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRRDDD");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
+//			agent.setMap(br);
+//			//Map map7 = new Map(br);
+//			
+//			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRRUU");
+//			
+//			
+//			// Test on a more tricky map
+//			br = new BufferedReader(new FileReader("src/tests/maps/map9.txt"));
+//			agent.setMap(br);
+////			Map map8 = new Map(br);
+//			assertEquals(agent.findPathToGoal(new Moves()), "DDRRRRR");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server1.txt"));
+//			agent.setMap(br);
+//	//		Map map9 = new Map(br);
+//			System.out.println(agent.findPathToGoal(new Moves()));
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server2.txt"));
+//			agent.setMap(br);
+//		//	Map map10 = new Map(br);
+//			assertEquals(agent.findPathToGoal(new Moves()), "");
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server3.txt"));
+//			agent.setMap(br);
+//			//Map map11 = new Map(br);
+//			System.out.println(agent.findPathToGoal(new Moves()));
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
+//			agent.setMap(br);
+//			//Map map12 = new Map(br);
+//			System.out.println(agent.findPathToGoal(new Moves()));
+//			
+//		
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if (br != null)br.close();
+//			} catch (IOException ex) {
+//				ex.printStackTrace();
+//			}
+//		}
+//	}
 	
 	@Test
 	public final void testFindPath() throws CloneNotSupportedException, PathNotFoundException
@@ -288,14 +315,14 @@ public class AgentTest {
 			Map map = new Map(br);
 			//agent.setMap(br);
 			
-			assertEquals(agent.findPath(map, new Position(1,1), new Position(4,1)).toString(), "DDD");
-			assertEquals(agent.findPath(map, new Position(1,2), new Position(1,2)).toString(), "");
+			assertEquals(agent.findPath(map, new Position(1,1), new Position(4,1), Cell.ECell.PLAYER).toString(), "DDD");
+			assertEquals(agent.findPath(map, new Position(1,2), new Position(1,2), Cell.ECell.PLAYER).toString(), "");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
 			//agent = new Agent();
 			map = new Map(br);
 			
-			assertEquals(agent.findPath(map, new Position(1,1), new Position(6,6)).toString(), "DDRRRRRDDD");
+			assertEquals(agent.findPath(map, new Position(1,1), new Position(6,6), Cell.ECell.PLAYER).toString(), "DDRRRRRDDD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			//agent = new Agent();
@@ -304,7 +331,7 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			//agent = new Agent();
 			map = new Map(br);
-			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17)).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17), Cell.ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 		
 		}
 		catch (IOException e) {
@@ -343,6 +370,35 @@ public class AgentTest {
 			agent.setCellAccessible(map).toStringAccessible();
 			
 			assertEquals("", "");
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	@Test
+	public final void testFindPathToGoals() throws CloneNotSupportedException
+	{
+		try
+		{
+			br = new BufferedReader(new FileReader("src/tests/maps/map10.txt"));
+			Map map = new Map(br);
+			
+			System.out.println(map);
+			System.out.println("Number of goals : " + map.getNumberOfGoals());
+			System.out.println("Number of boxes : " + map.getNumberOfBoxes());
+			for(String s : agent.getBoxToGoalPaths(map))
+			{
+				System.out.println(s);
+			}
+			
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();

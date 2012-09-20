@@ -1,6 +1,6 @@
 package model;
 
-public class Box {
+public class Box implements Cloneable{
 	protected Position position;
 	protected boolean onGoal;
 

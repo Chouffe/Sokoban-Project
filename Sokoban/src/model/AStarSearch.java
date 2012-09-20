@@ -57,7 +57,7 @@ public class AStarSearch
 		
 	}
 	
-	public Moves search() throws PathNotFoundException
+	public Moves search(Cell.ECell cellType) throws PathNotFoundException
 	{
 		while(!openedList.isEmpty())
 		{
@@ -85,7 +85,7 @@ public class AStarSearch
 //			System.out.println(closedList);
 			
 			//System.out.println(getNodesFromPosition(findEmptySpacesAround(current.getPosition())));
-			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition())))
+			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
 				if(closedList.contains(n))
 				{
@@ -111,7 +111,7 @@ public class AStarSearch
 			}
 		}
 		
-		System.out.println("END OF THE OPENED");
+		//System.out.println("END OF THE OPENED");
 		throw new PathNotFoundException();
 		//return null;
 	}
@@ -150,7 +150,81 @@ public class AStarSearch
 	 * @param map
 	 * @return ArrayList<Position> list of the available positions given the previous state node
 	 */
+//	public ArrayList<Position> findEmptySpacesAround(Position position)
+//	{
+//		ArrayList<Position> positions = new ArrayList<Position>();
+//		
+//		Position upPosition = new Position(position.getI(), position.getJ());
+//		upPosition.up(map);
+//		Position downPosition = new Position(position.getI(), position.getJ());
+//		downPosition.down(map);
+//		Position leftPosition = new Position(position.getI(), position.getJ());
+//		leftPosition.left(map);
+//		Position rightPosition = new Position(position.getI(), position.getJ());
+//		rightPosition.right(map);
+//		
+//		if(
+//				(upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
+//				&& 
+//				(map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR) 
+//					|| 
+//				map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+//				)
+//		)
+//		{
+//			positions.add(upPosition);
+//		}
+//		if(
+//				(downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
+//				&& 
+//				(map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+//					||
+//				map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+//				)
+//		)
+//		{
+//			positions.add(downPosition);
+//		}
+//		if(
+//				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
+//				&& 
+//				(map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+//					||
+//				map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+//				)
+//		)
+//		{
+//			positions.add(rightPosition);
+//		}
+//		if(
+//				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
+//				&& 
+//				(map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+//					||
+//				map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+//				)
+//		)
+//		{
+//			positions.add(leftPosition);
+//		}
+//		
+//		return positions;
+//	}
+	
 	public ArrayList<Position> findEmptySpacesAround(Position position)
+	{
+		return findEmptySpacesAround(position, map, Cell.ECell.BOX);
+	}
+	
+	/**
+	 * 
+	 * Finds the empty spaces around the position on the map
+	 * 
+	 * @param position
+	 * @param map
+	 * @return ArrayList<Position> list of the available positions given the previous state node
+	 */
+	public ArrayList<Position> findEmptySpacesAround(Position position, Map map)
 	{
 		ArrayList<Position> positions = new ArrayList<Position>();
 		
@@ -183,6 +257,7 @@ public class AStarSearch
 				)
 		)
 		{
+                    //System.out.println("FAIL.");
 			positions.add(downPosition);
 		}
 		if(
@@ -206,6 +281,177 @@ public class AStarSearch
 		)
 		{
 			positions.add(leftPosition);
+		}
+		
+		return positions;
+	}
+
+        /*
+         * @author: Luis
+         * This function should be used to move either the player or a box.
+         */
+        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving)
+	{
+		ArrayList<Position> positions = new ArrayList<Position>();
+		
+                // Get the position.
+		Position upPosition = new Position(position.getI(), position.getJ());
+		upPosition.up(map);
+		Position downPosition = new Position(position.getI(), position.getJ());
+		downPosition.down(map);
+		Position leftPosition = new Position(position.getI(), position.getJ());
+		leftPosition.left(map);
+		Position rightPosition = new Position(position.getI(), position.getJ());
+		rightPosition.right(map);
+		
+                // Move UP!
+		if(
+                    // It is not the same position. There was a wall.
+                    (upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
+                    && 
+                    // And it is an empty floor.
+                    (map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR) 
+                            || 
+                    // Or a goal.
+                    map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+                    )                     
+		)
+		{
+                    if (whoIsMoving==Cell.ECell.PLAYER){
+                        // Then add the position.
+			positions.add(upPosition);
+                    }
+                    else if (whoIsMoving==Cell.ECell.BOX)
+                    {
+                        // -------------------------------------
+                        // If the box wants to move up --> Don't.
+                        // -------------------------------------
+                        // Check if the cell down is a wall, a box or a box on goal.
+                        Cell wall = map.getCellFromPosition(downPosition);
+                        if (!(    wall.getType()==Cell.ECell.WALL || 
+                                wall.getType()==Cell.ECell.BOX  ||
+                                wall.getType()==Cell.ECell.BOX_ON_GOAL
+                            ))
+                            positions.add(upPosition);
+                        /*
+                         * For Debbuging
+                         */ 
+                        //else{                             
+                        //    System.out.println("Can't move up the box.");
+                        //    System.out.println(map);
+                        //}
+                            
+                    }
+                                            
+                          
+		}
+                // Move Down
+		if(
+                    (downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
+                    && 
+                    (map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+                            ||
+                    map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+                    )
+		)
+		{
+                    // If the cell is a player--> He can move.
+                    if (whoIsMoving==Cell.ECell.PLAYER){                        
+			positions.add(downPosition);
+                    }
+                    // If the cell is a box...
+                    else if (whoIsMoving==Cell.ECell.BOX)
+                    {
+                        // If the box wants to move down --> Don't.
+                        // -------------------------------------
+                        // Check if the cell up is a wall.                        
+                        Cell wall = map.getCellFromPosition(upPosition);
+                        if (!(    wall.getType()==Cell.ECell.WALL || 
+                                wall.getType()==Cell.ECell.BOX  ||
+                                wall.getType()==Cell.ECell.BOX_ON_GOAL
+                            ))
+                            positions.add(downPosition);
+                            
+                         /*
+                         * For Debbuging
+                         */ 
+                        //else{
+                        //    System.out.println("Can't move down the box.");
+                        //    System.out.println(map);
+                        //}
+                        
+                    }
+		}
+                
+                // Moving to the right!
+		if(
+				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
+				&& 
+				(map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+					||
+				map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+				)
+		)
+		{
+                    // -------------------------------------
+                    // Again the same .... Check if there is
+                    // a wall to the left and do not let it
+                    // move if this is a box.
+                    // -------------------------------------
+                    if (whoIsMoving==Cell.ECell.PLAYER){
+                        positions.add(rightPosition);
+                    }
+                    else if (whoIsMoving==Cell.ECell.BOX)
+                    {   
+                        Cell wall = map.getCellFromPosition(leftPosition);
+                        if (!(    wall.getType()==Cell.ECell.WALL || 
+                                wall.getType()==Cell.ECell.BOX  ||
+                                wall.getType()==Cell.ECell.BOX_ON_GOAL
+                            ))
+                            positions.add(rightPosition);
+                            
+                        /*
+                         * For debbuging
+                         */
+                        //else{
+                        //    System.out.println("Can't move right the box.");
+                        //    System.out.println(map);
+                        //}
+                    }
+                    
+		}
+                // Moving to the left!
+		if(
+				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
+				&& 
+				(map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
+					||
+				map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
+				)
+		)
+		{
+                    // -------------------------------------
+                    // Again the same .... Check if there is
+                    // a wall to the left and do not let it
+                    // move if this is a box.
+                    // -------------------------------------
+                    if (whoIsMoving==Cell.ECell.PLAYER){
+                        positions.add(leftPosition);
+                    }
+                    else if (whoIsMoving==Cell.ECell.BOX)
+                    {   
+                        Cell wall = map.getCellFromPosition(rightPosition);
+                        if (!(  wall.getType()==Cell.ECell.WALL || 
+                                wall.getType()==Cell.ECell.BOX  ||
+                                wall.getType()==Cell.ECell.BOX_ON_GOAL
+                            ))
+                            positions.add(leftPosition);
+                        /*else{                            
+                            System.out.println("Can't move left the box.");
+                            System.out.println(map);
+                        }*/
+                    }
+		
 		}
 		
 		return positions;
