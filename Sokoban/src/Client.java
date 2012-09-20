@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import model.Agent;
+import model.Map;
 
 
 /**
@@ -49,10 +50,13 @@ public class Client {
             Agent agent = new Agent(bufferToString);
 
             //we've found our solution
-            //String lMySol = agent.findPathToGoal(new Moves());
+            Map map = new Map(bufferToString);
+            System.out.println(map);
+            
+            String lMySol = agent.solve(map);
 
             // send the solution to the server
-            //lOut.println(lMySol);
+            lOut.println(lMySol);
             lOut.flush();
     
             //read answer from the server

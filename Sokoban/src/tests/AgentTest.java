@@ -277,4 +277,41 @@ public class AgentTest {
 			}
 		}
 	}
+	
+	@Test
+	public final void testSolving() throws CloneNotSupportedException
+	{
+		try
+		{
+			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
+			Map map = new Map(br);
+			System.out.println(map);
+			
+			agent.solve(map);
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/solve2.txt"));
+			map = new Map(br);
+			System.out.println(map);
+			
+			agent.solve(map);
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/solve3.txt"));
+			map = new Map(br);
+			System.out.println(map);
+			
+			agent.solve(map);
+			
+			
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 }

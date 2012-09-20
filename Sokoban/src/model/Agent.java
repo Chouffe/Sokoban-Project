@@ -1,6 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.LinkedList;
@@ -636,17 +637,22 @@ public class Agent {
 	* @param Boxpath String with the given box path
 	* @param BoxPos Position, initial position of the box
 	* @throws CloneNotSupportedException 
+	 * @throws IOException 
 	*/
 
 	//Converts a box path to the required player path.
-	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException{
+	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
 		String PlayerPath=new String();
 		char lastdir=' ';
 		Position newPlayerPos=new Position();
+		Position initialPositionPlayer = PlayerPos;
 		for(int i=0;i<BoxPath.length();i++){
+			System.in.read();
+			System.out.println(StartMap);
 			char newdir=BoxPath.charAt(i);
 			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
 				PlayerPath=PlayerPath+newdir;
+				
 				if(newdir=='U'){PlayerPos.up(StartMap);}
 				if(newdir=='D'){PlayerPos.down(StartMap);}
 				if(newdir=='L'){PlayerPos.left(StartMap);}
@@ -658,6 +664,7 @@ public class Agent {
 				if(newdir=='D'){newPlayerPos.up(StartMap);}
 				if(newdir=='L'){newPlayerPos.right(StartMap);}
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
+				//System.out.println(StartMap);
 				try {
 					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
 				} catch (PathNotFoundException e) {
@@ -665,6 +672,13 @@ public class Agent {
 					e.printStackTrace();
 				}
 				PlayerPos=newPlayerPos.clone();
+				PlayerPath=PlayerPath+newdir;
+				if(newdir=='U'){PlayerPos.up(StartMap);}
+				if(newdir=='D'){PlayerPos.down(StartMap);}
+				if(newdir=='L'){PlayerPos.left(StartMap);}
+				if(newdir=='R'){PlayerPos.right(StartMap);}
+				//System.out.println(StartMap);
+				
 			}
 			
 			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
@@ -673,8 +687,14 @@ public class Agent {
 			if(newdir=='L'){BoxPos.left(StartMap);}
 			if(newdir=='R'){BoxPos.right(StartMap);}
 			StartMap.set(Cell.ECell.BOX,BoxPos);
+			//System.out.println(StartMap);
 			lastdir=newdir;
 		}
+		StartMap.setPlayerPosition(PlayerPos);
+		StartMap.set(ECell.EMPTY_FLOOR, initialPositionPlayer);
+		StartMap.set(Cell.ECell.BOX_ON_GOAL,BoxPos);
+		StartMap.set(ECell.PLAYER, PlayerPos);
+		System.out.println(StartMap);
 		return PlayerPath;	
 	}
 	/**
@@ -687,9 +707,9 @@ public class Agent {
 		try {
 			
 			//System.out.println(m.getBoxes());
-			System.out.println(" Box Index : " +boxIndx);
+			//System.out.println(" Box Index : " +boxIndx);
 			paths[boxIndx] = findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), cellType);
-			System.out.println("path:" + paths[boxIndx]);
+			//System.out.println("path:" + paths[boxIndx]);
 			
 			return true;
 		} catch (PathNotFoundException e) {
@@ -776,6 +796,19 @@ public class Agent {
         
         }
 	
+	public String solve(Map map) throws CloneNotSupportedException, IOException
+	{
+		int i = 0;
+		String result = "";
+		for(String s : getBoxToGoalPaths(map))
+		{
+			//System.out.println(map);
+			result += findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+			i++;
+		}
+		System.out.println(result.toUpperCase());
+		return result.toUpperCase();
+	}
 	
 	
 	
