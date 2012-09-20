@@ -686,7 +686,7 @@ public class Agent {
 				if(newdir=='L'){newPlayerPos.right(StartMap);}
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
 				try {
-					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos); 
+					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos).toLowerCase(); 
 				} catch (PathNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
