@@ -17,6 +17,10 @@ public class Box implements Cloneable{
 		return position;
 	}
 
+	public void setPosition(Position pos) {
+		position = pos;
+	}
+
 	public Box clone() throws CloneNotSupportedException {
 		
 		Box copy = (Box)super.clone();
