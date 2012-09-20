@@ -497,7 +497,6 @@ public class Agent {
 	* @throws CloneNotSupportedException 
 	*/
 
-
 	//Converts a box path to the required player path.
 	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException{
 		String PlayerPath=new String();
@@ -559,6 +558,8 @@ public class Agent {
 	
 	/**
 	 * Clean the agent variables
+	 * 
+	 * @author arthur
 	 */
 	protected void clean()
 	{
