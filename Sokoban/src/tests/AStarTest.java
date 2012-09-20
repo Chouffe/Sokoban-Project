@@ -147,6 +147,40 @@ public class AStarTest
 			{
 			}
 			
+			// Test fucking large map
+			
+			// 1 : with a PLAYER
+			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath4.txt"));
+			map = new Map(br);
+			
+			astar = new AStarSearch(map);
+			astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(map.getGoals().get(0)));
+			assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+			
+			// 1 : with a BOX
+			astar = new AStarSearch(map);
+			astar.setStartAndGoalNode(new Node(new Position(3,2)), new Node(new Position(3,4)));
+			assertEquals(astar.search(ECell.BOX).toString(), "URDR");
+			
+			// Test real maps
+			br = new BufferedReader(new FileReader("src/tests/maps/map10.txt"));
+			map = new Map(br);
+			
+			astar = new AStarSearch(map);
+			
+			astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+			assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRR");
+			
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/map12.txt"));
+			map = new Map(br);
+			
+			
+			astar = new AStarSearch(map);
+			
+			astar.setStartAndGoalNode(new Node(new Position(2,8)), new Node(map.getGoals().get(0)));
+			assertEquals(astar.search(ECell.BOX).toString(), "RRRRRRR");
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();

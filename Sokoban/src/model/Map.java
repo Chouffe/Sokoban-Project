@@ -187,7 +187,6 @@ public class Map implements Cloneable
 							break;
 						case BOX:
 							addBox(new Position(i,j), false);
-							//boxes.add(new Box(new Position(i,j), false));
 							break;
 						case BOX_ON_GOAL:
 							addBox(new Position(i,j), true);
@@ -241,7 +240,9 @@ public class Map implements Cloneable
 								setPlayerPosition(new Position(i,j));
 								break;
 							case BOX:
+								System.out.println(i + " " + j);
 								addBox(new Position(i, j), false);
+								System.out.println(boxes);
 								break;
 							case BOX_ON_GOAL:
 								addBox(new Position(i, j), true);

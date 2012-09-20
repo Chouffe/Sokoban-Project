@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.Cell.ECell;
+
 import exception.PathNotFoundException;
 
 /**
@@ -75,6 +77,7 @@ public class AStarSearch
 			
 			// We add current to closedList
 			closedList.add(current);
+			map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
 			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
@@ -130,6 +133,7 @@ public class AStarSearch
 			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
+			map.set(ECell.BOX, start.getPosition());
 			return movesResult;
 		}
 	}
