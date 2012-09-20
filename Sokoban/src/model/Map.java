@@ -361,6 +361,10 @@ public class Map implements Cloneable
 		this.goals = goals;
 	}
 
+	public void setBoxes(ArrayList<Box> boxes) {
+		this.boxes = boxes;
+	}
+
 	public int getNumberOfGoals() {
 		return goals.size();
 	}
