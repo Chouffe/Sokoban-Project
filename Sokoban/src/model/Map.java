@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Cell.ECell;
+import static model.Cell.ECell.*;
+
 /**
  * Represents a map
  *
@@ -332,6 +335,40 @@ public class Map implements Cloneable
 				&& position.getI() < map.size() 
 				&& position.getJ() < width);
 	}
+
+	public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException {
+		Position boxPos = box.getPosition();
+		ECell boxCellType = getCellFromPosition(boxPos).getType();
+		Position playerPos = goal.clone();
+		ECell playerPosType = getCellFromPosition(playerPos).getType();
+
+		switch (boxPath.charAt(boxPath.length())) {
+
+		case 'U':
+			playerPos.down(this);
+		case 'D':
+			playerPos.up(this);
+		case 'L':
+			playerPos.right(this);
+		case 'R':
+			playerPos.left(this);
+		}
+
+		set(BOX_ON_GOAL, goal);
+
+		if (boxCellType == BOX_ON_GOAL)
+			set(GOAL_SQUARE, boxPos);
+		else if (boxCellType == BOX)
+			set(EMPTY_FLOOR, boxPos);
+
+		if (playerPosType == GOAL_SQUARE)
+			set(PLAYER_ON_GOAL_SQUARE, playerPos);
+		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED)
+			set(PLAYER, playerPos);
+
+			
+		box.setPosition(goal.clone());
+	}
 	
 	public Cell getCellFromPosition(Position position)
 	{
@@ -360,10 +397,6 @@ public class Map implements Cloneable
 
 	public void setGoals(ArrayList<Position> goals) {
 		this.goals = goals;
-	}
-
-	public void setBoxes(ArrayList<Box> boxes) {
-		this.boxes = boxes;
 	}
 
 	public int getNumberOfGoals() {

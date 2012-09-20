@@ -584,7 +584,7 @@ public class Agent {
 	}
 
 	/**
-	* Finds a box-to-goal path for each box if there is a solution for that box ordering
+	* Finds a box-to-goal path for each box.
 	*
 	* Populates a String array with box-to-goal paths and returns true if a valid
 	* solution is found for all boxes.
@@ -593,7 +593,7 @@ public class Agent {
 	* order in which they are stored in the String array.
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
-	* @param map 
+	* @param map Should be a clone, as it is altered
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	* @throws CloneNotSupportedException 
