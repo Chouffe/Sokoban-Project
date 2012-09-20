@@ -281,13 +281,22 @@ public class Agent {
 	}
 
         /*
-         * @author: Luis
+         * @author: Luis F. Reina G.
+         * @param:  position--> where the player/box is
+         *          map --> The actual map.
+         *          whoIsMoving --> If it is a player or a box.
+         * @return: ArrayList with the positions the player/box is allowed
+         *          to move.
          * This function should be used to move either the player or a box.
+         * The box can not move out of a wall or move if there is an obstacle
+         * that is going to block the movement.
+         * Upgrade: If the box should not move to a wall if there is no goal 
+         *          in it.
          */
         public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving)
 	{
 		ArrayList<Position> positions = new ArrayList<Position>();
-		
+		System.out.println(map);
                 // Get the position.
 		Position upPosition = new Position(position.getI(), position.getJ());
 		upPosition.up(map);
@@ -298,8 +307,11 @@ public class Agent {
 		Position rightPosition = new Position(position.getI(), position.getJ());
 		rightPosition.right(map);
 		
-                // Move UP!
-		if(
+                //               ^
+                //              / \
+                // Move UP!      |
+		//               | 
+                if(
                     // It is not the same position. There was a wall.
                     (upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
                     && 
@@ -322,11 +334,40 @@ public class Agent {
                         // -------------------------------------
                         // Check if the cell down is a wall, a box or a box on goal.
                         Cell wall = map.getCellFromPosition(downPosition);
-                        if (!(    wall.getType()==Cell.ECell.WALL || 
+                        if (!(  wall.getType()==Cell.ECell.WALL || 
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(upPosition);
+                            {
+                                //if (upPosition.getI()-1>=0){ 
+                                //---> Not going to check this, it will work by faith!!!
+                                // Check if oneCellUp has a goal (worth moving there).
+                                Cell oneCellUp = map.getCellFromPosition(new Position(upPosition.getI()-1,upPosition.getJ()));
+                                
+                                
+                                // If this oneCellUp is a wall.... then check if there is a goal in there.
+                                if (oneCellUp.getType()==Cell.ECell.WALL)
+                                    // 
+                                    for (int goalCount=0; goalCount<map.getNumberOfGoals();goalCount++)
+                                    {
+                                        // Get the goal Row
+                                        int i = map.getGoals().get(goalCount).getI();
+                                        // Get the goal Column
+                                        //int j = map.getGoals().get(goalCount).getJ();
+                                        // Check if there is a goal on the Row. 
+                                        if (upPosition.getI()==i) // || upPosition.getJ()==j)
+                                            positions.add(upPosition);
+                                        else
+                                        {
+                                            System.out.println("Don't go Up!");
+                                            //System.out.println(map);
+                                        }
+                                    }
+                                else
+                                    // Add it.
+                                    positions.add(upPosition);
+                            }  
+                        
                         /*
                          * For Debbuging
                          */ 
@@ -339,7 +380,9 @@ public class Agent {
                                             
                           
 		}
-                // Move Down
+                //              |
+                // Move Down    |
+                //              V
 		if(
                     (downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
                     && 
@@ -364,7 +407,36 @@ public class Agent {
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(downPosition);
+                            //positions.add(downPosition);
+                            {
+                                //if (upPosition.getI()-1>=0){ 
+                                //---> Not going to check this, it will work by faith!!!
+                                // Check if oneCellUp has a goal (worth moving there).
+                                Cell oneCellDown = map.getCellFromPosition(new Position(downPosition.getI()+1,downPosition.getJ()));
+                                
+                                
+                                // If this oneCellUp is a wall.... then check if there is a goal in there.
+                                if (oneCellDown.getType()==Cell.ECell.WALL)
+                                    // 
+                                    for (int goalCount=0; goalCount<map.getNumberOfGoals();goalCount++)
+                                    {
+                                        // Get the goal Row
+                                        int i = map.getGoals().get(goalCount).getI();
+                                        // Get the goal Column
+                                        //int j = map.getGoals().get(goalCount).getJ();
+                                        // Check if there is a goal on the Row. 
+                                        if (upPosition.getI()==i) // || upPosition.getJ()==j)
+                                            positions.add(downPosition);
+                                        else
+                                        {
+                                            System.out.println("Don't go Down!");
+                                            //System.out.println(map);
+                                        }
+                                    }
+                                else
+                                    // Add it.
+                                    positions.add(downPosition);
+                            }  
                             
                          /*
                          * For Debbuging
@@ -377,7 +449,11 @@ public class Agent {
                     }
 		}
                 
-                // Moving to the right!
+                // ------->
+                //
+                // Moving to the right!     ----->
+                //
+                // ------->
 		if(
 				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
 				&& 
@@ -398,11 +474,40 @@ public class Agent {
                     else if (whoIsMoving==Cell.ECell.BOX)
                     {   
                         Cell wall = map.getCellFromPosition(leftPosition);
-                        if (!(    wall.getType()==Cell.ECell.WALL || 
+                        if (!(  wall.getType()==Cell.ECell.WALL || 
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(rightPosition);
+                            //positions.add(rightPosition);
+                            {
+                                //if (upPosition.getI()-1>=0){ 
+                                //---> Not going to check this, it will work by faith!!!
+                                // Check if oneCellUp has a goal (worth moving there).
+                                Cell oneCellRight = map.getCellFromPosition(new Position(rightPosition.getI(),rightPosition.getJ()+1));
+                                
+                                
+                                // If this oneCellUp is a wall.... then check if there is a goal in there.
+                                if (oneCellRight.getType()==Cell.ECell.WALL)
+                                    // 
+                                    for (int goalCount=0; goalCount<map.getNumberOfGoals();goalCount++)
+                                    {
+                                        // Get the goal Row
+                                        int i = map.getGoals().get(goalCount).getI();
+                                        // Get the goal Column
+                                        //int j = map.getGoals().get(goalCount).getJ();
+                                        // Check if there is a goal on the Row. 
+                                        if (upPosition.getI()==i) // || upPosition.getJ()==j)
+                                            positions.add(rightPosition);
+                                        else
+                                        {
+                                            System.out.println("Don't go Right!");
+                                            //System.out.println(map);
+                                        }
+                                    }
+                                else
+                                    // Add it.
+                                    positions.add(rightPosition);
+                            }  
                             
                         /*
                          * For debbuging
@@ -414,7 +519,11 @@ public class Agent {
                     }
                     
 		}
-                // Moving to the left!
+                //      <----------
+                //
+                // Moving to the left!    <----------
+                //
+                //      <----------
 		if(
 				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
 				&& 
@@ -439,7 +548,36 @@ public class Agent {
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(leftPosition);
+                            //positions.add(leftPosition);
+                            {
+                                //if (upPosition.getI()-1>=0){ 
+                                //---> Not going to check this, it will work by faith!!!
+                                // Check if oneCellUp has a goal (worth moving there).
+                                Cell oneCellLeft = map.getCellFromPosition(new Position(leftPosition.getI(),leftPosition.getJ()-1));
+                                
+                                
+                                // If this oneCellUp is a wall.... then check if there is a goal in there.
+                                if (oneCellLeft.getType()==Cell.ECell.WALL)
+                                    // 
+                                    for (int goalCount=0; goalCount<map.getNumberOfGoals();goalCount++)
+                                    {
+                                        // Get the goal Row
+                                        int i = map.getGoals().get(goalCount).getI();
+                                        // Get the goal Column
+                                        //int j = map.getGoals().get(goalCount).getJ();
+                                        // Check if there is a goal on the Row. 
+                                        if (upPosition.getI()==i) // || upPosition.getJ()==j)
+                                            positions.add(leftPosition);
+                                        else
+                                        {
+                                            System.out.println("Don't go Left!");
+                                            //System.out.println(map);
+                                        }
+                                    }
+                                else
+                                    // Add it.
+                                    positions.add(leftPosition);
+                            }  
                         /*else{                            
                             System.out.println("Can't move left the box.");
                             System.out.println(map);
