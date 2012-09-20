@@ -625,30 +625,18 @@ public class Agent {
 	* @throws CloneNotSupportedException 
 	*/
 	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
+		Map safeToAlterMap = map.clone();
 		String[] paths = new String[map.getNumberOfBoxes()];
-		ArrayList<Box> orderedBoxes = new ArrayList<Box>;
-		findBoxToGoalPaths(orderedBoxes, map, paths, 0);
+		//System.out.println(paths.length);
+		//pathExists(map, paths, 0, 0, ECell.BOX);
+		//System.out.println(paths[0]);
+		findBoxToGoalPaths(safeToAlterMap, paths, 0);
 		
 		return paths;
 	}
 
-	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) {
-		if (map.getNumberOfBoxes() == 0) {
-			map.setBoxes(orderedBoxes);
-			if (findSequentialBoxToGoalPaths(map, paths, 0)) return true;
-			}
-		else {
-			boolean isSolved = false;
-			for (int b=0; b<map.getNumberOfBoxes(); b++) {
-				isSolved = isSolved || findBoxToGoalPaths(orderedBoxes.add(map.getBoxes().get(b), map.getBoxes().remove(b), paths)); 
-				if (isSolved) break;
-			}
-		return isSolved;
-		}
-	}
-
 	/**
-	* Finds a box-to-goal path for each box if there is a solution for that box ordering
+	* Finds a box-to-goal path for each box.
 	*
 	* Populates a String array with box-to-goal paths and returns true if a valid
 	* solution is found for all boxes.
@@ -657,39 +645,32 @@ public class Agent {
 	* order in which they are stored in the String array.
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
-	* @param map 
+	* @param map Should be a clone, as it is altered
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	* @throws CloneNotSupportedException 
 	*/
-	private boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException {
+	private boolean findBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException {
 		
 		if (map.getBoxes().isEmpty()) return true;
 		else {
 			boolean isSolved = false;
-				for (int g = 0; g<map.getNumberOfGoals(); g++) {
-					System.out.println("G : " + g);
-					if (getCellFromPosition(map.getBoxes().get(g)) != Cell.ECell.BOX_ON_GOAL) {
-						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
-							Map newMap = map.clone();
-							updateMapWithBoxOnGoal(newMap, g);
-							isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, ++boxIndx);
-							if (isSolved) break;
-						}
-					}
+			for (int g = 0; g<map.getNumberOfGoals(); g++) {
+				System.out.println("G : " + g);
+				if (pathExists(map,paths,boxIndx, g, Cell.ECell.BOX)) {
+					Map newMap = map.clone();
+					newMap.set(Cell.ECell.WALL, map.getGoals().get(g));
+					newMap.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
+					newMap.getGoals().remove(g);
+					newMap.getBoxes().remove(0);
+					isSolved = isSolved || findBoxToGoalPaths(newMap, paths, ++boxIndx);
+					if (isSolved) break;
 				}
-			}
 			return isSolved;
+			}
+		return false;	
 		}
 	}
-
-	private void updateMapWithBoxOnGoal(Map map, int goalIndx) {
-			map.set(Cell.ECell.WALL, map.getGoals().get(goalIndx));
-			map.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
-			map.getGoals().remove(goalIndx);
-			map.getBoxes().remove(0);
-	}
-
 	/**
 	* Finds a player path for the given box path.
 	*
@@ -698,11 +679,8 @@ public class Agent {
 	* @param Startmap map Should be a clone, as it is altered
 	* @param Boxpath String with the given box path
 	* @param BoxPos Position, initial position of the box
-	* @throws CloneNotSupportedException 
+	 * @throws CloneNotSupportedException 
 	*/
-
-
-	//Converts a box path to the required player path.
 	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException{
 		String PlayerPath=new String();
 		char lastdir=' ';
@@ -757,6 +735,7 @@ public class Agent {
 			
 			return true;
 		} catch (PathNotFoundException e) {
+			System.out.print("some sort of fucking exception");
 			return false;
 		}
 	}
