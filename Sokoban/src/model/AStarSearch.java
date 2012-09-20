@@ -5,17 +5,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.Cell.ECell;
-
 import exception.PathNotFoundException;
 
+/**
+ * Class to handle the AStar Search on map
+ * @author arthur
+ *
+ */
 public class AStarSearch 
 {
 	
 	protected Node start, goal;
 	protected Map map;
 	protected int maxNodes;
-	protected final int MAXNODES = 1000;
 	
 	protected List<Node> openedList = new LinkedList<Node>();
 	protected List<Node> closedList = new LinkedList<Node>();
@@ -24,7 +26,6 @@ public class AStarSearch
 	
 	public AStarSearch()
 	{
-		maxNodes = MAXNODES;
 		map = null;
 	}
 	
@@ -57,6 +58,13 @@ public class AStarSearch
 		
 	}
 	
+	/**
+	 * Implementation of the AStar Search
+	 * @param cellType
+	 * The cellType should be either a PLAYER or a BOX
+	 * @return
+	 * @throws PathNotFoundException
+	 */
 	public Moves search(Cell.ECell cellType) throws PathNotFoundException
 	{
 		while(!openedList.isEmpty())
@@ -66,11 +74,7 @@ public class AStarSearch
 			
 			if(current.isGoal(goal))
 			{
-//				System.out.println(goal);
-//				System.out.println("FOUND");
 				return reconstructPath(current);
-//				return;
-				//return reconstructPath(current);
 			}
 			
 			// We remove current from openedList
@@ -78,22 +82,16 @@ public class AStarSearch
 			
 			// We add current to closedList
 			closedList.add(current);
-			
-//			System.out.println("OPENED");
-//			System.out.println(openedList);
-//			System.out.println("CLOSED");
-//			System.out.println(closedList);
-			
-			//System.out.println(getNodesFromPosition(findEmptySpacesAround(current.getPosition())));
+		
 			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
 				if(closedList.contains(n))
 				{
 					continue;
 				}
+				
 				// We compute a new g tentative
 				int tentativeGScore = current.getG() + current.distance(current.getPosition(), n.getPosition());
-				//System.out.println("Tentative : " + tentativeGScore);
 				
 				if(!openedList.contains(n) || tentativeGScore < n.getG())
 				{
@@ -101,31 +99,34 @@ public class AStarSearch
 					{
 						openedList.add(n);
 					}
+					
 					n.parent = current;
 					n.setG(tentativeGScore);
 					n.setH(n.goalDistanceEstimate(goal));
 					n.setF(n.getG() + n.getH());
-					map.set(ECell.VISITED, n.getPosition());
-					System.out.println(map);
+					
+					//map.set(ECell.VISITED, n.getPosition());
+					//System.out.println(map);
 				}
 			}
 		}
 		
-		//System.out.println("END OF THE OPENED");
+		// No path found : we throw an exception
 		throw new PathNotFoundException();
-		//return null;
 	}
 	
+	/**
+	 * Auxiliary function for the AStar search
+	 * Reconstruct the path from a child node to its parent recursively
+	 * @param currentNode
+	 * @return
+	 */
 	public Moves reconstructPath(Node currentNode)
 	{
 		if(currentNode.getParent() != null)
 		{
-			//System.out.println(currentNode);
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
-			return reconstructPath(currentNode.getParent());
-			
-			
-			
+			return reconstructPath(currentNode.getParent());	
 		}
 		else
 		{
@@ -133,84 +134,20 @@ public class AStarSearch
 			{
 				return new Moves();
 			}
+			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
 			return movesResult;
-//			System.out.println(movesResult);
-//			System.out.println(currentNode.toString());
 		}
 	}
 	
 	
 	/**
-	 * 
-	 * Finds the empty spaces around the position on the map
-	 * 
+	 * Find empty space around a given position
 	 * @param position
-	 * @param map
-	 * @return ArrayList<Position> list of the available positions given the previous state node
+	 * @return
+	 * @see findEmptySpacesAround
 	 */
-//	public ArrayList<Position> findEmptySpacesAround(Position position)
-//	{
-//		ArrayList<Position> positions = new ArrayList<Position>();
-//		
-//		Position upPosition = new Position(position.getI(), position.getJ());
-//		upPosition.up(map);
-//		Position downPosition = new Position(position.getI(), position.getJ());
-//		downPosition.down(map);
-//		Position leftPosition = new Position(position.getI(), position.getJ());
-//		leftPosition.left(map);
-//		Position rightPosition = new Position(position.getI(), position.getJ());
-//		rightPosition.right(map);
-//		
-//		if(
-//				(upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
-//				&& 
-//				(map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR) 
-//					|| 
-//				map.getMap().get(upPosition.getI()).get(upPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
-//				)
-//		)
-//		{
-//			positions.add(upPosition);
-//		}
-//		if(
-//				(downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
-//				&& 
-//				(map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
-//					||
-//				map.getMap().get(downPosition.getI()).get(downPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
-//				)
-//		)
-//		{
-//			positions.add(downPosition);
-//		}
-//		if(
-//				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
-//				&& 
-//				(map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
-//					||
-//				map.getMap().get(rightPosition.getI()).get(rightPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
-//				)
-//		)
-//		{
-//			positions.add(rightPosition);
-//		}
-//		if(
-//				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
-//				&& 
-//				(map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.EMPTY_FLOOR)
-//					||
-//				map.getMap().get(leftPosition.getI()).get(leftPosition.getJ()).getType().equals(Cell.ECell.GOAL_SQUARE)
-//				)
-//		)
-//		{
-//			positions.add(leftPosition);
-//		}
-//		
-//		return positions;
-//	}
-	
 	public ArrayList<Position> findEmptySpacesAround(Position position)
 	{
 		return findEmptySpacesAround(position, map, Cell.ECell.BOX);
@@ -457,7 +394,11 @@ public class AStarSearch
 		return positions;
 	}
 	
-	
+	/**
+	 * Convert List of Positions to List of Nodes
+	 * @param positionList
+	 * @return List of Nodes
+	 */
 	public List<Node> getNodesFromPosition(List<Position> positionList)
 	{
 		List<Node> nodeList = new ArrayList<Node>();
@@ -470,6 +411,7 @@ public class AStarSearch
 		return nodeList;
 	}
 
+	
 	public Map getMap() {
 		return map;
 	}
@@ -509,7 +451,5 @@ public class AStarSearch
 	public void setClosedList(List<Node> closedList) {
 		this.closedList = closedList;
 	}
-	
-	
 	
 }

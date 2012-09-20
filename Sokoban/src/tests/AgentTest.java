@@ -314,26 +314,34 @@ public class AgentTest {
 			// Test easy Pathfinding
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
 			Map map = new Map(br);
-			//agent.setMap(br);
 			
 			assertEquals(agent.findPath(map, new Position(1,1), new Position(4,1), Cell.ECell.PLAYER).toString(), "DDD");
 			assertEquals(agent.findPath(map, new Position(1,2), new Position(1,2), Cell.ECell.PLAYER).toString(), "");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
-			//agent = new Agent();
+		
 			map = new Map(br);
 			
 			assertEquals(agent.findPath(map, new Position(1,1), new Position(6,6), Cell.ECell.PLAYER).toString(), "DDRRRRRDDD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			//agent = new Agent();
+		
 			agent.setMap(br);
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			//agent = new Agent();
+		
 			map = new Map(br);
 			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17), Cell.ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 		
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/map11.txt"));
+		
+			map = new Map(br);
+			assertEquals(agent.findPath(map, map.getPlayerPosition(), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRRRRR");
+			
+			assertEquals(agent.findPath(map, new Position(5,1), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRURURURUR");
+			assertEquals(agent.findPath(map, new Position(4,2), new Position(1,14), Cell.ECell.BOX).toString(), "RRRRRRRRRURURUR");
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -352,25 +360,28 @@ public class AgentTest {
 	{
 		try
 		{
+			
+			// TODO : add some assert
 			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
 			Map map = new Map(br);
-			System.out.println(map);
+			//System.out.println(map);
 			
 			agent.setCellAccessible(map).toStringAccessible();
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
 			map = new Map(br);
-			System.out.println(map);
+			//System.out.println(map);
 			
 			agent.setCellAccessible(map).toStringAccessible();
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
 			map = new Map(br);
-			System.out.println(map);
+			//System.out.println(map);
 			
 			agent.setCellAccessible(map).toStringAccessible();
 			
-			assertEquals("", "");
+			
+			//assertEquals("", "");
 		}
 		catch (IOException e) {
 			e.printStackTrace();
