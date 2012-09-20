@@ -665,7 +665,45 @@ public class Agent {
 		return false;	
 		}
 	}
-
+	//Converts a box path to the required player path.
+	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException{
+		String PlayerPath=new String();
+		char lastdir=' ';
+		Position newPlayerPos=new Position();
+		for(int i=0;i<BoxPath.length();i++){
+			char newdir=BoxPath.charAt(i);			
+			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
+				PlayerPath=PlayerPath+newdir;
+				if(newdir=='U'){PlayerPos.up(StartMap);}
+				if(newdir=='D'){PlayerPos.down(StartMap);}
+				if(newdir=='L'){PlayerPos.left(StartMap);}
+				if(newdir=='R'){PlayerPos.right(StartMap);}
+			}	
+			else{   //Else find a path for the player to the correct side of the box.
+				newPlayerPos=BoxPos.clone();
+				if(newdir=='U'){newPlayerPos.down(StartMap);}
+				if(newdir=='D'){newPlayerPos.up(StartMap);}
+				if(newdir=='L'){newPlayerPos.right(StartMap);}
+				if(newdir=='R'){newPlayerPos.left(StartMap);}
+				try {
+					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos); 
+				} catch (PathNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				PlayerPos=newPlayerPos.clone();
+			}
+			
+			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
+			if(newdir=='U'){BoxPos.down(StartMap);}
+			if(newdir=='D'){BoxPos.up(StartMap);}
+			if(newdir=='L'){BoxPos.right(StartMap);}
+			if(newdir=='R'){BoxPos.left(StartMap);}
+			StartMap.set(Cell.ECell.BOX,BoxPos);
+			lastdir=newdir;
+		}
+		return PlayerPath;	
+	}
 	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
 	 * @throws CloneNotSupportedException 
