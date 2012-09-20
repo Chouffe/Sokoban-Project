@@ -671,7 +671,16 @@ public class Agent {
 		return false;	
 		}
 	}
-	//Converts a box path to the required player path.
+	/**
+	* Finds a player path for the given box path.
+	*
+	*
+	* @author Joakim Andrén <joaandr@kth.se>
+	* @param Startmap map Should be a clone, as it is altered
+	* @param Boxpath String with the given box path
+	* @param BoxPos Position, initial position of the box
+	 * @throws CloneNotSupportedException 
+	*/
 	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException{
 		String PlayerPath=new String();
 		char lastdir=' ';
@@ -701,10 +710,10 @@ public class Agent {
 			}
 			
 			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
-			if(newdir=='U'){BoxPos.down(StartMap);}
-			if(newdir=='D'){BoxPos.up(StartMap);}
-			if(newdir=='L'){BoxPos.right(StartMap);}
-			if(newdir=='R'){BoxPos.left(StartMap);}
+			if(newdir=='U'){BoxPos.up(StartMap);}
+			if(newdir=='D'){BoxPos.down(StartMap);}
+			if(newdir=='L'){BoxPos.left(StartMap);}
+			if(newdir=='R'){BoxPos.right(StartMap);}
 			StartMap.set(Cell.ECell.BOX,BoxPos);
 			lastdir=newdir;
 		}

@@ -14,6 +14,7 @@ import model.Map;
 import model.Moves;
 import model.Position;
 import model.Cell.ECell;
+import model.Box;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -393,9 +394,18 @@ public class AgentTest {
 			System.out.println(map);
 			System.out.println("Number of goals : " + map.getNumberOfGoals());
 			System.out.println("Number of boxes : " + map.getNumberOfBoxes());
+			int i=0;
 			for(String s : agent.getBoxToGoalPaths(map))
 			{
-				System.out.println(s);
+				Map newmap=map.clone();
+				Box b=map.getBoxes().get(i);
+				System.out.println("Player path:" + agent.findPlayerPathFromBoxPath(s, newmap,map.getPlayerPosition() ,b.getPosition()));
+				System.out.println("box path"+s);
+				System.out.println("Box pos:"+b.getPosition());
+				System.out.println("Player pos:"+map.getPlayerPosition());
+				i++;
+				System.out.println(newmap);
+				System.out.println(map);
 			}
 			
 			
