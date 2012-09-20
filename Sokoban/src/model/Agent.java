@@ -622,7 +622,7 @@ public class Agent {
 	* order in which they are stored in the String array.
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
-	 * @throws CloneNotSupportedException 
+	* @throws CloneNotSupportedException 
 	*/
 	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
 		Map safeToAlterMap = map.clone();
@@ -648,7 +648,7 @@ public class Agent {
 	* @param map Should be a clone, as it is altered
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
-	 * @throws CloneNotSupportedException 
+	* @throws CloneNotSupportedException 
 	*/
 	private boolean findBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException {
 		
@@ -721,7 +721,7 @@ public class Agent {
 	}
 	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
-	 * @throws CloneNotSupportedException 
+	* @throws CloneNotSupportedException 
 	*
 	*
 	*/
