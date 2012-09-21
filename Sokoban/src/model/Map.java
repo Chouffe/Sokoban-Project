@@ -3,6 +3,7 @@ package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import exception.IllegalMoveException;
 
@@ -19,6 +20,7 @@ public class Map implements Cloneable
 	protected ArrayList<ArrayList<Cell>> map = null;
 	protected ArrayList<Position> goals = null;
 	protected ArrayList<Box> boxes;
+	protected HashMap<Position, Box> boxHashMap;
 	
 	// Todo : model with a Player, not only a position
 	protected Player player;
@@ -34,6 +36,9 @@ public class Map implements Cloneable
 		boxes = new ArrayList<Box>();
 		//playerPosition = new Position();
 		player = new Player();
+		boxHashMap = new HashMap<Position, Box>();
+
+		playerPosition = new Position();
 		height = 0;
 		width = 0;
 	}
@@ -510,6 +515,10 @@ public class Map implements Cloneable
 		return boxes;
 	}
 
+	public Box getBox(Position position) {
+		return boxHashMap.get(position);
+	}
+
 	public int getNumberOfBoxes() {
 		return boxes.size();
 	}
@@ -524,6 +533,7 @@ public class Map implements Cloneable
 
 	protected void addBox(Position position, boolean onGoal) {
 		boxes.add(new Box(position, onGoal));
+		boxHashMap.put(position, boxes.get(0));
 	}
 	
 	protected void addGoal(Position position)
@@ -586,8 +596,10 @@ public class Map implements Cloneable
 
 	public void setBoxes(ArrayList<Box> boxes) {
 		this.boxes = boxes;
+		boxHashMap.clear();
+		for (Box b : boxes) {
+			boxHashMap.put(b.getPosition(), b);
+		}
 	}
-	
-
 	
 }

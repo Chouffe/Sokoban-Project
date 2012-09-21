@@ -44,6 +44,41 @@ public class Position implements Cloneable
 		setJ(j);
 	}
 	
+	public Position move(Map map, char dir) {
+		Position pos = this.clone();
+		switch(dir) {
+			case 'U':
+			case 'u':
+				pos.up(map);
+			case 'D':
+			case 'd':
+				pos.down(map);
+			case 'L':
+			case 'l':
+				pos.left(map);
+			case 'R':
+			case 'r':
+				pos.right(map);
+		}
+	}
+
+	public void move(Map map, char dir) {
+		switch(dir) {
+			case 'U':
+			case 'u':
+				this.up(map);
+			case 'D':
+			case 'd':
+				this.down(map);
+			case 'L':
+			case 'l':
+				this.left(map);
+			case 'R':
+			case 'r':
+				this.right(map);
+		}
+	}
+
 	public Position up(Map map)
 	{
 		if(map != null && map.getMap() != null && map.getMap().size() > 0)
