@@ -22,7 +22,7 @@ public class Map implements Cloneable
 	
 	// Todo : model with a Player, not only a position
 	protected Player player;
-	protected Position playerPosition = null;
+	//protected Position playerPosition = null;
 	
 	protected int height = 0;
 	protected int width = 0;
@@ -32,7 +32,7 @@ public class Map implements Cloneable
 		map = new ArrayList<ArrayList<Cell>>();
 		goals = new ArrayList<Position>();
 		boxes = new ArrayList<Box>();
-		playerPosition = new Position();
+		//playerPosition = new Position();
 		player = new Player();
 		height = 0;
 		width = 0;
@@ -115,26 +115,28 @@ public class Map implements Cloneable
 		}
 		
 		// Clone the player position
-		copie.playerPosition = playerPosition.clone();
+		//copie.playerPosition = playerPosition.clone();
 		
 		return copie;
 	}
 	
-	public void movePlayer(Position position) throws CloneNotSupportedException
+	public void movePlayer(Position position) throws CloneNotSupportedException, IllegalMoveException
 	{
 		
-		if(getCellFromPosition(position).getType().equals(Cell.ECell.GOAL_SQUARE))
-		{
-			set(Cell.ECell.PLAYER_ON_GOAL_SQUARE, position);
-			set(Cell.ECell.VISITED, playerPosition);
-			playerPosition = position.clone();
-		}
-		else if(getCellFromPosition(position).getType().equals(Cell.ECell.EMPTY_FLOOR))
-		{
-			set(Cell.ECell.PLAYER, position);
-			set(Cell.ECell.VISITED, playerPosition);
-			playerPosition = position.clone();
-		}
+		set(player, position);
+		
+//		if(getCellFromPosition(position).getType().equals(Cell.ECell.GOAL_SQUARE))
+//		{
+//			set(Cell.ECell.PLAYER_ON_GOAL_SQUARE, position);
+//			set(Cell.ECell.VISITED, playerPosition);
+//			playerPosition = position.clone();
+//		}
+//		else if(getCellFromPosition(position).getType().equals(Cell.ECell.EMPTY_FLOOR))
+//		{
+//			set(Cell.ECell.PLAYER, position);
+//			set(Cell.ECell.VISITED, playerPosition);
+//			playerPosition = position.clone();
+//		}
 	}
 	
 	public String toString()
@@ -538,11 +540,11 @@ public class Map implements Cloneable
 	}
 
 	public Position getPlayerPosition() {
-		return playerPosition;
+		return player.getPosition();
 	}
 
 	public void setPlayerPosition(Position playerPosition) {
-		this.playerPosition = playerPosition;
+		this.player.setPosition(playerPosition);
 	}
 
 	public int getHeight() {

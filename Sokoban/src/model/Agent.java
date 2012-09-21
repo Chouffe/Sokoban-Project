@@ -10,7 +10,6 @@ import java.util.List;
 import model.Cell.ECell;
 
 import exception.PathNotFoundException;
-import java.io.IOException;
 
 
 /**
@@ -850,6 +849,14 @@ public class Agent {
 		//System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
+
+		public AStarSearch getAstar() {
+			return astar;
+		}
+
+		public void setAstar(AStarSearch astar) {
+			this.astar = astar;
+		}
 
 	
 	

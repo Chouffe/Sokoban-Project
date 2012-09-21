@@ -97,12 +97,12 @@ public class AgentTest {
 			Position position3 = new Position(2,4);
 			
 			// test with a Player
-			assertEquals(1, agent.findEmptySpacesAround(position, map).size());
-			assertEquals(1, agent.findEmptySpacesAround(position, map, ECell.PLAYER).size());
-			assertEquals(2, agent.findEmptySpacesAround(position2, map).size());
-			assertEquals(2, agent.findEmptySpacesAround(position2, map, ECell.PLAYER).size());
-			assertEquals(3, agent.findEmptySpacesAround(position3, map).size());
-			assertEquals(3, agent.findEmptySpacesAround(position3, map, ECell.PLAYER).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(position, map).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(position, map, ECell.PLAYER).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(position2, map).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(position2, map, ECell.PLAYER).size());
+			assertEquals(3, agent.getAstar().findEmptySpacesAround(position3, map).size());
+			assertEquals(3, agent.getAstar().findEmptySpacesAround(position3, map, ECell.PLAYER).size());
 			
 			// Test with a Box
 			Position positionBox1 = new Position(1,2);
@@ -112,26 +112,26 @@ public class AgentTest {
 			Position positionBox5 = new Position(4,4);
 			Position positionBox6 = new Position(4,2);
 			
-			assertEquals(0, agent.findEmptySpacesAround(positionBox1, map, ECell.BOX).size());
-			assertEquals(2, agent.findEmptySpacesAround(positionBox2, map, ECell.BOX).size());
-			assertEquals(2, agent.findEmptySpacesAround(positionBox3, map, ECell.BOX).size());
-			assertEquals(2, agent.findEmptySpacesAround(positionBox4, map, ECell.BOX).size());
-			assertEquals(0, agent.findEmptySpacesAround(positionBox5, map, ECell.BOX).size());
-			assertEquals(0, agent.findEmptySpacesAround(positionBox6, map, ECell.BOX).size());
+			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox1, map, ECell.BOX).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(positionBox2, map, ECell.BOX).size());
+			assertEquals(2, agent.getAstar().findEmptySpacesAround(positionBox3, map, ECell.BOX).size());
+			assertEquals(2, agent.getAstar().findEmptySpacesAround(positionBox4, map, ECell.BOX).size());
+			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox5, map, ECell.BOX).size());
+			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox6, map, ECell.BOX).size());
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/map6.txt"));
 			Map map2 = new Map(br);
 			
 			Position position4 = map2.getPlayerPosition();
-			assertEquals(1, agent.findEmptySpacesAround(position4, map2).size());
-			assertEquals(1, agent.findEmptySpacesAround(map2.getPlayerPosition(), map2, ECell.PLAYER).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(position4, map2).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(map2.getPlayerPosition(), map2, ECell.PLAYER).size());
 			
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/map8.txt"));
 			
 			Map map3 = new Map(br);
-			assertEquals(1, agent.findEmptySpacesAround(map3.getPlayerPosition(), map3).size());
-			assertEquals(1, agent.findEmptySpacesAround(map3.getPlayerPosition(), map3, ECell.PLAYER).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(map3.getPlayerPosition(), map3).size());
+			assertEquals(1, agent.getAstar().findEmptySpacesAround(map3.getPlayerPosition(), map3, ECell.PLAYER).size());
 			
 			
 			

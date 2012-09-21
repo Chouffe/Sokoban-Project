@@ -90,10 +90,13 @@ public class MapTest
 			
 			Map map2 = map.clone();
 			
+			assertEquals(map.getPlayer(), map2.getPlayer());
+			
 			// Test player Position
 			map2.getPlayerPosition().setI(2);
-			map2.getPlayerPosition().setJ(2);
+			map2.getPlayerPosition().setJ(3);
 			
+			assertFalse(map.getPlayer() == map2.getPlayer());
 			assertFalse(map.getPlayerPosition().getI() == map2.getPlayerPosition().getI());
 			assertFalse(map.getPlayerPosition().getJ() == map2.getPlayerPosition().getJ());
 			
@@ -104,7 +107,6 @@ public class MapTest
 			assertFalse(map.getGoals().equals(map2.getGoals()));
 			
 			// Test Cells
-			
 			Position pos = new Position(1, 1);
 			map2.set(Cell.ECell.VISITED, pos);
 			
@@ -147,7 +149,7 @@ public class MapTest
 			assertEquals(map.getCellFromPosition(position4), null);
 			assertEquals(map.getCellFromPosition(position3).getType(), Cell.ECell.EMPTY_FLOOR);
 			assertEquals(map.getCellFromPosition(position2).getType(), Cell.ECell.EMPTY_FLOOR);
-			assertEquals(map.getCellFromPosition(position).getType(), Cell.ECell.EMPTY_FLOOR);
+			assertEquals(map.getCellFromPosition(position).getType(), Cell.ECell.PLAYER);
 			
 			// TODO : test the others cells
 			
@@ -210,9 +212,10 @@ public class MapTest
 	/**
 	 * Tests if the player Position is correctly handled
 	 * @throws CloneNotSupportedException
+	 * @throws IllegalMoveException 
 	 */
 	@Test
-	public final void testPositionPlayer() throws CloneNotSupportedException
+	public final void testPositionPlayer() throws CloneNotSupportedException, IllegalMoveException
 	{
 				
 		try
@@ -234,13 +237,7 @@ public class MapTest
 			
 			assertTrue(map3.getPlayerPosition().getI() == 8);
 			assertTrue(map3.getPlayerPosition().getJ() == 11);
-			
-			Position position = new Position(7,11);
-			Position visited = new Position(8,11);
-			map3.movePlayer(position);
-			
-			assertEquals(map3.getCellFromPosition(position).getType(), Cell.ECell.PLAYER);
-			assertEquals(map3.getCellFromPosition(visited).getType(), Cell.ECell.VISITED);
+		
 		
 		}
 		catch (IOException e) {
