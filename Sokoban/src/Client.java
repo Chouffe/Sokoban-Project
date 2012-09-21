@@ -15,6 +15,7 @@ import model.Map;
  */
 public class Client {
 	
+        static BufferedReader br;
 	
 	public static void main(String[] pArgs) 
 	{
@@ -53,18 +54,18 @@ public class Client {
             Agent agent = new Agent(bufferToString);
 
             //we've found our solution
-            Map map = new Map(bufferToString);
-            System.out.println(map);
+            //Map map = new Map(bufferToString);
+            //System.out.println(map);
             
             
-            /*br = new BufferedReader(new FileReader("maps/path/solve3.txt"));
+            br = new BufferedReader(new FileReader("maps/path/map1.txt"));
             Map map = new Map(br);
             System.out.println(map);
 
             System.out.println("Sol: "+agent.solve(map));
-            */
+            
 
-            String lMySol = agent.solve(map);
+            /*String lMySol = agent.solve(map);
 
             // send the solution to the server
             lOut.println(lMySol);
@@ -73,7 +74,7 @@ public class Client {
             //read answer from the server
             lLine = lIn.readLine();
     
-            System.out.println(lLine);
+            System.out.println(lLine);*/
     
 		}
 		catch(Throwable t)
