@@ -860,7 +860,7 @@ public class Agent {
 			result += findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
 			i++;
 		}
-                SolveBoardMoves(result,init);
+                //SolveBoardMoves(result,init);
 		System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
