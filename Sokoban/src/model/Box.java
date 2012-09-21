@@ -1,24 +1,14 @@
 package model;
 
-public class Box implements Cloneable{
-	protected Position position;
-	protected boolean onGoal;
+public class Box extends Element implements Cloneable{
 
-	Box(Position pos, boolean onGoal) {
-		position = pos;
-		this.onGoal = onGoal;
+	public Box()
+	{
+		super();
 	}
-
-	public boolean isOnGoal() {
-		return onGoal;
-	}
-
-	public Position getPosition() {
-		return position;
-	}
-
-	public void setPosition(Position pos) {
-		position = pos;
+	
+	public Box(Position position, boolean onGoal) {
+		super(position, onGoal);
 	}
 
 	public Box clone() throws CloneNotSupportedException {

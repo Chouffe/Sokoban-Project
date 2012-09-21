@@ -10,9 +10,12 @@ import java.io.IOException;
 import model.Cell;
 import model.Map;
 import model.Position;
+import model.Cell.ECell;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import exception.IllegalMoveException;
 
 
 public class MapTest 
@@ -44,6 +47,7 @@ public class MapTest
 			assertEquals(map2.getMap().get(0).get(0).getType(), Cell.ECell.VISITED);
 			assertEquals(map2.getMap().get(1).get(0).getType(), Cell.ECell.WALL);
 			assertEquals(map2.getMap().get(2).get(0).getType(), Cell.ECell.PLAYER);
+			assertEquals(map2.getCellFromPosition(map2.getPlayerPosition()).getType(), Cell.ECell.PLAYER_ON_GOAL_SQUARE);
 			assertEquals(map2.getMap().get(2).get(1).getType(), Cell.ECell.PLAYER_ON_GOAL_SQUARE);
 			assertEquals(map2.getMap().get(2).get(2).getType(), Cell.ECell.BOX);
 			assertEquals(map2.getMap().get(2).get(3).getType(), Cell.ECell.BOX_ON_GOAL);
@@ -237,6 +241,82 @@ public class MapTest
 			
 			assertEquals(map3.getCellFromPosition(position).getType(), Cell.ECell.PLAYER);
 			assertEquals(map3.getCellFromPosition(visited).getType(), Cell.ECell.VISITED);
+		
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	@Test
+	public final void testSettingMap() throws IllegalMoveException, CloneNotSupportedException
+	{
+		try
+		{
+			br = new BufferedReader(new FileReader("src/tests/maps/setting/map1.txt"));
+			Map map1 = new Map(br);
+			
+			assertEquals(map1.getPlayer().getPosition(), new Position(1,3));
+			assertEquals(map1.getBoxes().get(0).getPosition(), new Position(2,3));
+			
+			// We make the move : it updates the map
+			map1.set(map1.getPlayer(), map1.getGoals().get(0));
+			
+			//System.out.println(map1);
+			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
+			
+			// Empty floor
+			Position emptyFloor = new Position(1,3);
+			assertEquals(map1.getCellFromPosition(emptyFloor).getType(), ECell.EMPTY_FLOOR);
+			
+			// We make the move : it updates the map
+			map1.set(map1.getPlayer(), map1.getGoals().get(1));
+			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
+			assertEquals(map1.getCellFromPosition(map1.getGoals().get(0)).getType(), ECell.GOAL_SQUARE);
+			
+			// We make the same move
+			map1.set(map1.getPlayer(), map1.getGoals().get(1));
+			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
+			assertEquals(map1.getCellFromPosition(map1.getGoals().get(0)).getType(), ECell.GOAL_SQUARE);
+			
+			// We move the box now
+			Position oldBoxPosition = new Position(1,4);
+			map1.set(map1.getBoxes().get(0), map1.getGoals().get(0));
+			assertEquals(map1.getCellFromPosition(oldBoxPosition).getType(), ECell.EMPTY_FLOOR);
+			assertEquals(map1.getCellFromPosition(map1.getBoxes().get(0).getPosition()).getType(), ECell.BOX_ON_GOAL);
+			
+			// Test illegal moves
+			try
+			{
+				map1.set(map1.getPlayer(), new Position(0,0));
+				map1.set(map1.getBoxes().get(0), new Position(0,1));
+			}
+			catch(IllegalMoveException e)
+			{
+				
+			}
+			
+//			assertTrue(map1.setPlayer(player).getI() == 0);
+//			assertTrue(map1.getPlayerPosition().getJ() == 2);
+//			
+//			assertTrue(map2.getPlayerPosition().getI() == 0);
+//			assertTrue(map2.getPlayerPosition().getJ() == 2);
+//			
+//			assertTrue(map3.getPlayerPosition().getI() == 8);
+//			assertTrue(map3.getPlayerPosition().getJ() == 11);
+//			
+//			Position position = new Position(7,11);
+//			Position visited = new Position(8,11);
+//			map3.movePlayer(position);
+//			
+//			assertEquals(map3.getCellFromPosition(position).getType(), Cell.ECell.PLAYER);
+//			assertEquals(map3.getCellFromPosition(visited).getType(), Cell.ECell.VISITED);
 		
 		}
 		catch (IOException e) {
