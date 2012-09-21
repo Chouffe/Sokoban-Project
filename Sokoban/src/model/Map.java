@@ -185,9 +185,11 @@ public class Map implements Cloneable
 				{
 					case GOAL_SQUARE:
 						set(ECell.PLAYER_ON_GOAL_SQUARE, p);
+						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
 						set(ECell.PLAYER, p);
+						e.setOnGoal(false);
 					break;
 					default:
 						throw new IllegalMoveException();
@@ -199,9 +201,11 @@ public class Map implements Cloneable
 				{
 					case GOAL_SQUARE:
 						set(ECell.BOX_ON_GOAL, p);
+						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
 						set(ECell.BOX, p);
+						e.setOnGoal(false);
 					break;
 					default:
 						throw new IllegalMoveException();

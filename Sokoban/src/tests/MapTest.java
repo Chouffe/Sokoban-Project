@@ -264,11 +264,13 @@ public class MapTest
 			
 			assertEquals(map1.getPlayer().getPosition(), new Position(1,3));
 			assertEquals(map1.getBoxes().get(0).getPosition(), new Position(2,3));
+			assertEquals(map1.getPlayer().isOnGoal(), false);
+			
 			
 			// We make the move : it updates the map
 			map1.set(map1.getPlayer(), map1.getGoals().get(0));
 			
-			//System.out.println(map1);
+			assertEquals(map1.getPlayer().isOnGoal(), true);
 			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
 			
 			// Empty floor
@@ -285,9 +287,14 @@ public class MapTest
 			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
 			assertEquals(map1.getCellFromPosition(map1.getGoals().get(0)).getType(), ECell.GOAL_SQUARE);
 			
+			map1.set(map1.getPlayer(), emptyFloor);
+			assertEquals(map1.getPlayer().isOnGoal(), false);
+			
 			// We move the box now
 			Position oldBoxPosition = new Position(1,4);
+			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
 			map1.set(map1.getBoxes().get(0), map1.getGoals().get(0));
+			assertEquals(map1.getBoxes().get(0).isOnGoal(), true);
 			assertEquals(map1.getCellFromPosition(oldBoxPosition).getType(), ECell.EMPTY_FLOOR);
 			assertEquals(map1.getCellFromPosition(map1.getBoxes().get(0).getPosition()).getType(), ECell.BOX_ON_GOAL);
 			
@@ -301,6 +308,9 @@ public class MapTest
 			{
 				
 			}
+			
+			map1.set(map1.getBoxes().get(0), oldBoxPosition);
+			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
 			
 //			assertTrue(map1.setPlayer(player).getI() == 0);
 //			assertTrue(map1.getPlayerPosition().getJ() == 2);
