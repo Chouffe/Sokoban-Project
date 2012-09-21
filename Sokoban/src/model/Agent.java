@@ -541,12 +541,13 @@ public class Agent {
 	 */
 	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
 	{
-            //try{
+
+            try{
 		clean();
 		
-		astar.setMap(map.clone());                 
-                astar.setStartAndGoalNode(new Node(position1), new Node(position2));
-		
+		astar.setMap(map.clone());
+		astar.setStartAndGoalNode(new Node(position1), new Node(position2));
+                
                 int position1I = position1.getI();
                 int position1J = position1.getJ();
                 int position2I = position2.getI();
@@ -563,14 +564,15 @@ public class Agent {
                     return "R";
                 else
                     return astar.search(cellType).toString();
-            /*} catch (PathNotFoundException e) {
+            } catch (PathNotFoundException e) {
                     
                     System.out.println("CAN NOT FIND PATH:");
                     System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
                     System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
                     System.out.println();
                     return "";
-            }*/
+            }                
+		
 		
 	}
 	
@@ -637,8 +639,12 @@ public class Agent {
 							Map newMap = map.clone();
                                                          
 							updateMapWithBoxOnGoal(newMap, g);
+
                                                         
                                                         // -------------------------
+
+                                                                                                                // -------------------------
+
                                                         // These three lines are making problems
                                                         // I Rolled back the code and it seems to work.
                                                         // -------------------------
@@ -647,6 +653,9 @@ public class Agent {
 //                                                        newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
 //                                                        newMap.getGoals().remove(g);
 //                                                        newMap.getBoxes().remove(0);
+
+
+
 
 							isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, ++boxIndx);
 							if (isSolved) break;
@@ -684,12 +693,14 @@ public class Agent {
 		Position newPlayerPos=new Position();
 		Position initialPositionPlayer = PlayerPos;
 
+
 		for(int i=0;i<BoxPath.length();i++){                    
 			//System.in.read();
 			//System.out.println(StartMap);
 			char newdir=BoxPath.charAt(i);
 			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
 				PlayerPath=PlayerPath+newdir;
+
 				if(newdir=='U'){PlayerPos.up(StartMap);}
 				if(newdir=='D'){PlayerPos.down(StartMap);}
 				if(newdir=='L'){PlayerPos.left(StartMap);}
@@ -715,7 +726,6 @@ public class Agent {
 				if(newdir=='L'){PlayerPos.left(StartMap);}
 				if(newdir=='R'){PlayerPos.right(StartMap);}
 				//System.out.println(StartMap);
-				
 			}
 
 			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
@@ -732,7 +742,9 @@ public class Agent {
 		StartMap.set(Cell.ECell.BOX_ON_GOAL,BoxPos);
 		StartMap.set(ECell.PLAYER, PlayerPos);
 
+
 		//System.out.println(StartMap);
+
 
 		return PlayerPath;	
 	}
@@ -857,7 +869,6 @@ public class Agent {
                     System.out.println(map);
                     System.in.read();
             }
-          
         
         
         }
@@ -877,6 +888,7 @@ public class Agent {
 		System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
+
 	
 	
 	

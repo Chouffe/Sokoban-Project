@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import model.Agent;
 import model.Map;
 
-
 /**
  * Remote connection
  *
@@ -50,7 +49,7 @@ public class Client {
                 bufferToString.add(lLine);
             }
             
-            // We store the Map in a DataStructure
+                       // We store the Map in a DataStructure
             Agent agent = new Agent(bufferToString);
 
             //we've found our solution

@@ -461,7 +461,6 @@ public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNot
 		this.boxes = boxes;
 	}
 	
-	
 
 	
 }
