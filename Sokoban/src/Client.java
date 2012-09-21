@@ -53,9 +53,7 @@ public class Client {
                        // We store the Map in a DataStructure
             Agent agent = new Agent(bufferToString);
 
-            //we've found our solution
-            //Map map = new Map(bufferToString);
-            //System.out.println(map);
+
             
             
             br = new BufferedReader(new FileReader("maps/path/map1.txt"));
@@ -64,17 +62,19 @@ public class Client {
 
             System.out.println("Sol: "+agent.solve(map));
             
-
-            /*String lMySol = agent.solve(map);
-
-            // send the solution to the server
-            lOut.println(lMySol);
-            lOut.flush();
-    
-            //read answer from the server
-            lLine = lIn.readLine();
-    
-            System.out.println(lLine);*/
+//            //we've found our solution
+//            Map map = new Map(bufferToString);
+//            System.out.println(map);
+//            String lMySol = agent.solve(map);
+//
+//            // send the solution to the server
+//            lOut.println(lMySol);
+//            lOut.flush();
+//    
+//            //read answer from the server
+//            lLine = lIn.readLine();
+//    
+//            System.out.println(lLine);
     
 		}
 		catch(Throwable t)

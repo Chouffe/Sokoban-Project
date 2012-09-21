@@ -341,19 +341,20 @@ public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNot
 		ECell boxCellType = getCellFromPosition(boxPos).getType();
 		Position playerPos = goal.clone();
 		ECell playerPosType = getCellFromPosition(playerPos).getType();
-
-		switch (boxPath.charAt(boxPath.length())) {
-
-		case 'U':
-			playerPos.down(this);
-		case 'D':
-			playerPos.up(this);
-		case 'L':
-			playerPos.right(this);
-		case 'R':
-			playerPos.left(this);
-		}
-
+//                if (!boxPath.isEmpty())
+//                {
+//                    switch (boxPath.charAt(boxPath.length()-1)) {
+//
+//                    case 'U':
+//                            playerPos.down(this);
+//                    case 'D':
+//                            playerPos.up(this);
+//                    case 'L':
+//                            playerPos.right(this);
+//                    case 'R':
+//                            playerPos.left(this);
+//                    }
+//                }
 		set(BOX_ON_GOAL, goal);
 
 		if (boxCellType == BOX_ON_GOAL)
@@ -361,10 +362,10 @@ public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNot
 		else if (boxCellType == BOX)
 			set(EMPTY_FLOOR, boxPos);
 
-		if (playerPosType == GOAL_SQUARE)
-			set(PLAYER_ON_GOAL_SQUARE, playerPos);
-		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED)
-			set(PLAYER, playerPos);
+//		if (playerPosType == GOAL_SQUARE)
+//			set(PLAYER_ON_GOAL_SQUARE, playerPos);
+//		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED)
+//			set(PLAYER, playerPos);
 
 
 		box.setPosition(goal.clone());
