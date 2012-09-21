@@ -205,6 +205,7 @@ public class Agent {
 		return positions;
 	}
 
+        
         /*
          * @author: Luis F. Reina G.
          * @param:  position--> where the player/box is
@@ -857,10 +858,12 @@ public class Agent {
 		for(String s : getBoxToGoalPaths(map))
 		{
 			//System.out.println(map);
-			result += findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+                        String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+                        System.out.println (r);
+			result +=r; 
 			i++;
 		}
-                //SolveBoardMoves(result,init);
+                SolveBoardMoves(result,init);
 		System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
