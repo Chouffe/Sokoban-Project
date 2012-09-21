@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import model.Agent;
-
+import model.Map;
 
 /**
  * Remote connection
@@ -45,14 +45,25 @@ public class Client {
                 bufferToString.add(lLine);
             }
             
-            // We store the Map in a DataStructure
+                       // We store the Map in a DataStructure
             Agent agent = new Agent(bufferToString);
 
             //we've found our solution
-            //String lMySol = agent.findPathToGoal(new Moves());
+            Map map = new Map(bufferToString);
+            System.out.println(map);
+            
+            
+            /*br = new BufferedReader(new FileReader("maps/path/solve3.txt"));
+            Map map = new Map(br);
+            System.out.println(map);
+
+            System.out.println("Sol: "+agent.solve(map));
+            */
+
+            String lMySol = agent.solve(map);
 
             // send the solution to the server
-            //lOut.println(lMySol);
+            lOut.println(lMySol);
             lOut.flush();
     
             //read answer from the server

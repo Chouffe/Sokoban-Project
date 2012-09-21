@@ -539,12 +539,38 @@ public class Agent {
 	 */
 	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
 	{
+            try{
 		clean();
 		
 		astar.setMap(map.clone());
 		astar.setStartAndGoalNode(new Node(position1), new Node(position2));
+                
+                int position1I = position1.getI();
+                int position1J = position1.getJ();
+                int position2I = position2.getI();
+                int position2J = position2.getJ();
+                
+                // There was a problem with single moving boxes. 
+                if (position1I-position2I==1 && position1J-position2J==0)
+                    return "U";
+                else if (position1I-position2I==-1  && position1J-position2J ==0)
+                    return "D";
+                else if (position1J-position2J==1   && position1I-position2I ==0)
+                    return "L";
+                else if (position1J-position2J==-1  && position1I-position2I ==0)
+                    return "R";
+                else
+                    return astar.search(cellType).toString();
+            } catch (PathNotFoundException e) {
+                    
+                    System.out.println("CAN NOT FIND PATH:");
+                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
+                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
+                    System.out.println();
+                    return "";
+            }                
 		
-		return astar.search(cellType).toString();
+		
 		
 	}
 	
@@ -643,10 +669,14 @@ public class Agent {
 		String PlayerPath=new String();
 		char lastdir=' ';
 		Position newPlayerPos=new Position();
+		Position initialPositionPlayer = PlayerPos;
 		for(int i=0;i<BoxPath.length();i++){
+			//System.in.read();
+			//System.out.println(StartMap);
 			char newdir=BoxPath.charAt(i);
 			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
 				PlayerPath=PlayerPath+newdir;
+
 				if(newdir=='U'){PlayerPos.up(StartMap);}
 				if(newdir=='D'){PlayerPos.down(StartMap);}
 				if(newdir=='L'){PlayerPos.left(StartMap);}
@@ -658,6 +688,7 @@ public class Agent {
 				if(newdir=='D'){newPlayerPos.up(StartMap);}
 				if(newdir=='L'){newPlayerPos.right(StartMap);}
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
+				//System.out.println(StartMap);
 				try {
 					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
 				} catch (PathNotFoundException e) {
@@ -665,16 +696,29 @@ public class Agent {
 					e.printStackTrace();
 				}
 				PlayerPos=newPlayerPos.clone();
+				PlayerPath=PlayerPath+newdir;
+				if(newdir=='U'){PlayerPos.up(StartMap);}
+				if(newdir=='D'){PlayerPos.down(StartMap);}
+				if(newdir=='L'){PlayerPos.left(StartMap);}
+				if(newdir=='R'){PlayerPos.right(StartMap);}
+				//System.out.println(StartMap);
+
 			}
-			
+
 			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
 			if(newdir=='U'){BoxPos.up(StartMap);}
 			if(newdir=='D'){BoxPos.down(StartMap);}
 			if(newdir=='L'){BoxPos.left(StartMap);}
 			if(newdir=='R'){BoxPos.right(StartMap);}
 			StartMap.set(Cell.ECell.BOX,BoxPos);
+			//System.out.println(StartMap);
 			lastdir=newdir;
 		}
+		StartMap.setPlayerPosition(PlayerPos);
+		StartMap.set(ECell.EMPTY_FLOOR, initialPositionPlayer);
+		StartMap.set(Cell.ECell.BOX_ON_GOAL,BoxPos);
+		StartMap.set(ECell.PLAYER, PlayerPos);
+		System.out.println(StartMap);
 		return PlayerPath;	
 	}
 	/**
@@ -737,44 +781,81 @@ public class Agent {
          * @author: Luis
          * Prints the moves we get for an answer.
          */
-        public void SolveBoardMoves(String moves, Map map) throws IOException
+        public void SolveBoardMoves(String moves, Map map) throws IOException, CloneNotSupportedException
         {            
             Position start_position = map.getPlayerPosition();
+            
+            System.out.println(map);
+            System.in.read();
             
             // Separate the box and player moves.
             for(char a: moves.toCharArray())
             {
+                System.out.print(a);
                 // Only Player moves in Upper case
                     switch (a)
                     {
-                        case 'U':   map.setPlayerPosition(start_position.up(map));
-                                    break;
-                        case 'D':   map.setPlayerPosition(start_position.down(map));
-                                    break;
-                        case 'L':   map.setPlayerPosition(start_position.left(map));
-                                    break;
-                        case 'R':   map.setPlayerPosition(start_position.right(map));
-                                    break;
-                        case 'u':   map.set(Cell.ECell.BOX,start_position);
+                        case 'u':   map.set(ECell.EMPTY_FLOOR, start_position);
                                     map.setPlayerPosition(start_position.up(map));
+                                    map.set(ECell.PLAYER, start_position);
                                     break;
-                        case 'd':   map.set(Cell.ECell.BOX,start_position);
+                        case 'd':   map.set(ECell.EMPTY_FLOOR, start_position);
                                     map.setPlayerPosition(start_position.down(map));
+                                    map.set(ECell.PLAYER, start_position);
                                     break;
-                        case 'l':   map.set(Cell.ECell.BOX,start_position);
+                        case 'l':   map.set(ECell.EMPTY_FLOOR, start_position);
                                     map.setPlayerPosition(start_position.left(map));
+                                    map.set(ECell.PLAYER, start_position);
                                     break;
-                        case 'r':   map.set(Cell.ECell.BOX,start_position);
+                        case 'r':   map.set(ECell.EMPTY_FLOOR, start_position);
                                     map.setPlayerPosition(start_position.right(map));
+                                    map.set(ECell.PLAYER, start_position);
                                     break;
-                    }
+                        case 'U':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
+                                    map.setPlayerPosition(start_position.up(map));
+                                    map.set(Cell.ECell.BOX,start_position.clone().up(map));
+                                    map.set(ECell.PLAYER, start_position);
+                                    break;
+                        case 'D':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
+                                    map.setPlayerPosition(start_position.down(map));
+                                    map.set(Cell.ECell.BOX,start_position.clone().down(map));
+                                    map.set(ECell.PLAYER, start_position);
+                                    break;
+                        case 'L':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
+                                    map.setPlayerPosition(start_position.left(map));
+                                    map.set(Cell.ECell.BOX,start_position.clone().left(map));
+                                    map.set(ECell.PLAYER, start_position);
+                                    break;
+                        case 'R':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
+                                    map.setPlayerPosition(start_position.right(map));
+                                    map.set(Cell.ECell.BOX,start_position.clone().right(map));
+                                    map.set(ECell.PLAYER, start_position);
+                                    break;
+                    
+                    }                    
                     System.out.println(map);
                     System.in.read();
             }
-          
         
         
         }
+        
+        public String solve(Map map) throws CloneNotSupportedException, IOException
+	{
+		int i = 0;
+		String result = "";
+                Map init = map.clone();
+		for(String s : getBoxToGoalPaths(map))
+		{
+			//System.out.println(map);
+			result += findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+			i++;
+		}
+                SolveBoardMoves(result,init);
+		System.out.println(result.toUpperCase());
+		return result.toUpperCase();
+	}
+
 	
 	
 	

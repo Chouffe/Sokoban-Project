@@ -454,5 +454,8 @@ public class Map implements Cloneable
 			System.out.print('\n');
 		}
 	}
+        public void setBoxes(ArrayList<Box> boxes) {
+		this.boxes = boxes;
+	}
 	
 }
