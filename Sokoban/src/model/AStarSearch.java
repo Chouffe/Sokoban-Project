@@ -8,6 +8,7 @@ import java.util.List;
 import model.Cell.ECell;
 
 import exception.PathNotFoundException;
+import java.io.IOException;
 
 /**
  * Class to handle the AStar Search on map
@@ -61,7 +62,7 @@ public class AStarSearch
 	 * @throws PathNotFoundException
 	 * @throws CloneNotSupportedException 
 	 */
-	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException
+	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException
 	{
 		while(!openedList.isEmpty())
 		{
@@ -150,7 +151,7 @@ public class AStarSearch
 	 * @return
 	 * @see findEmptySpacesAround
 	 */
-	public ArrayList<Position> findEmptySpacesAround(Position position)
+	public ArrayList<Position> findEmptySpacesAround(Position position) throws CloneNotSupportedException, IOException
 	{
 		return findEmptySpacesAround(position, map, Cell.ECell.BOX);
 	}
@@ -224,15 +225,214 @@ public class AStarSearch
 		
 		return positions;
 	}
+        	/**
+	 * 
+	 * Find a path from one position to another
+	 * @return 
+	 * @throws CloneNotSupportedException 
+	 * @throws PathNotFoundException 
+	 */
+        public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException
+	{
+		
+		return findPath(map, position1, position2, cellType);
+	}
+	
+	/**
+	 * 
+	 * @author arthur
+	 * @param map
+	 * @param position1
+	 * @param position2
+	 * @return The moves that the player has to do to complete the path
+	 * @throws CloneNotSupportedException
+	 * @throws PathNotFoundException
+	 */
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, PathNotFoundException, PathNotFoundException, PathNotFoundException, IOException
+	{
 
+            try{
+		clean();
+		
+		setMap(map.clone());
+		setStartAndGoalNode(new Node(position1), new Node(position2));
+                
+                int position1I = position1.getI();
+                int position1J = position1.getJ();
+                int position2I = position2.getI();
+                int position2J = position2.getJ();
+                
+                // There was a problem with single moving boxes. 
+                if (position1I-position2I==1 && position1J-position2J==0)
+                    return "U";
+                else if (position1I-position2I==-1  && position1J-position2J ==0)
+                    return "D";
+                else if (position1J-position2J==1   && position1I-position2I ==0)
+                    return "L";
+                else if (position1J-position2J==-1  && position1I-position2I ==0)
+                    return "R";
+                else
+                    return search(cellType).toString();
+            } catch (PathNotFoundException e) {
+                    
+                    System.out.println("CAN NOT FIND PATH:");
+                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
+                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
+                    System.out.println();
+                    return "";
+            }                
+		
+		
+	}
+
+        	/**
+	* Checks if a a player can move the box in the given direction
+	*
+	*
+	* @author Joakim Andrén <joaandr@kth.se>
+	* @param Map map
+	* @param Boxdir is the given box diretion
+	* @param BoxPos Position, position of the box
+	* @param PlayerPos Position, position of the player
+	* @throws CloneNotSupportedException 
+	 * @throws IOException 
+	*/
+        
+        //Check if box can be moved in direction
+	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
+		String PlayerPath=new String();
+		Position newPlayerPos=new Position();
+		newPlayerPos=BoxPos.clone();
+		if(Boxdir=='U'){newPlayerPos.down(map);}
+		if(Boxdir=='D'){newPlayerPos.up(map);}
+		if(Boxdir=='L'){newPlayerPos.right(map);}
+		if(Boxdir=='R'){newPlayerPos.left(map);}
+		if(newPlayerPos!=PlayerPos){
+			try {
+					PlayerPath=findPath(map,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
+				} catch (PathNotFoundException e) {
+					return null;
+				}
+		}
+		PlayerPath=PlayerPath+Boxdir;
+		return PlayerPath;	
+	}
+        
+      public boolean GoalNearWall (Position actualPosition, int movement, boolean UpDown)
+        {
+            //if (upPosition.getI()-1>=0){ 
+                                //---> Not going to check this, it will work by faith!!!
+                                // Check if oneCellUp has a goal (worth moving there).
+                                int sumI = UpDown?movement:0;
+                                int sumJ = UpDown?0:movement;
+                                Cell oneCellUp = map.getCellFromPosition(new Position(actualPosition.getI()+ sumI,actualPosition.getJ()+sumJ));
+                                
+                                
+                                // If this oneCellUp is a wall.... then check if there is a goal in there.
+                                if (oneCellUp.getType()==Cell.ECell.WALL)
+                                    // 
+                                    for (int goalCount=0; goalCount<map.getNumberOfGoals();goalCount++)
+                                    {
+                                        // Get the goal Row
+                                        int i = map.getGoals().get(goalCount).getI();
+                                        // Get the goal Column
+                                        //int j = map.getGoals().get(goalCount).getJ();
+                                        // Check if there is a goal on the Row. 
+                                        if (actualPosition.getI()==i) // || upPosition.getJ()==j)
+                                            return true;                                        
+                                    }
+                                    return false;
+//                                else{
+//                                     // Add it.
+//                                    // Search for the player movement.
+//                                    Position player = map.getPlayerPosition();
+//                                    // Search for a valid path for the box to move.
+//                                    // Map map
+//                                    // Box position = position
+//                                    // Box direction position = leftPosition
+//                                    // Player position = player.
+//                                    String validPath= checkBoxDir('U',map,player,position);/*Use Joakim's function*/
+//                                    // Si no se puede mover a la derecha porque el jugador no puede llegar.
+//                                    if (validPath != null)
+//                                        positions.add(upPosition);
+//                                    else
+//                                        System.out.println("You shall not pass!");
+//                                }
+                              
+        }
+
+      
+      
+      
+        public Position BoxCanMove (Position whereToMove, Position whereToCheck, Position whereAmI, Map map) throws CloneNotSupportedException, IOException
+        {
+            // -------------------------------------
+            // If the box wants to move up --> Don't.
+            // -------------------------------------
+            // Check if the cell down is a wall, a box or a box on goal.
+            Cell wall = map.getCellFromPosition(whereToCheck);
+            if (!(  wall.getType()==Cell.ECell.WALL || 
+                    wall.getType()==Cell.ECell.BOX  ||
+                    wall.getType()==Cell.ECell.BOX_ON_GOAL
+                ))
+
+                {
+                    // If you are going to a wall with no goal --> Don't go there.
+                    if (GoalNearWall(whereToMove,-1,true)) {
+                        return whereToMove;
+                    }                                
+                    
+                         // Add it.
+                        // Search for the player movement.
+                        Position player = map.getPlayerPosition();
+                        // Search for a valid path for the box to move.
+                        // Map map
+                        // Box position = position
+                        // Box direction position = leftPosition
+                        // Player position = player.
+                        String validPath= checkBoxDir('U',map,player,whereAmI);/*Use Joakim's function*/
+                        // Si no se puede mover a la derecha porque el jugador no puede llegar.
+                        System.out.println("validPath : "+validPath);
+                        if (validPath != null)
+                            return whereToMove;
+                        else
+                            System.out.println("You shall not pass!");
+                    
+                                            /*
+                         * For Debbuging
+                         */ 
+                        //else{                             
+                        //    System.out.println("Can't move away the box.");
+                        //    System.out.println(map);
+                        //}
+                }
+            return null;
+
+            /*
+             * For Debbuging
+             */ 
+            //else{                             
+            //    System.out.println("Can't move up the box.");
+            //    System.out.println(map);
+            //}            
+        }
         /*
-         * @author: Luis
+         * @author: Luis F. Reina G.
+         * @param:  position--> where the player/box is
+         *          map --> The actual map.
+         *          whoIsMoving --> If it is a player or a box.
+         * @return: ArrayList with the positions the player/box is allowed
+         *          to move.
          * This function should be used to move either the player or a box.
+         * The box can not move out of a wall or move if there is an obstacle
+         * that is going to block the movement.
+         * Upgrade: If the box should not move to a wall if there is no goal 
+         *          in it.
          */
-        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving)
+        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving) throws CloneNotSupportedException, IOException
 	{
 		ArrayList<Position> positions = new ArrayList<Position>();
-		
+		System.out.println(map);
                 // Get the position.
 		Position upPosition = new Position(position.getI(), position.getJ());
 		upPosition.up(map);
@@ -242,9 +442,12 @@ public class AStarSearch
 		leftPosition.left(map);
 		Position rightPosition = new Position(position.getI(), position.getJ());
 		rightPosition.right(map);
-		
-                // Move UP!
-		if(
+
+                //               ^
+                //              / \
+                // Move UP!      |
+		//               | 
+                if(
                     // It is not the same position. There was a wall.
                     (upPosition.getI() != position.getI() || upPosition.getJ() != position.getJ()) 
                     && 
@@ -262,29 +465,14 @@ public class AStarSearch
                     }
                     else if (whoIsMoving==Cell.ECell.BOX)
                     {
-                        // -------------------------------------
-                        // If the box wants to move up --> Don't.
-                        // -------------------------------------
-                        // Check if the cell down is a wall, a box or a box on goal.
-                        Cell wall = map.getCellFromPosition(downPosition);
-                        if (!(    wall.getType()==Cell.ECell.WALL || 
-                                wall.getType()==Cell.ECell.BOX  ||
-                                wall.getType()==Cell.ECell.BOX_ON_GOAL
-                            ))
-                            positions.add(upPosition);
-                        /*
-                         * For Debbuging
-                         */ 
-                        //else{                             
-                        //    System.out.println("Can't move up the box.");
-                        //    System.out.println(map);
-                        //}
-                            
+                        Position test = BoxCanMove(upPosition,downPosition,position,map);
+                        if (test!=null)
+                            positions.add(test);                                                    
                     }
-                                            
-                          
 		}
-                // Move Down
+                //              |
+                // Move Down    |
+                //              V
 		if(
                     (downPosition.getI() != position.getI() || downPosition.getJ() != position.getJ()) 
                     && 
@@ -301,28 +489,17 @@ public class AStarSearch
                     // If the cell is a box...
                     else if (whoIsMoving==Cell.ECell.BOX)
                     {
-                        // If the box wants to move down --> Don't.
-                        // -------------------------------------
-                        // Check if the cell up is a wall.                        
-                        Cell wall = map.getCellFromPosition(upPosition);
-                        if (!(    wall.getType()==Cell.ECell.WALL || 
-                                wall.getType()==Cell.ECell.BOX  ||
-                                wall.getType()==Cell.ECell.BOX_ON_GOAL
-                            ))
-                            positions.add(downPosition);
-                            
-                         /*
-                         * For Debbuging
-                         */ 
-                        //else{
-                        //    System.out.println("Can't move down the box.");
-                        //    System.out.println(map);
-                        //}
-                        
+                        Position test = BoxCanMove(downPosition,upPosition,position,map);
+                        if (test!=null)
+                            positions.add(test); 
+                                                                            
                     }
-		}
-                
-                // Moving to the right!
+		}                
+                // ------->
+                //
+                // Moving to the right!     ----->
+                //
+                // ------->
 		if(
 				(rightPosition.getI() != position.getI() || rightPosition.getJ() != position.getJ()) 
 				&& 
@@ -342,24 +519,16 @@ public class AStarSearch
                     }
                     else if (whoIsMoving==Cell.ECell.BOX)
                     {   
-                        Cell wall = map.getCellFromPosition(leftPosition);
-                        if (!(    wall.getType()==Cell.ECell.WALL || 
-                                wall.getType()==Cell.ECell.BOX  ||
-                                wall.getType()==Cell.ECell.BOX_ON_GOAL
-                            ))
-                            positions.add(rightPosition);
-                            
-                        /*
-                         * For debbuging
-                         */
-                        //else{
-                        //    System.out.println("Can't move right the box.");
-                        //    System.out.println(map);
-                        //}
-                    }
-                    
+                        Position test = BoxCanMove(rightPosition,leftPosition,position,map);
+                        if (test!=null)
+                            positions.add(test); 
+                    }                                                  
 		}
-                // Moving to the left!
+                //      <----------
+                //
+                // Moving to the left!    <----------
+                //
+                //      <----------
 		if(
 				(leftPosition.getI() != position.getI() || leftPosition.getJ() != position.getJ()) 
 				&& 
@@ -378,23 +547,15 @@ public class AStarSearch
                         positions.add(leftPosition);
                     }
                     else if (whoIsMoving==Cell.ECell.BOX)
-                    {   
-                        Cell wall = map.getCellFromPosition(rightPosition);
-                        if (!(  wall.getType()==Cell.ECell.WALL || 
-                                wall.getType()==Cell.ECell.BOX  ||
-                                wall.getType()==Cell.ECell.BOX_ON_GOAL
-                            ))
-                            positions.add(leftPosition);
-                        /*else{                            
-                            System.out.println("Can't move left the box.");
-                            System.out.println(map);
-                        }*/
-                    }
-		
-		}
-		
+                    {                           
+                        Position test = BoxCanMove(leftPosition,rightPosition,position,map);
+                        if (test!=null)
+                            positions.add(test); 
+                    }		
+		}		
 		return positions;
-	}
+	}        
+
 	
 	/**
 	 * Convert List of Positions to List of Nodes

@@ -159,14 +159,14 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
 			Map map = new Map(br);
 			
-			assertEquals(agent.findPath(map, new Position(1,1), new Position(4,1), Cell.ECell.PLAYER).toString(), "DDD");
-			assertEquals(agent.findPath(map, new Position(1,2), new Position(1,2), Cell.ECell.PLAYER).toString(), "");
+			assertEquals(agent.getAstar().findPath(map, new Position(1,1), new Position(4,1), Cell.ECell.PLAYER).toString(), "DDD");
+			assertEquals(agent.getAstar().findPath(map, new Position(1,2), new Position(1,2), Cell.ECell.PLAYER).toString(), "");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
 		
 			map = new Map(br);
 			
-			assertEquals(agent.findPath(map, new Position(1,1), new Position(6,6), Cell.ECell.PLAYER).toString(), "DDRRRRRDDD");
+			assertEquals(agent.getAstar().findPath(map, new Position(1,1), new Position(6,6), Cell.ECell.PLAYER).toString(), "DDRRRRRDDD");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 		
@@ -175,16 +175,16 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 		
 			map = new Map(br);
-			assertEquals(agent.findPath(map, new Position(1,3), new Position(12,17), Cell.ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+			assertEquals(agent.getAstar().findPath(map, new Position(1,3), new Position(12,17), Cell.ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 		
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/map11.txt"));
 		
 			map = new Map(br);
-			assertEquals(agent.findPath(map, map.getPlayerPosition(), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRRRRR");
+			assertEquals(agent.getAstar().findPath(map, map.getPlayerPosition(), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRRRRR");
 			
-			assertEquals(agent.findPath(map, new Position(5,1), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRURURURUR");
-			assertEquals(agent.findPath(map, new Position(4,2), new Position(1,14), Cell.ECell.BOX).toString(), "RRRRRRRRRURURUR");
+			assertEquals(agent.getAstar().findPath(map, new Position(5,1), new Position(1,14), Cell.ECell.PLAYER).toString(), "RRRRRRRRRURURURUR");
+			assertEquals(agent.getAstar().findPath(map, new Position(4,2), new Position(1,14), Cell.ECell.BOX).toString(), "RRRRRRRRRURURUR");
 			
 		}
 		catch (IOException e) {
@@ -240,7 +240,7 @@ public class AgentTest {
 
 	
 	@Test
-	public final void testSolving() throws CloneNotSupportedException
+	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException
 	{
 		try
 		{

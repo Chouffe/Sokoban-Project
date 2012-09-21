@@ -56,25 +56,25 @@ public class Client {
 
             
             
-            br = new BufferedReader(new FileReader("maps/path/map1.txt"));
-            Map map = new Map(br);
-            System.out.println(map);
-
-            System.out.println("Sol: "+agent.solve(map));
-            
-//            //we've found our solution
-//            Map map = new Map(bufferToString);
+//            br = new BufferedReader(new FileReader("maps/path/map1.txt"));
+//            Map map = new Map(br);
 //            System.out.println(map);
-//            String lMySol = agent.solve(map);
 //
-//            // send the solution to the server
-//            lOut.println(lMySol);
-//            lOut.flush();
-//    
-//            //read answer from the server
-//            lLine = lIn.readLine();
-//    
-//            System.out.println(lLine);
+//            System.out.println("Sol: "+agent.solve(map));
+            
+            //we've found our solution
+            Map map = new Map(bufferToString);
+            System.out.println(map);
+            String lMySol = agent.solve(map);
+
+            // send the solution to the server
+            lOut.println(lMySol);
+            lOut.flush();
+    
+            //read answer from the server
+            lLine = lIn.readLine();
+    
+            System.out.println(lLine);
     
 		}
 		catch(Throwable t)

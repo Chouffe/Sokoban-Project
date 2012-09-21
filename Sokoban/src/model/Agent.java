@@ -136,65 +136,8 @@ public class Agent {
 		return map;
 	}
 	
-	/**
-	 * 
-	 * Find a path from one position to another
-	 * @return 
-	 * @throws CloneNotSupportedException 
-	 * @throws PathNotFoundException 
-	 */
-	public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
-	{
-		moves = new Moves();
-		return findPath(map, position1, position2, cellType);
-	}
-	
-	/**
-	 * 
-	 * @author arthur
-	 * @param map
-	 * @param position1
-	 * @param position2
-	 * @return The moves that the player has to do to complete the path
-	 * @throws CloneNotSupportedException
-	 * @throws PathNotFoundException
-	 */
-	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException
-	{
 
-            try{
-		clean();
-		
-		astar.setMap(map.clone());
-		astar.setStartAndGoalNode(new Node(position1), new Node(position2));
-                
-                int position1I = position1.getI();
-                int position1J = position1.getJ();
-                int position2I = position2.getI();
-                int position2J = position2.getJ();
-                
-                // There was a problem with single moving boxes. 
-                if (position1I-position2I==1 && position1J-position2J==0)
-                    return "U";
-                else if (position1I-position2I==-1  && position1J-position2J ==0)
-                    return "D";
-                else if (position1J-position2J==1   && position1I-position2I ==0)
-                    return "L";
-                else if (position1J-position2J==-1  && position1I-position2I ==0)
-                    return "R";
-                else
-                    return astar.search(cellType).toString();
-            } catch (PathNotFoundException e) {
-                    
-                    System.out.println("CAN NOT FIND PATH:");
-                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
-                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
-                    System.out.println();
-                    return "";
-            }                
-		
-		
-	}
+	
 	
 	/**
 	* Finds a box-to-goal path for each box.
@@ -205,7 +148,7 @@ public class Agent {
 	* @author Alden Coots <ialden.coots@gmail.com>
 	* @throws CloneNotSupportedException 
 	*/
-	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException {
+	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		String[] paths = new String[map.getNumberOfBoxes()];
 		ArrayList<Box> orderedBoxes = new ArrayList<Box>();
 		findBoxToGoalPaths(orderedBoxes, map, paths);
@@ -213,7 +156,7 @@ public class Agent {
 		return paths;
 	}
 
-	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException {
+	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
 			if (findSequentialBoxToGoalPaths(map, paths, 0)) return true;
@@ -247,7 +190,7 @@ public class Agent {
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	* @throws CloneNotSupportedException 
 	*/
-	private boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException {
+	private boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		
 		if (map.getBoxes().isEmpty()) return true;
 		else {
@@ -334,7 +277,7 @@ public class Agent {
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
 				//System.out.println(StartMap);
 				try {
-					PlayerPath=PlayerPath+findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
+					PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
 				} catch (PathNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -369,38 +312,9 @@ public class Agent {
 
 		return PlayerPath;	
 	}
-	/**
-	* Checks if a a player can move the box in the given direction
-	*
-	*
-	* @author Joakim Andrén <joaandr@kth.se>
-	* @param Map map
-	* @param Boxdir is the given box diretion
-	* @param BoxPos Position, position of the box
-	* @param PlayerPos Position, position of the player
-	* @throws CloneNotSupportedException 
-	 * @throws IOException 
-	*/
 
-	//Check if box can be moved in direction
-	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
-		String PlayerPath=new String();
-		Position newPlayerPos=new Position();
-		newPlayerPos=BoxPos.clone();
-		if(Boxdir=='U'){newPlayerPos.down(map);}
-		if(Boxdir=='D'){newPlayerPos.up(map);}
-		if(Boxdir=='L'){newPlayerPos.right(map);}
-		if(Boxdir=='R'){newPlayerPos.left(map);}
-		if(newPlayerPos!=PlayerPos){
-			try {
-					PlayerPath=findPath(map,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
-				} catch (PathNotFoundException e) {
-					return null;
-				}
-		}
-		PlayerPath=PlayerPath+Boxdir;
-		return PlayerPath;	
-	}
+
+
 
 	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
@@ -408,7 +322,7 @@ public class Agent {
 	*
 	*
 	*/
-	private boolean pathExists(Map m, String[] paths, int boxIndx, int g, Cell.ECell cellType) throws CloneNotSupportedException {
+	private boolean pathExists(Map m, String[] paths, int boxIndx, int g, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		try {
 			
 			//System.out.println(m.getBoxes());
@@ -416,7 +330,7 @@ public class Agent {
 			//System.out.println("path:" + paths[boxIndx]);
 
 			//System.out.println(" Box Index : " +boxIndx);
-			paths[boxIndx] = findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),cellType);
+			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),cellType);
 
 			
 			//if (cellType == ECell.BOX)
@@ -537,11 +451,11 @@ public class Agent {
          * @throws CloneNotSupportedException
          * @throws IOException
          */
-        public String solve(Map map) throws CloneNotSupportedException, IOException
+        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException
         {
 		int i = 0;
 		String result = "";
-        //Map init = map.clone();
+                Map init = map.clone();
 		for(String s : getBoxToGoalPaths(map))
 		{
 			//System.out.println(map);
@@ -551,7 +465,7 @@ public class Agent {
 			i++;
 		}
 
-        //SolveBoardMoves(result,init);
+                //SolveBoardMoves(result,init);
 		//System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
