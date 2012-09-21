@@ -16,7 +16,6 @@ public class Position implements Cloneable
 	
 	public Position(int i, int j)
 	{
-		this();
 		this.i = i;
 		this.j = j;
 	}
@@ -43,7 +42,7 @@ public class Position implements Cloneable
 		setI(i);
 		setJ(j);
 	}
-	
+
 	public Position move(Map map, char dir) throws CloneNotSupportedException {
 		Position pos = this.clone();
 		switch(dir) {
@@ -63,6 +62,43 @@ public class Position implements Cloneable
 		return pos;
 	}
 
+	public Position unboundMove(char dir) throws CloneNotSupportedException {
+		Position pos = this.clone();
+		switch(dir) {
+			case 'U':
+			case 'u':
+				pos.unboundUp();
+			case 'D':
+			case 'd':
+				pos.unboundDown();
+			case 'L':
+			case 'l':
+				pos.unboundLeft();
+			case 'R':
+			case 'r':
+				pos.unboundRight();
+		}
+		return pos;
+	}
+
+	public Position unboundIncrement(char dir) throws CloneNotSupportedException {
+		switch(dir) {
+			case 'U':
+			case 'u':
+				unboundUp();
+			case 'D':
+			case 'd':
+				unboundDown();
+			case 'L':
+			case 'l':
+				unboundLeft();
+			case 'R':
+			case 'r':
+				unboundRight();
+		}
+		return this;
+	}
+
 	public Position up(Map map)
 	{
 		if(map != null && map.getMap() != null && map.getMap().size() > 0)
@@ -75,6 +111,7 @@ public class Position implements Cloneable
 		
 		return this;
 	}
+
 	public Position down(Map map)
 	{
 		if(map != null && map.getMap() != null && map.getMap().size() > 0)
@@ -114,6 +151,22 @@ public class Position implements Cloneable
 		}
 		
 		return this;
+	}
+
+	public void unboundUp() {
+		i -= 1;
+	}
+
+	public void unboundDown() {
+		i += 1;
+	}
+	
+	public void unboundLeft() {
+		j -= 1;
+	}
+
+	public void unboundRight() {
+		j += 1;
 	}
 
 	@Override

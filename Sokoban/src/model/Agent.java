@@ -233,7 +233,7 @@ public class Agent {
 	*/
 
 	//Converts a box path to the required player path.
-	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
+	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws PathNotFoundException, CloneNotSupportedException, IOException{
 		String PlayerPath=new String();
 		char lastdir=' ';
 		Position newPlayerPos=new Position();
@@ -260,7 +260,7 @@ public class Agent {
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
 				//System.out.println(StartMap);
 				PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
-				}
+				
 				PlayerPos=newPlayerPos.clone();
 				PlayerPath=PlayerPath+newdir;
 				if(newdir=='U'){PlayerPos.up(StartMap);}
