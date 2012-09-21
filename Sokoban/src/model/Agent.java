@@ -83,7 +83,14 @@ public class Agent {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * Set the cells to accessible when the player can reach them
+	 * 
+	 * @author arthur
+	 * @param map
+	 * @return
+	 */
 	public Map setCellAccessible(Map map)
 	{
 		
