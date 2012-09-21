@@ -3,7 +3,7 @@ package model;
 
 /**
  * 
- * Test if a i=given String is a solution
+ * Test if a given String is a solution
  * @author arthur
  *
  */
