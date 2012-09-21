@@ -44,7 +44,7 @@ public class Position implements Cloneable
 		setJ(j);
 	}
 	
-	public Position move(Map map, char dir) {
+	public Position move(Map map, char dir) throws CloneNotSupportedException {
 		Position pos = this.clone();
 		switch(dir) {
 			case 'U':
@@ -60,23 +60,7 @@ public class Position implements Cloneable
 			case 'r':
 				pos.right(map);
 		}
-	}
-
-	public void move(Map map, char dir) {
-		switch(dir) {
-			case 'U':
-			case 'u':
-				this.up(map);
-			case 'D':
-			case 'd':
-				this.down(map);
-			case 'L':
-			case 'l':
-				this.left(map);
-			case 'R':
-			case 'r':
-				this.right(map);
-		}
+		return pos;
 	}
 
 	public Position up(Map map)

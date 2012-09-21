@@ -34,11 +34,8 @@ public class Map implements Cloneable
 		map = new ArrayList<ArrayList<Cell>>();
 		goals = new ArrayList<Position>();
 		boxes = new ArrayList<Box>();
-		//playerPosition = new Position();
 		player = new Player();
 		boxHashMap = new HashMap<Position, Box>();
-
-		playerPosition = new Position();
 		height = 0;
 		width = 0;
 	}

@@ -101,7 +101,7 @@ public class Agent {
 		{
 			// TODO : throw an exception instead
 			return null;
-put}
+		}
 		lNodes.add(new Node(map.getPlayerPosition()));
 		map.getCellFromPosition(map.getPlayerPosition()).setAccessible(true);
 		//System.out.println("Nodes : "+ lNodes);
