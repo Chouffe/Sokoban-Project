@@ -237,44 +237,6 @@ public class AgentTest {
 			}
 		}
 	}
-	
-	@Test
-	public final void testFindPathToGoals() throws CloneNotSupportedException
-	{
-		try
-		{
-			br = new BufferedReader(new FileReader("src/tests/maps/map10.txt"));
-			Map map = new Map(br);
-			
-//			System.out.println(map);
-//			System.out.println("Number of goals : " + map.getNumberOfGoals());
-//			System.out.println("Number of boxes : " + map.getNumberOfBoxes());
-//			int i=0;
-//			for(String s : agent.getBoxToGoalPaths(map))
-//			{
-//				Map newmap=map.clone();
-//				Box b=map.getBoxes().get(i);
-//				System.out.println("Player path:" + agent.findPlayerPathFromBoxPath(s, newmap,map.getPlayerPosition() ,b.getPosition()));
-//				System.out.println("box path"+s);
-//				System.out.println("Box pos:"+b.getPosition());
-//				System.out.println("Player pos:"+map.getPlayerPosition());
-//				i++;
-//				System.out.println(newmap);
-//				System.out.println(map);
-//			}
-			
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
 
 	
 	@Test
@@ -287,13 +249,13 @@ public class AgentTest {
 			//System.out.println(map);
 
 			
-			agent.solve(map);
+			assertEquals("RRRRDRRRRRRRR", agent.solve(map));
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/solve2.txt"));
 			map = new Map(br);
 			//System.out.println(map);
 			
-			//agent.solve(map);
+			assertEquals("RRRRRRRRRRRRLLLLLLLDRRRRRRR", agent.solve(map));
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/solve3.txt"));
 			map = new Map(br);

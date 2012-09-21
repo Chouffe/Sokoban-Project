@@ -59,8 +59,9 @@ public class AStarSearch
 	 * The cellType should be either a PLAYER or a BOX
 	 * @return
 	 * @throws PathNotFoundException
+	 * @throws CloneNotSupportedException 
 	 */
-	public Moves search(Cell.ECell cellType) throws PathNotFoundException
+	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException
 	{
 		while(!openedList.isEmpty())
 		{
@@ -116,8 +117,9 @@ public class AStarSearch
 	 * Reconstruct the path from a child node to its parent recursively
 	 * @param currentNode
 	 * @return
+	 * @throws CloneNotSupportedException 
 	 */
-	public Moves reconstructPath(Node currentNode)
+	public Moves reconstructPath(Node currentNode) throws CloneNotSupportedException
 	{
 		if(currentNode.getParent() != null)
 		{
@@ -128,13 +130,16 @@ public class AStarSearch
 		{
 			if(movesResult.getMoves().size() == 0)
 			{
+				clean();
 				return new Moves();
 			}
 			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
 			map.set(ECell.BOX, start.getPosition());
-			return movesResult;
+			Moves result = movesResult.clone();
+			clean();
+			return result;
 		}
 	}
 	
@@ -447,6 +452,15 @@ public class AStarSearch
 
 	public void setClosedList(List<Node> closedList) {
 		this.closedList = closedList;
+	}
+	
+	protected void clean()
+	{
+		
+		openedList = new LinkedList<Node>();
+		closedList = new LinkedList<Node>();
+		
+		movesResult = new Moves();
 	}
 	
 }

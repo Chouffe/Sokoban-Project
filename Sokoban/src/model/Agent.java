@@ -845,13 +845,9 @@ public class Agent {
 			result +=r; 
 			i++;
 		}
-<<<<<<< OURS
-                SolveBoardMoves(result,init);
-		System.out.println(result.toUpperCase());
-=======
-                //SolveBoardMoves(result,init);
+
+        //SolveBoardMoves(result,init);
 		//System.out.println(result.toUpperCase());
->>>>>>> THEIRS
 		return result.toUpperCase();
 	}
 
