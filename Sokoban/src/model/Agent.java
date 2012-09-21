@@ -750,6 +750,39 @@ public class Agent {
 		return PlayerPath;	
 	}
 	/**
+	* Checks if a a player can move the box in the given direction
+	*
+	*
+	* @author Joakim Andrén <joaandr@kth.se>
+	* @param Map map
+	* @param Boxdir is the given box diretion
+	* @param BoxPos Position, position of the box
+	* @param PlayerPos Position, position of the player
+	* @throws CloneNotSupportedException 
+	 * @throws IOException 
+	*/
+
+	//Check if box can be moved in direction
+	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
+		String PlayerPath=new String();
+		Position newPlayerPos=new Position();
+		newPlayerPos=BoxPos.clone();
+		if(Boxdir=='U'){newPlayerPos.down(map);}
+		if(Boxdir=='D'){newPlayerPos.up(map);}
+		if(Boxdir=='L'){newPlayerPos.right(map);}
+		if(Boxdir=='R'){newPlayerPos.left(map);}
+		if(newPlayerPos!=PlayerPos){
+			try {
+					PlayerPath=findPath(map,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
+				} catch (PathNotFoundException e) {
+					return null;
+				}
+		}
+		PlayerPath=PlayerPath+Boxdir;
+		return PlayerPath;	
+	}
+
+	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
 	* @throws CloneNotSupportedException 
 	*
