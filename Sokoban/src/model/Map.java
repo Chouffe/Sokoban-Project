@@ -336,7 +336,7 @@ public class Map implements Cloneable
 				&& position.getJ() < width);
 	}
 
-	public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException {
+public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException {
 		Position boxPos = box.getPosition();
 		ECell boxCellType = getCellFromPosition(boxPos).getType();
 		Position playerPos = goal.clone();
@@ -366,9 +366,10 @@ public class Map implements Cloneable
 		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED)
 			set(PLAYER, playerPos);
 
-			
+
 		box.setPosition(goal.clone());
 	}
+
 	
 	public Cell getCellFromPosition(Position position)
 	{
@@ -455,10 +456,12 @@ public class Map implements Cloneable
 		}
 	}
 
+
 	public void setBoxes(ArrayList<Box> boxes) {
 		this.boxes = boxes;
 	}
 	
 	
+
 	
 }

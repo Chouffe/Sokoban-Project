@@ -277,6 +277,7 @@ public class AgentTest {
 			}
 		}
 	}
+
 	
 	@Test
 	public final void testSolving() throws CloneNotSupportedException
@@ -286,6 +287,7 @@ public class AgentTest {
 			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
 			Map map = new Map(br);
 			System.out.println(map);
+
 			
 			agent.solve(map);
 			
@@ -300,8 +302,6 @@ public class AgentTest {
 			System.out.println(map);
 			
 			agent.solve(map);
-			
-			
 			
 		}
 		catch (IOException e) {

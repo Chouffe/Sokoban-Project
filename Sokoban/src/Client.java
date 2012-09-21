@@ -1,3 +1,5 @@
+//package tests;
+
 import java.io.*;
 import java.net.Socket;
 //import java.net.*;
@@ -17,6 +19,8 @@ public class Client {
 	
 	public static void main(String[] pArgs) 
 	{
+            	BufferedReader br;
+                
 		if(pArgs.length<3)
 		{
 			System.out.println("usage: java Client host port boardnum");
@@ -53,6 +57,14 @@ public class Client {
             Map map = new Map(bufferToString);
             System.out.println(map);
             
+            
+            /*br = new BufferedReader(new FileReader("maps/path/solve3.txt"));
+            Map map = new Map(br);
+            System.out.println(map);
+
+            System.out.println("Sol: "+agent.solve(map));
+            */
+
             String lMySol = agent.solve(map);
 
             // send the solution to the server
@@ -70,4 +82,5 @@ public class Client {
 			t.printStackTrace();
 		}
 	}
+        
 }
