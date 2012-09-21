@@ -289,9 +289,13 @@ public class Agent {
                                             //System.out.println(map);
                                         }
                                     }
-                                else
+                                else{
                                     // Add it.
+                                    // Search for the player movement.
+                                    // Search for a valid path for the box to move.
+                                    // Si no se puede mover a la derecha porque el jugador no puede llegar.
                                     positions.add(upPosition);
+                                }
                             }  
                         
                         /*
@@ -501,8 +505,22 @@ public class Agent {
                                         }
                                     }
                                 else
+                                {                                    
                                     // Add it.
-                                    positions.add(leftPosition);
+                                    // Search for the player movement.
+                                    Position player = map.getPlayerPosition();
+                                    // Search for a valid path for the box to move.
+                                    // Map map
+                                    // Box position = position
+                                    // Box direction position = leftPosition
+                                    // Player position = player.
+                                    String validPath= "";/*Use Joakim's function*/
+                                    // Si no se puede mover a la derecha porque el jugador no puede llegar.
+                                    if (validPath != null)
+                                        positions.add(leftPosition);
+                                    else
+                                        System.out.println("You shall not pass!");
+                                }
                             }  
                         /*else{                            
                             System.out.println("Can't move left the box.");
