@@ -225,7 +225,7 @@ public class AStarSearch
 		
 		return positions;
 	}
-        	/**
+     /**
 	 * 
 	 * Find a path from one position to another
 	 * @return 
@@ -251,7 +251,6 @@ public class AStarSearch
 	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, PathNotFoundException, PathNotFoundException, PathNotFoundException, IOException
 	{
 
-            try{
 		clean();
 		
 		setMap(map.clone());
@@ -273,19 +272,9 @@ public class AStarSearch
                     return "R";
                 else
                     return search(cellType).toString();
-            } catch (PathNotFoundException e) {
-                    
-                    System.out.println("CAN NOT FIND PATH:");
-                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
-                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
-                    System.out.println();
-                    return "";
-            }                
-		
-		
 	}
 
-        	/**
+    /**
 	* Checks if a a player can move the box in the given direction
 	*
 	*
@@ -295,7 +284,7 @@ public class AStarSearch
 	* @param BoxPos Position, position of the box
 	* @param PlayerPos Position, position of the player
 	* @throws CloneNotSupportedException 
-	 * @throws IOException 
+	* @throws IOException 
 	*/
         
         //Check if box can be moved in direction

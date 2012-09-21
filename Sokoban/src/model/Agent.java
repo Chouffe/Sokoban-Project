@@ -200,26 +200,9 @@ public class Agent {
 					if (map.getCellFromPosition(map.getGoals().get(g)).getType() != Cell.ECell.BOX_ON_GOAL) {
 						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
 							Map newMap = map.clone();
-                                                         
-							//updateMapWithBoxOnGoal(newMap, g);
-
-                                                        
-                                                        // -------------------------
-
-                                                                                                                // -------------------------
-
-                                                        // These three lines are making problems
-                                                        // I Rolled back the code and it seems to work.
-                                                        // -------------------------
-                                                        
-                                                        
-                                                        newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
-                                                        newMap.getGoals().remove(g);
-                                                        newMap.getBoxes().remove(0);
-
-
-
-
+							newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
+							newMap.getGoals().remove(g);
+							newMap.getBoxes().remove(0);
 							isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, ++boxIndx);
 							if (isSolved) break;
 						}
@@ -230,12 +213,12 @@ public class Agent {
 	
 		}
         
-        private void updateMapWithBoxOnGoal(Map map, int goalIndx) {
-			map.set(Cell.ECell.WALL, map.getGoals().get(goalIndx));
-			map.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
-			map.getGoals().remove(goalIndx);
-			map.getBoxes().remove(0);
-	}
+//        private void updateMapWithBoxOnGoal(Map map, int goalIndx) {
+//			map.set(Cell.ECell.WALL, map.getGoals().get(goalIndx));
+//			map.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
+//			map.getGoals().remove(goalIndx);
+//			map.getBoxes().remove(0);
+//	}
 
 	/**
 	* Finds a player path for the given box path.
@@ -276,11 +259,7 @@ public class Agent {
 				if(newdir=='L'){newPlayerPos.right(StartMap);}
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
 				//System.out.println(StartMap);
-				try {
-					PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
-				} catch (PathNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
 				}
 				PlayerPos=newPlayerPos.clone();
 				PlayerPath=PlayerPath+newdir;
