@@ -357,6 +357,7 @@ public class Agent {
 			//System.out.println(StartMap);
 			lastdir=newdir;
 		}
+		
 		StartMap.setPlayerPosition(PlayerPos);
 		StartMap.set(ECell.EMPTY_FLOOR, initialPositionPlayer);
 		StartMap.set(Cell.ECell.BOX_ON_GOAL,BoxPos);
