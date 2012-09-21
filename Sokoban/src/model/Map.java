@@ -164,6 +164,20 @@ public class Map implements Cloneable
 		}
 	}
 	
+	/**
+	 * 
+	 * It sets a map
+	 * Given an element e to set at a new position p, the function
+	 * is able to handle the modifications for the map's cells
+	 * 
+	 * @author arthur
+	 * @param e
+	 * @param p
+	 * @return
+	 * @throws IllegalMoveException
+	 * If we try to move an element to a wall, or to an other box ...
+	 * @see set(Cell.ECell cell, Position position)
+	 */
 	public Map set(Element e, Position p) throws IllegalMoveException
 	{
 		Cell oldCell = getCellFromPosition(e.getPosition());
