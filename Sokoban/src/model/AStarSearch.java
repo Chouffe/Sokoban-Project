@@ -309,7 +309,7 @@ public class AStarSearch
 		if(Boxdir=='R'){newPlayerPos.left(map);}
 		if(newPlayerPos!=PlayerPos){
 			try {
-					PlayerPath=findPath(map,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
+					PlayerPath=findPath(map.clone(),PlayerPos.clone(),newPlayerPos.clone(), ECell.PLAYER).toLowerCase(); 
 				} catch (PathNotFoundException e) {
 					return null;
 				}
@@ -429,7 +429,7 @@ public class AStarSearch
          * Upgrade: If the box should not move to a wall if there is no goal 
          *          in it.
          */
-        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving)
+        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving) throws CloneNotSupportedException, IOException
 	{
 		ArrayList<Position> positions = new ArrayList<Position>();
 
@@ -471,7 +471,15 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
+                        {
+                        	Position player = map.getPlayerPosition();
+                        	String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                            
+                            //System.out.println("validPath : "+validPath);
+                            //if (validPath != null)
                             positions.add(upPosition);
+                        }
+                            
                         /*
                          * For Debbuging
                          */ 
@@ -509,7 +517,15 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(downPosition);
+                        {
+                        	Position player = map.getPlayerPosition();
+                        	//String validPath= checkBoxDir('D',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                            
+                            //System.out.println("validPath : "+validPath);
+                            //if (validPath != null)
+                            	positions.add(downPosition);
+                        }
+                        	//positions.add(downPosition);
                             
                          /*
                          * For Debbuging
@@ -547,7 +563,15 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(rightPosition);
+                        {
+                        	Position player = map.getPlayerPosition();
+                        	//String validPath= checkBoxDir('R',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                            
+                            //System.out.println("validPath : "+validPath);
+                            //if (validPath != null)
+                            	positions.add(rightPosition);
+                        }
+                            //positions.add(rightPosition);
                             
                         /*
                          * For debbuging
@@ -584,7 +608,14 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX  ||
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
-                            positions.add(leftPosition);
+                        {
+                        	Position player = map.getPlayerPosition();
+                        	//String validPath= checkBoxDir('L',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                            
+                            //System.out.println("validPath : "+validPath);
+                            //if (validPath != null)
+                            	positions.add(leftPosition);
+                        }
                         /*else{                            
                             System.out.println("Can't move left the box.");
                             System.out.println(map);

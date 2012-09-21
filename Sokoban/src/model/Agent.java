@@ -465,7 +465,7 @@ public class Agent {
 			i++;
 		}
 
-                //SolveBoardMoves(result,init);
+                SolveBoardMoves(result,init);
 		//System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
