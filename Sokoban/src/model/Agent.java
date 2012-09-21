@@ -559,7 +559,7 @@ public class Agent {
 		else {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
-					System.out.println("G : " + g);
+					//System.out.println("G : " + g);
 					if (map.getCellFromPosition(map.getGoals().get(g)).getType() != Cell.ECell.BOX_ON_GOAL) {
 						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
 							Map newMap = map.clone();
@@ -720,13 +720,13 @@ public class Agent {
 
 			//System.out.println("path:" + paths[boxIndx]);
 
-			System.out.println(" Box Index : " +boxIndx);
+			//System.out.println(" Box Index : " +boxIndx);
 			paths[boxIndx] = findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),cellType);
 
 			
 			//if (cellType == ECell.BOX)
                         //    paths[boxIndx] = paths[boxIndx].substring(0, paths[boxIndx].length()-1);
-                        System.out.println("path:" + paths[boxIndx]);
+                        //System.out.println("path:" + paths[boxIndx]);
 			return true;
 		} catch (PathNotFoundException e) {
 			return false;
@@ -833,10 +833,10 @@ public class Agent {
         }
         
         public String solve(Map map) throws CloneNotSupportedException, IOException
-	{
+        {
 		int i = 0;
 		String result = "";
-                Map init = map.clone();
+        //Map init = map.clone();
 		for(String s : getBoxToGoalPaths(map))
 		{
 			//System.out.println(map);
@@ -845,8 +845,13 @@ public class Agent {
 			result +=r; 
 			i++;
 		}
+<<<<<<< OURS
                 SolveBoardMoves(result,init);
 		System.out.println(result.toUpperCase());
+=======
+                //SolveBoardMoves(result,init);
+		//System.out.println(result.toUpperCase());
+>>>>>>> THEIRS
 		return result.toUpperCase();
 	}
 
