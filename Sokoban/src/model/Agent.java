@@ -459,8 +459,8 @@ public class Agent {
 		for(String s : getBoxToGoalPaths(map))
 		{
 			//System.out.println(map);
-                        String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
-                        System.out.println (r);
+            String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+            System.out.println (r);
 			result +=r; 
 			i++;
 		}

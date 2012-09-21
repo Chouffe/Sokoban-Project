@@ -244,8 +244,22 @@ public class AgentTest {
 	{
 		try
 		{
-			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map1.txt"));
 			Map map = new Map(br);
+			assertEquals("DDLDLURULLULDD", agent.solve(map));
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map2.txt"));
+			map = new Map(br);
+			//agent.solve(map);
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map3.txt"));
+			map = new Map(br);
+			agent.solve(map);
+			
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
+			map = new Map(br);
 			//System.out.println(map);
 
 			
