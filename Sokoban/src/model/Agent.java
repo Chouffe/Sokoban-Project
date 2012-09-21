@@ -636,6 +636,15 @@ public class Agent {
 						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
 							Map newMap = map.clone();
 							updateMapWithBoxOnGoal(newMap, g);
+                                                                                                                // -------------------------
+                                                        // These three lines are making problems
+                                                        // I Rolled back the code and it seems to work.
+                                                        // -------------------------
+                                                        
+                                                        
+//                                                        newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
+//                                                        newMap.getGoals().remove(g);
+//                                                        newMap.getBoxes().remove(0);
 							isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, ++boxIndx);
 							if (isSolved) break;
 						}
