@@ -248,10 +248,10 @@ public class AStarSearch
 	 * @throws CloneNotSupportedException
 	 * @throws PathNotFoundException
 	 */
-	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, PathNotFoundException, PathNotFoundException, PathNotFoundException, IOException
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException
 	{
 
-            try{
+  
 		clean();
 		
 		setMap(map.clone());
@@ -273,14 +273,15 @@ public class AStarSearch
                     return "R";
                 else
                     return search(cellType).toString();
-            } catch (PathNotFoundException e) {
-                    
-                    System.out.println("CAN NOT FIND PATH:");
-                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
-                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
-                    System.out.println();
-                    return "";
-            }                
+//            } catch (PathNotFoundException e) {
+//                    
+//                    System.out.println("CAN NOT FIND PATH:");
+//                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
+//                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
+//                    System.out.println();
+//                    throw new
+//                    return "";
+//            }                
 		
 		
 	}
@@ -296,10 +297,11 @@ public class AStarSearch
 	* @param PlayerPos Position, position of the player
 	* @throws CloneNotSupportedException 
 	 * @throws IOException 
+        	 * @throws PathNotFoundException 
 	*/
         
         //Check if box can be moved in direction
-	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
+	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException, PathNotFoundException{
 		String PlayerPath=new String();
 		Position newPlayerPos=new Position();
 		newPlayerPos=BoxPos.clone();
@@ -308,13 +310,14 @@ public class AStarSearch
 		if(Boxdir=='L'){newPlayerPos.right(map);}
 		if(Boxdir=='R'){newPlayerPos.left(map);}
 		if(newPlayerPos!=PlayerPos){
-			try {
-					PlayerPath=findPath(map.clone(),PlayerPos.clone(),newPlayerPos.clone(), ECell.PLAYER).toLowerCase(); 
-				} catch (PathNotFoundException e) {
-					return null;
-				}
+			PlayerPath = findPath(map.clone(),PlayerPos.clone(),newPlayerPos.clone(), ECell.PLAYER).toLowerCase();
 		}
-		PlayerPath=PlayerPath+Boxdir;
+		
+		if(PlayerPath != null)
+		{
+			PlayerPath=PlayerPath+Boxdir;
+		}
+		
 		return PlayerPath;	
 	}
         
@@ -364,7 +367,7 @@ public class AStarSearch
       
       
       
-        public Position BoxCanMove (Position whereToMove, Position whereToCheck, Position whereAmI, Map map) throws CloneNotSupportedException, IOException
+        public Position BoxCanMove (Position whereToMove, Position whereToCheck, Position whereAmI, Map map) throws CloneNotSupportedException, IOException, PathNotFoundException
         {
             // -------------------------------------
             // If the box wants to move up --> Don't.
@@ -473,8 +476,14 @@ public class AStarSearch
                             ))
                         {
                         	Position player = map.getPlayerPosition();
-                        	//String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
-                            
+                        	try
+                        	{
+                        		String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                        	}
+                        	catch(PathNotFoundException e)
+                        	{
+                        		
+                        	}
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
                             positions.add(upPosition);

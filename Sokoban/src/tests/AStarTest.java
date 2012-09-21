@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -236,6 +237,54 @@ public class AStarTest
 				ex.printStackTrace();
 			}
 		}
+		
+	}
+	
+	@Test
+	public final void testCheckBoxDir() throws CloneNotSupportedException, IOException, PathNotFoundException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map4.txt"));
+		Map map = new Map(br);
+		AStarSearch astar = new AStarSearch(); 
+		
+		assertEquals("rururrddlU", astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
+		assertEquals("rururD", astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
+		assertEquals("rururrdL", astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
+		assertEquals("rurR", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
+		
+		
+		assertEquals("uU", astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+//		@Test
+//		public final void testCheckBoxDir() throws CloneNotSupportedException, IOException, PathNotFoundException
+		
 		
 	}
 	
