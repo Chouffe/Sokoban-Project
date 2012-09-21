@@ -282,9 +282,48 @@ public class AStarTest
 		{
 		}
 		
-//		@Test
-//		public final void testCheckBoxDir() throws CloneNotSupportedException, IOException, PathNotFoundException
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map5.txt"));
+		map = new Map(br);
+		astar = new AStarSearch(); 
 		
+		assertEquals("rR", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map6.txt"));
+		map = new Map(br);
+		Map clonedMap = map.clone();
+		astar = new AStarSearch(); 
+		
+		assertEquals("R", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		try
+		{
+			assertEquals(null, astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
+			
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		// Test cloning
+		assertEquals(clonedMap.toString(), map.clone().toString());
 		
 	}
 	

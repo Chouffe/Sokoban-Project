@@ -475,15 +475,15 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
                         {
-                        	Position player = map.getPlayerPosition();
-                        	try
-                        	{
-                        		String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
-                        	}
-                        	catch(PathNotFoundException e)
-                        	{
-                        		
-                        	}
+//                        	Position player = map.getPlayerPosition();
+//                        	try
+//                        	{
+//                        		String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+//                        	}
+//                        	catch(PathNotFoundException e)
+//                        	{
+//                        		
+//                        	}
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
                             positions.add(upPosition);
