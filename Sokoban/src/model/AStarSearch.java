@@ -473,7 +473,7 @@ public class AStarSearch
                             ))
                         {
                         	Position player = map.getPlayerPosition();
-                        	String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
+                        	//String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
                             
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
