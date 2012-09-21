@@ -261,7 +261,7 @@ public class AgentTest {
 			map = new Map(br);
 			//System.out.println(map);
 			
-			//agent.solve(map);
+			agent.solve(map);
 			//agent.SolveBoardMoves(agent.solve(map), map);
 			
 		}

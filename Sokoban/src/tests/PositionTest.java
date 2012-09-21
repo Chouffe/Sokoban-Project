@@ -13,6 +13,8 @@ import model.Position;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.IllegalMoveException;
+
 public class PositionTest 
 {
 	Position position1;
@@ -202,6 +204,33 @@ public class PositionTest
 		assertEquals(position4, position1);
 		
 		assertFalse(position2 == position4);
+	}
+	
+	@Test
+	public final void testMovingPositionWithPlayer() throws IllegalMoveException, CloneNotSupportedException
+	{
+		
+		BufferedReader br = null;
+		try
+		{
+			br = new BufferedReader(new FileReader("src/tests/maps/position/map1.txt"));
+			
+			Map map = new Map(br);
+			
+			System.out.println(map);
+			//System.out.println(map.getPlayerPosition().right(map));
+			System.out.println(map.set(map.getPlayer(), map.getPlayerPosition().clone().right(map)));
+			//System.out.println(map);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 }
