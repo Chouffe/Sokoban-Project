@@ -47,7 +47,7 @@ public class PositionFinder {
 		char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
 		ECell[] surr = new ECell[8];
 		for (int i=0; i<8; i++) {
-			surr[i] = getCellType(map, position.unboundMove(dirs[i]));
+			surr[i] = getCellType(map, position.unboundIncrement(dirs[i]));
 		}
 		return surr;
 	}
@@ -58,7 +58,7 @@ public class PositionFinder {
 	}
 
 	private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
-		int numAdjBoxes = 0;
+		int numAdjBoxes = -1;
 		for (ECell c : getSurroundingCellTypes(map, pos)) {
 			if (c == BOX || c == BOX_ON_GOAL)
 				numAdjBoxes++;
@@ -93,6 +93,7 @@ public class PositionFinder {
 		if (map.isPositionOnTheMap(twoAway)) {
 			ECell twoAwayType = getCellType(map, pos);
 			if (twoAwayType == WALL) {
+				System.out.println("Two spots away is a wall?");
 				char[] orthos = getOrthogonals(dir);
 				Position spreader1 = target.unboundMove(orthos[0]);
 				Position spreader2 = target.unboundMove(orthos[1]);
@@ -106,12 +107,39 @@ public class PositionFinder {
 						return false;
 					spreader1.unboundIncrement(orthos[1]);
 				}
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
-	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir) throws CloneNotSupportedException {
+	private char getOppositeDirection(char dir) {
+		switch (dir) {
+			case 'U':
+				return 'D';
+			case 'D':
+				return 'U';
+			case 'L':
+				return 'R';
+			case 'R':
+				return 'L';
+		}
+		return 'E';
+	}
+
+	private boolean playerCanPush(Map map, Position position, char dir) throws CloneNotSupportedException, IOException {
+		AStarSearch searcher = new AStarSearch();
+		Position dest = position.unboundMove(getOppositeDirection(dir));
+		try {
+			searcher.findPath(map, map.getPlayerPosition(), dest, Cell.ECell.PLAYER);
+			return true;
+		}
+		catch (PathNotFoundException e) {
+			return false;
+		}
+	}
+
+	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir) throws CloneNotSupportedException, IOException {
 		Position dest = position.unboundMove(dir);
 		if (!map.isPositionOnTheMap(dest))
 			return false;
@@ -123,10 +151,26 @@ public class PositionFinder {
 		
 		else {
 			if (isValidBoxSquare(map, dest)) {
-				if (getCellType(map, dest) == GOAL_SQUARE) return true;
-				if (isCorner(map, dest)) return false;
-				if (boxWillDeadlock(map, dest)) return false;
-				if (boxWillStickOnWall(map, position, dir)) return false;
+				if (playerCanPush(map, position, dir)) {
+					System.out.println("Player can push");
+					if (getCellType(map, dest) == GOAL_SQUARE) {
+						System.out.println("Destination square is a goal");
+						return true;
+					}
+					if (isCorner(map, dest)) {
+						System.out.println("Can't push into a corner");
+					   	return false;
+					}
+					if (boxWillDeadlock(map, dest)) {
+						System.out.println("This would cause a deadlock");
+						return false;
+					}
+					if (boxWillStickOnWall(map, position, dir)) {
+						System.out.println("Box will stick on this wall");
+					   	return false;
+					}
+					return true;
+				}
 			}
 		}
 		return false;
