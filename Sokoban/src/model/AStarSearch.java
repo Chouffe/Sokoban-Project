@@ -64,6 +64,7 @@ public class AStarSearch
 	 */
 	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException
 	{
+		PositionFinder pf = new PositionFinder();
 		while(!openedList.isEmpty())
 		{
 			Collections.sort(openedList);
@@ -81,7 +82,7 @@ public class AStarSearch
 			closedList.add(current);
 			map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
-			for(Node n : getNodesFromPosition(findEmptySpacesAround(current.getPosition(), map, cellType)))
+			for(Node n : getNodesFromPosition(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
 				if(closedList.contains(n))
 				{
