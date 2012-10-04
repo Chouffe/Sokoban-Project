@@ -49,15 +49,19 @@ public class Position implements Cloneable
 			case 'U':
 			case 'u':
 				pos.up(map);
+				break;
 			case 'D':
 			case 'd':
 				pos.down(map);
+				break;
 			case 'L':
 			case 'l':
 				pos.left(map);
+				break;
 			case 'R':
 			case 'r':
 				pos.right(map);
+				break;
 		}
 		return pos;
 	}
@@ -68,15 +72,19 @@ public class Position implements Cloneable
 			case 'U':
 			case 'u':
 				pos.unboundUp();
+				break;
 			case 'D':
 			case 'd':
 				pos.unboundDown();
+				break;
 			case 'L':
 			case 'l':
 				pos.unboundLeft();
+				break;
 			case 'R':
 			case 'r':
 				pos.unboundRight();
+				break;
 		}
 		return pos;
 	}
@@ -86,15 +94,19 @@ public class Position implements Cloneable
 			case 'U':
 			case 'u':
 				unboundUp();
+				break;
 			case 'D':
 			case 'd':
 				unboundDown();
+				break;
 			case 'L':
 			case 'l':
 				unboundLeft();
+				break;
 			case 'R':
 			case 'r':
 				unboundRight();
+				break;
 		}
 		return this;
 	}
@@ -154,19 +166,19 @@ public class Position implements Cloneable
 	}
 
 	public void unboundUp() {
-		i -= 1;
+		i--;
 	}
 
 	public void unboundDown() {
-		i += 1;
+		i++;
 	}
 	
 	public void unboundLeft() {
-		j -= 1;
+		j--;
 	}
 
 	public void unboundRight() {
-		j += 1;
+		j++;
 	}
 
 	@Override

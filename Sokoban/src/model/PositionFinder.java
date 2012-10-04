@@ -10,22 +10,23 @@ import java.io.IOException;
 
 public class PositionFinder {
 
-	PositionFinder() {
+	public PositionFinder() {
 	}
 
 	public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException {
 		ArrayList<Position> spaces = new ArrayList<Position>(4);
 		char[] dirs = {'U', 'D', 'L', 'R'};
 		for (int i=0; i<4; i++) {
-			if (isValidMove(map, position, what, dirs[i]))
+			if (isValidMove(map, position, what, dirs[i])) {
 				spaces.add(position.unboundMove(dirs[i]));
+			}
 		}
 		return spaces;
 	}
 
 	private boolean isPlayerAccessible(Map map, Position position) {
-		ECell cellType = map.getCellFromPosition(position).getType();	
-		return (cellType == VISITED || cellType == EMPTY_FLOOR || cellType == GOAL_SQUARE)
+		ECell cellType = getCellType(map, position);	
+		return (cellType == VISITED || cellType == EMPTY_FLOOR || cellType == GOAL_SQUARE);
 	}
 
 	private ECell getCellType(Map map, Position pos) {
@@ -58,7 +59,7 @@ public class PositionFinder {
 
 	private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
 		int numAdjBoxes = 0;
-		for (ECell c : getSurroundingCellTypes(map, pos)) {//[up down left right]
+		for (ECell c : getSurroundingCellTypes(map, pos)) {
 			if (c == BOX || c == BOX_ON_GOAL)
 				numAdjBoxes++;
 		}
@@ -111,21 +112,24 @@ public class PositionFinder {
 	}
 
 	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir) throws CloneNotSupportedException {
-		if (!map.isPositionOnTheMap(position.unboundMove(dir)))
+		Position dest = position.unboundMove(dir);
+		if (!map.isPositionOnTheMap(dest))
 			return false;
 		boolean isPlayer = (what == PLAYER || what == PLAYER_ON_GOAL_SQUARE);
 
-		if (isPlayer && isPlayerAccessible(map, position))
-			return true;
+		if (isPlayer) {
+			return (isPlayerAccessible(map, dest));
+		}
+		
 		else {
-			if (isValidBoxSquare(map, position.unboundMove(dir))) {
-				if (getCellType(map, position.unboundMove(dir)) == GOAL_SQUARE) return true;
-				if (isCorner(map, position.unboundMove(dir))) return false;
-				if (boxWillDeadlock(map, position.unboundMove(dir))) return false;
+			if (isValidBoxSquare(map, dest)) {
+				if (getCellType(map, dest) == GOAL_SQUARE) return true;
+				if (isCorner(map, dest)) return false;
+				if (boxWillDeadlock(map, dest)) return false;
 				if (boxWillStickOnWall(map, position, dir)) return false;
 			}
 		}
-		return true;
+		return false;
 
 	}
 
