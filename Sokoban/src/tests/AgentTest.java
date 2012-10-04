@@ -1,20 +1,20 @@
 package tests;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.AStarSearch;
 import model.Agent;
 import model.Cell;
 import model.Map;
-import model.Moves;
 import model.Position;
 import model.Cell.ECell;
-import model.Box;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -240,12 +240,41 @@ public class AgentTest {
 
 	
 	@Test
+	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/pathExist/map1.txt"));
+		Map map = new Map(br);
+		String[] paths = new String[2];
+	
+		assertEquals(false, agent.pathExists(map, paths, 0, 0));
+		assertEquals(true, agent.pathExists(map, paths, 1, 1));
+		
+		assertTrue(paths[1].length() > 0);
+		assertEquals(null, paths[0]);
+	}
+	
+	@Test
 	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException
 	{
 		try
 		{
-			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map1.txt"));
 			Map map = new Map(br);
+			assertEquals("DDLDLURULLULDD", agent.solve(map));
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map2.txt"));
+			map = new Map(br);
+			// Failure...
+			//agent.solve(map);
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/solve/map3.txt"));
+			map = new Map(br);
+			agent.solve(map);
+			
+			
+			br = new BufferedReader(new FileReader("src/tests/maps/path/solve.txt"));
+			map = new Map(br);
 			//System.out.println(map);
 
 			

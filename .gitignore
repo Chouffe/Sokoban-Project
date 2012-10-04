@@ -4,3 +4,5 @@ bin
 .metadata
 /Sokoban/nbproject/private/
 /Sokoban/build/
+*.DS_Store
+nbproject*

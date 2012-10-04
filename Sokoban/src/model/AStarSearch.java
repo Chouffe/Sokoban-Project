@@ -248,7 +248,7 @@ public class AStarSearch
 	 * @throws CloneNotSupportedException
 	 * @throws PathNotFoundException
 	 */
-	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, PathNotFoundException, PathNotFoundException, PathNotFoundException, IOException
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException
 	{
 
 		clean();
@@ -272,6 +272,16 @@ public class AStarSearch
                     return "R";
                 else
                     return search(cellType).toString();
+//            } catch (PathNotFoundException e) {
+//                    
+//                    System.out.println("CAN NOT FIND PATH:");
+//                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
+//                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
+//                    System.out.println();
+//                    throw new
+//                    return "";
+//            }                
+		
 	}
 
     /**
@@ -285,10 +295,12 @@ public class AStarSearch
 	* @param PlayerPos Position, position of the player
 	* @throws CloneNotSupportedException 
 	* @throws IOException 
+	* @throws IOException 
+    * @throws PathNotFoundException 
 	*/
         
         //Check if box can be moved in direction
-	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException{
+	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException, PathNotFoundException{
 		String PlayerPath=new String();
 		Position newPlayerPos=new Position();
 		newPlayerPos=BoxPos.clone();
@@ -297,13 +309,14 @@ public class AStarSearch
 		if(Boxdir=='L'){newPlayerPos.right(map);}
 		if(Boxdir=='R'){newPlayerPos.left(map);}
 		if(newPlayerPos!=PlayerPos){
-			try {
-					PlayerPath=findPath(map.clone(),PlayerPos.clone(),newPlayerPos.clone(), ECell.PLAYER).toLowerCase(); 
-				} catch (PathNotFoundException e) {
-					return null;
-				}
+			PlayerPath = findPath(map.clone(),PlayerPos.clone(),newPlayerPos.clone(), ECell.PLAYER).toLowerCase();
 		}
-		PlayerPath=PlayerPath+Boxdir;
+		
+		if(PlayerPath != null)
+		{
+			PlayerPath=PlayerPath+Boxdir;
+		}
+		
 		return PlayerPath;	
 	}
         
@@ -353,7 +366,7 @@ public class AStarSearch
       
       
       
-        public Position BoxCanMove (Position whereToMove, Position whereToCheck, Position whereAmI, Map map) throws CloneNotSupportedException, IOException
+        public Position BoxCanMove (Position whereToMove, Position whereToCheck, Position whereAmI, Map map) throws CloneNotSupportedException, IOException, PathNotFoundException
         {
             // -------------------------------------
             // If the box wants to move up --> Don't.
@@ -461,12 +474,24 @@ public class AStarSearch
                                 wall.getType()==Cell.ECell.BOX_ON_GOAL
                             ))
                         {
-                        	Position player = map.getPlayerPosition();
-                        	//String validPath= checkBoxDir('U',map.clone(),player.clone(),position.clone());/*Use Joakim's function*/
-                            
+//                        	Position player = map.getPlayerPosition();
+                        	try
+                        	{
+                        		String validPath= checkBoxDir('U',map.clone(),map.getPlayerPosition().clone(),position.clone());/*Use Joakim's function*/
+                        		System.out.println("Player : " + map.getPlayerPosition());
+                        		System.out.println("Box : " + position);
+                        		System.out.println("Valid Path U : " + validPath);
+                        		
+                        		
+                        		positions.add(upPosition);
+                        	}
+                        	catch(PathNotFoundException e)
+                        	{
+                        		System.out.println("crash");
+                        	}
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
-                            positions.add(upPosition);
+                            
                         }
                             
                         /*
@@ -512,7 +537,22 @@ public class AStarSearch
                             
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
-                            	positions.add(downPosition);
+                        	try
+                        	{
+                        		String validPath= checkBoxDir('D',map.clone(),map.getPlayerPosition().clone(),position.clone());/*Use Joakim's function*/
+                        		System.out.println("Player : " + map.getPlayerPosition());
+                        		System.out.println("Box : " + position);
+                        		System.out.println("Valid Path D : " + validPath);
+                        		
+                        		
+                        		positions.add(downPosition);
+                        	}
+                        	catch(PathNotFoundException e)
+                        	{
+                        		System.out.println("crash");
+                        	}
+                        	
+                            	//positions.add(downPosition);
                         }
                         	//positions.add(downPosition);
                             
@@ -558,7 +598,21 @@ public class AStarSearch
                             
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
-                            	positions.add(rightPosition);
+                        	try
+                        	{
+                        		String validPath= checkBoxDir('R',map.clone(),map.getPlayerPosition().clone(),position.clone());/*Use Joakim's function*/
+                        		System.out.println("Player : " + map.getPlayerPosition());
+                        		System.out.println("Box : " + position);
+                        		System.out.println("Valid Path R : " + validPath);
+                        		
+                        		
+                        		positions.add(rightPosition);
+                        	}
+                        	catch(PathNotFoundException e)
+                        	{
+                        		System.out.println("crash");
+                        	}
+                            	//positions.add(rightPosition);
                         }
                             //positions.add(rightPosition);
                             
@@ -603,7 +657,21 @@ public class AStarSearch
                             
                             //System.out.println("validPath : "+validPath);
                             //if (validPath != null)
-                            	positions.add(leftPosition);
+                        	try
+                        	{
+                        		String validPath= checkBoxDir('L',map.clone(),map.getPlayerPosition().clone(),position.clone());/*Use Joakim's function*/
+                        		System.out.println("Player : " + map.getPlayerPosition());
+                        		System.out.println("Box : " + position);
+                        		System.out.println("Valid Path L : " + validPath);
+                        		
+                        		
+                        		positions.add(leftPosition);
+                        	}
+                        	catch(PathNotFoundException e)
+                        	{
+                        		System.out.println("crash");
+                        	}
+                            	//positions.add(leftPosition);
                         }
                         /*else{                            
                             System.out.println("Can't move left the box.");

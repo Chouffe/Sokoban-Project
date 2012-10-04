@@ -198,7 +198,7 @@ public class Agent {
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					//System.out.println("G : " + g);
 					if (map.getCellFromPosition(map.getGoals().get(g)).getType() != Cell.ECell.BOX_ON_GOAL) {
-						if (pathExists(map, paths, boxIndx, g, Cell.ECell.BOX)) {
+						if (pathExists(map, paths, boxIndx, g)) {
 							Map newMap = map.clone();
 							newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
 							newMap.getGoals().remove(g);
@@ -301,7 +301,7 @@ public class Agent {
 	*
 	*
 	*/
-	private boolean pathExists(Map m, String[] paths, int boxIndx, int g, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public boolean pathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		try {
 			
 			//System.out.println(m.getBoxes());
@@ -309,7 +309,7 @@ public class Agent {
 			//System.out.println("path:" + paths[boxIndx]);
 
 			//System.out.println(" Box Index : " +boxIndx);
-			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),cellType);
+			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),ECell.BOX);
 
 			
 			//if (cellType == ECell.BOX)
@@ -361,7 +361,7 @@ public class Agent {
          * @author: Luis
          * Prints the moves we get for an answer.
          */
-        public void SolveBoardMoves(String moves, Map map) throws IOException, CloneNotSupportedException
+        public void solveBoardMoves(String moves, Map map) throws IOException, CloneNotSupportedException
         {            
             Position start_position = map.getPlayerPosition();
             
@@ -371,7 +371,7 @@ public class Agent {
             // Separate the box and player moves.
             for(char a: moves.toCharArray())
             {
-                System.out.print(a);
+                System.out.println("Move done : " +a);
                 // Only Player moves in Upper case
                     switch (a)
                     {
@@ -434,17 +434,18 @@ public class Agent {
         {
 		int i = 0;
 		String result = "";
-                Map init = map.clone();
+        Map init = map.clone();
 		for(String s : getBoxToGoalPaths(map))
 		{
 			//System.out.println(map);
-                        String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
-                        System.out.println (r);
-			result +=r; 
+            String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
+            System.out.println(r);
+			result += r; 
+			//result += '\n';
 			i++;
 		}
 
-                SolveBoardMoves(result,init);
+        solveBoardMoves(result,init);
 		//System.out.println(result.toUpperCase());
 		return result.toUpperCase();
 	}
