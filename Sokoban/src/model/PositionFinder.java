@@ -25,9 +25,7 @@ public class PositionFinder {
 
 	private boolean isPlayerAccessible(Map map, Position position) {
 		ECell cellType = map.getCellFromPosition(position).getType();	
-		if (cellType == VISITED || cellType == EMPTY_FLOOR || cellType == GOAL_SQUARE)
-		return true;
-		else return false;
+		return (cellType == VISITED || cellType == EMPTY_FLOOR || cellType == GOAL_SQUARE)
 	}
 
 	private ECell getCellType(Map map, Position pos) {
@@ -64,8 +62,7 @@ public class PositionFinder {
 			if (c == BOX || c == BOX_ON_GOAL)
 				numAdjBoxes++;
 		}
-		if (numAdjBoxes > 2) return true;
-		else return false;
+		return (numAdjBoxes > 2);
 	}
 
 	char[] getOrthogonals(char dir) {
