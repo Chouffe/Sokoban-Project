@@ -89,12 +89,9 @@ public class PositionFinder {
 
 	private boolean boxWillStickOnWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
 		Position target = pos.unboundMove(dir);
-		System.out.println("Target " + target);
 		Position twoAway = target.unboundMove(dir);
-		System.out.println("Two away " + twoAway);
 		if (map.isPositionOnTheMap(twoAway)) {
 			ECell twoAwayType = getCellType(map, twoAway);
-			System.out.println("Two away type: " + twoAwayType);
 			if (twoAwayType == WALL) {
 				System.out.println("Two spots away is a wall?");
 				char[] orthos = getOrthogonals(dir);
