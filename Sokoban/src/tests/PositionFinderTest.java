@@ -185,4 +185,19 @@ public class PositionFinderTest {
 		sol.add(pos.unboundMove('R'));
 		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
 	}
+
+	@Test
+	public final void testBoxNearGoalWall() throws CloneNotSupportedException, IOException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map15.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<Position> sol = new ArrayList<Position>(4);
+		sol.add(pos.unboundMove('U'));
+		sol.add(pos.unboundMove('D'));
+		sol.add(pos.unboundMove('R'));
+		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+	}
 }

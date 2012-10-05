@@ -158,7 +158,6 @@ public class Agent {
 	}
 
 	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException {
-		System.out.println(map.getBoxes().size());
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
 			return (findSequentialBoxToGoalPaths(map, paths, 0));

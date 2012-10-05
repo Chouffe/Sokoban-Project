@@ -97,12 +97,12 @@ public class PositionFinder {
 				Position spreader1 = target.unboundMove(orthos[0]);
 				Position spreader2 = target.unboundMove(orthos[1]);
 				while (isValidBoxSquare(map, spreader1)) {
-					if (isValidBoxSquare(map, spreader1.unboundMove(dir)))
+					if (isGoal(map, spreader1) || isValidBoxSquare(map, spreader1.unboundMove(dir)))
 						return false;
 					spreader1.unboundIncrement(orthos[0]);
 				}
 				while (isValidBoxSquare(map, spreader2)) {
-					if (isValidBoxSquare(map, spreader2.unboundMove(dir)))
+					if (isGoal(map, spreader2) || isValidBoxSquare(map, spreader2.unboundMove(dir)))
 						return false;
 					spreader2.unboundIncrement(orthos[1]);
 				}
