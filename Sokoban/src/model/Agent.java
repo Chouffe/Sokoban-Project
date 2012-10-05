@@ -3,6 +3,7 @@ package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -157,22 +158,24 @@ public class Agent {
 	}
 
 	private boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException {
+		System.out.println(map.getBoxes().size());
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
-			if (findSequentialBoxToGoalPaths(map, paths, 0)) return true;
+			return (findSequentialBoxToGoalPaths(map, paths, 0));
 			}
 		else {
 			boolean isSolved = false;
 			for (int b=0; b<map.getNumberOfBoxes(); b++) {
-				orderedBoxes.add(map.getBoxes().get(b));
-				map.getBoxes().remove(b);
-				isSolved = isSolved || findBoxToGoalPaths(orderedBoxes, map, paths); 
+				ArrayList<Box> newOrder = new ArrayList<Box>();
+				Collections.copy(orderedBoxes, newOrder);
+				Map newMap = map.clone();
+				newOrder.add(map.getBoxes().get(b));
+				newMap.getBoxes().remove(b);
+				isSolved = isSolved || findBoxToGoalPaths(newOrder, newMap, paths); 
 				if (isSolved) break;
 			}
 		return isSolved;
 		}
-		
-		return false;
 	}
 
 	/**
