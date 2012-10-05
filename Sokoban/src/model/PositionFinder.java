@@ -89,23 +89,26 @@ public class PositionFinder {
 
 	private boolean boxWillStickOnWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
 		Position target = pos.unboundMove(dir);
+		System.out.println("Target " + target);
 		Position twoAway = target.unboundMove(dir);
+		System.out.println("Two away " + twoAway);
 		if (map.isPositionOnTheMap(twoAway)) {
-			ECell twoAwayType = getCellType(map, pos);
+			ECell twoAwayType = getCellType(map, twoAway);
+			System.out.println("Two away type: " + twoAwayType);
 			if (twoAwayType == WALL) {
 				System.out.println("Two spots away is a wall?");
 				char[] orthos = getOrthogonals(dir);
 				Position spreader1 = target.unboundMove(orthos[0]);
 				Position spreader2 = target.unboundMove(orthos[1]);
 				while (isValidBoxSquare(map, spreader1)) {
-					if (isValidBoxSquare(map, spreader1.unboundMove(dir)) || isGoal(map, spreader1.unboundMove(dir)))
+					if (isValidBoxSquare(map, spreader1.unboundMove(dir)))
 						return false;
 					spreader1.unboundIncrement(orthos[0]);
 				}
 				while (isValidBoxSquare(map, spreader2)) {
-					if (isValidBoxSquare(map, spreader2.unboundMove(dir)) || isGoal(map, spreader2.unboundMove(dir)))
+					if (isValidBoxSquare(map, spreader2.unboundMove(dir)))
 						return false;
-					spreader1.unboundIncrement(orthos[1]);
+					spreader2.unboundIncrement(orthos[1]);
 				}
 				return true;
 			}
