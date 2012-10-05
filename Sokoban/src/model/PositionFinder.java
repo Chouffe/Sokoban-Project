@@ -93,7 +93,6 @@ public class PositionFinder {
 		if (map.isPositionOnTheMap(twoAway)) {
 			ECell twoAwayType = getCellType(map, twoAway);
 			if (twoAwayType == WALL) {
-				System.out.println("Two spots away is a wall?");
 				char[] orthos = getOrthogonals(dir);
 				Position spreader1 = target.unboundMove(orthos[0]);
 				Position spreader2 = target.unboundMove(orthos[1]);
@@ -152,21 +151,16 @@ public class PositionFinder {
 		else {
 			if (isValidBoxSquare(map, dest)) {
 				if (playerCanPush(map, position, dir)) {
-					System.out.println("Player can push");
 					if (getCellType(map, dest) == GOAL_SQUARE) {
-						System.out.println("Destination square is a goal");
 						return true;
 					}
 					if (isCorner(map, dest)) {
-						System.out.println("Can't push into a corner");
 					   	return false;
 					}
 					if (boxWillDeadlock(map, dest)) {
-						System.out.println("This would cause a deadlock");
 						return false;
 					}
 					if (boxWillStickOnWall(map, position, dir)) {
-						System.out.println("Box will stick on this wall");
 					   	return false;
 					}
 					return true;
