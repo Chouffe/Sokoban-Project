@@ -152,7 +152,7 @@ public class PositionFinder {
 		else {
 			if (isValidBoxSquare(map, dest)) {
 				if (playerCanPush(map, position, dir)) {
-					if (getCellType(map, dest) == GOAL_SQUARE) {
+					if (isGoal(map, dest)) {
 						return true;
 					}
 					if (isCorner(map, dest)) {

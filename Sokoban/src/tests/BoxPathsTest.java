@@ -121,4 +121,4 @@ public class BoxPathsTest {
 	assertEquals("RRRR", paths[1]);
 	assertEquals(true, success);
 	}
-		}
+}
