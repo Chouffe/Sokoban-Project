@@ -79,12 +79,13 @@ public class PositionFinder {
 	}
 
 	private boolean isGoal(Map map, Position pos) {
-		return (getCellType(map,pos) == GOAL_SQUARE);
+		ECell type = getCellType(map,pos);
+		return (type == GOAL_SQUARE || type == PLAYER_ON_GOAL_SQUARE);
 	}
 
 	private boolean isValidBoxSquare(Map map, Position pos) {
 		ECell type = getCellType(map, pos);
-		return (type == EMPTY_FLOOR || type == VISITED || type == GOAL_SQUARE);
+		return (!(type == BOX || type == WALL || type == BOX_ON_GOAL));
 	}
 
 	private boolean boxWillStickOnWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
@@ -112,7 +113,7 @@ public class PositionFinder {
 		return false;
 	}
 
-	private char getOppositeDirection(char dir) {
+	public static char getOppositeDirection(char dir) {
 		switch (dir) {
 			case 'U':
 				return 'D';
