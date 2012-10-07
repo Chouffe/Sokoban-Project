@@ -1,85 +1,85 @@
-		package model;
+package model;
 
-		import java.io.IOException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 
-		import static model.Cell.ECell.*;
+import static model.Cell.ECell.*;
 import model.Cell.ECell;
 
 
-		public class PositionFinder {
+public class PositionFinder {
 
 	public PositionFinder() {
 	}
 
 
-			public ArrayList<BoxMove> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException, IllegalMoveException {
-				ArrayList<BoxMove> spaces = new ArrayList<BoxMove>(4);
-				char[] dirs = {'U', 'D', 'L', 'R'};
-				for (int i=0; i<4; i++) {
-					String playerPushPath = new String();
-					if (isValidMove(map, position, what, dirs[i], playerPushPath)) {
-						spaces.add(new BoxMove(position.unboundMove(dirs[i]), playerPushPath));
-					}
+		public ArrayList<BoxMove> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException, IllegalMoveException {
+			ArrayList<BoxMove> spaces = new ArrayList<BoxMove>(4);
+			char[] dirs = {'U', 'D', 'L', 'R'};
+			for (int i=0; i<4; i++) {
+				String playerPushPath = new String();
+				if (isValidMove(map, position, what, dirs[i], playerPushPath)) {
+					spaces.add(new BoxMove(position.unboundMove(dirs[i]), playerPushPath));
 				}
-				return spaces;
 			}
+			return spaces;
+		}
 
-			private boolean isPlayerAccessible(Map map, Position position) {
-				ECell cellType = getCellType(map, position);	
-				return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL));
-			}
+		private boolean isPlayerAccessible(Map map, Position position) {
+			ECell cellType = getCellType(map, position);	
+			return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL));
+		}
 
-			private ECell getCellType(Map map, Position pos) {
-				return map.getCellFromPosition(pos).getType();
-			}
-			
-			//[up down left right]
-			private ECell[] getAdjacentCellTypes(Map map, Position position) throws CloneNotSupportedException {
-				ECell[] cells = new ECell[4];
-				cells[0] = getCellType(map, position.unboundMove('U'));
-				cells[1] = getCellType(map, position.unboundMove('D'));
-				cells[2] = getCellType(map, position.unboundMove('L'));
-				cells[3] = getCellType(map, position.unboundMove('R'));
-				return cells;
-			}
+		private ECell getCellType(Map map, Position pos) {
+			return map.getCellFromPosition(pos).getType();
+		}
+		
+		//[up down left right]
+		private ECell[] getAdjacentCellTypes(Map map, Position position) throws CloneNotSupportedException {
+			ECell[] cells = new ECell[4];
+			cells[0] = getCellType(map, position.unboundMove('U'));
+			cells[1] = getCellType(map, position.unboundMove('D'));
+			cells[2] = getCellType(map, position.unboundMove('L'));
+			cells[3] = getCellType(map, position.unboundMove('R'));
+			return cells;
+		}
 
-			private ECell[] getSurroundingCellTypes(Map map, Position position) throws CloneNotSupportedException {
-				char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
-				ECell[] surr = new ECell[8];
-				for (int i=0; i<8; i++) {
-					surr[i] = getCellType(map, position.unboundIncrement(dirs[i]));
+		private ECell[] getSurroundingCellTypes(Map map, Position position) throws CloneNotSupportedException {
+			char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
+			ECell[] surr = new ECell[8];
+			for (int i=0; i<8; i++) {
+				surr[i] = getCellType(map, position.unboundIncrement(dirs[i]));
+			}
+			return surr;
+		}
+
+		private boolean isCorner(Map map, Position position) throws CloneNotSupportedException {
+			ECell[] cells = getAdjacentCellTypes(map, position); //[up down left right]
+			return ((cells[0] == WALL || cells[1] == WALL) && (cells[2] == WALL || cells[3] == WALL));
+		}
+
+		private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
+			int numAdjBoxes = -1;
+			for (ECell c : getSurroundingCellTypes(map, pos)) {
+				if (c == BOX || c == BOX_ON_GOAL)
+					numAdjBoxes++;
+			}
+			return (numAdjBoxes > 2);
+		}
+
+		char[] getOrthogonals(char dir) {
+			char[] orthos = new char[2];
+			if (dir == 'U' || dir == 'D') {
+				char[] lr = {'L', 'R'};
+				return lr;
 				}
-				return surr;
-			}
-
-			private boolean isCorner(Map map, Position position) throws CloneNotSupportedException {
-				ECell[] cells = getAdjacentCellTypes(map, position); //[up down left right]
-				return ((cells[0] == WALL || cells[1] == WALL) && (cells[2] == WALL || cells[3] == WALL));
-			}
-
-			private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
-				int numAdjBoxes = -1;
-				for (ECell c : getSurroundingCellTypes(map, pos)) {
-					if (c == BOX || c == BOX_ON_GOAL)
-						numAdjBoxes++;
-				}
-				return (numAdjBoxes > 2);
-			}
-
-			char[] getOrthogonals(char dir) {
-				char[] orthos = new char[2];
-				if (dir == 'U' || dir == 'D') {
-					char[] lr = {'L', 'R'};
-					return lr;
-					}
-				else {
-			char[] ud = {'U', 'D'};
-			return ud;
-			}
+			else {
+		char[] ud = {'U', 'D'};
+		return ud;
+		}
 	}
 
 	private boolean isGoal(Map map, Position pos) {

@@ -47,6 +47,12 @@ public class AStarSearch
 		this.start.setG(0);
 		this.start.setH(this.start.goalDistanceEstimate(goal));
 		this.start.setF(this.start.getG() + this.start.getH());
+		try {
+			this.start.setMap(map.clone());
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		this.movesResult = new Moves();
 		
@@ -93,7 +99,7 @@ public class AStarSearch
 			// System.out.println("Initial map " + map);
 			// map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
-			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
+			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), current.getMap(), cellType)))
 			{
 				//System.out.println("Node " + n);
 				
@@ -121,12 +127,13 @@ public class AStarSearch
 					// We update the map
 					Moves m = new Moves();
 					m.addMove(n.parent.getPosition(), n.getPosition());
-					Map mapCopy = map.clone();
+					Map mapCopy = n.parent.getMap().clone();
 					
 					try
 					{
-						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
 						mapCopy.applyMoves(m.toString());
+						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+						
 					}
 					catch(IllegalMoveException ill)
 					{
@@ -166,6 +173,7 @@ public class AStarSearch
 				clean();
 				return new Moves();
 			}
+			System.out.println(currentNode.getMap());
 			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
