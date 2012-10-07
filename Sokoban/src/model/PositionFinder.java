@@ -13,12 +13,13 @@ public class PositionFinder {
 	public PositionFinder() {
 	}
 
-	public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException {
-		ArrayList<Position> spaces = new ArrayList<Position>(4);
+	public ArrayList<BoxMove> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException {
+		ArrayList<BoxMove> spaces = new ArrayList<BoxMove>(4);
 		char[] dirs = {'U', 'D', 'L', 'R'};
 		for (int i=0; i<4; i++) {
-			if (isValidMove(map, position, what, dirs[i])) {
-				spaces.add(position.unboundMove(dirs[i]));
+			String playerPushPath = new String();
+			if (isValidMove(map, position, what, dirs[i], playerPushPath)) {
+				spaces.add(new BoxMove(position.unboundMove(dirs[i]), playerPushPath));
 			}
 		}
 		return spaces;
@@ -127,11 +128,12 @@ public class PositionFinder {
 		return 'E';
 	}
 
-	private boolean playerCanPush(Map map, Position position, char dir) throws CloneNotSupportedException, IOException {
+	private boolean playerCanPush(Map map, Position position, char dir, String path) throws CloneNotSupportedException, IOException {
 		AStarSearch searcher = new AStarSearch();
 		Position dest = position.unboundMove(getOppositeDirection(dir));
 		try {
-			searcher.findPath(map, map.getPlayerPosition(), dest, Cell.ECell.PLAYER);
+			path = searcher.findPath(map, map.getPlayerPosition(), dest, Cell.ECell.PLAYER);
+			path.toLowerCase();
 			return true;
 		}
 		catch (PathNotFoundException e) {
@@ -139,7 +141,7 @@ public class PositionFinder {
 		}
 	}
 
-	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir) throws CloneNotSupportedException, IOException {
+	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir, String playerPushPath) throws CloneNotSupportedException, IOException {
 		Position dest = position.unboundMove(dir);
 		if (!map.isPositionOnTheMap(dest))
 			return false;
@@ -151,7 +153,7 @@ public class PositionFinder {
 		
 		else {
 			if (isValidBoxSquare(map, dest)) {
-				if (playerCanPush(map, position, dir)) {
+				if (playerCanPush(map, position, dir, playerPushPath)) {
 					if (isGoal(map, dest)) {
 						return true;
 					}
