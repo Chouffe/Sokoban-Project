@@ -604,4 +604,14 @@ public class Map implements Cloneable
 		}
 	}
 	
+	/**
+	 * Altered the map according to the String moves
+	 * @param moves
+	 * @throws IllegalMoveException
+	 */
+	public void applyMoves(String moves) throws IllegalMoveException
+	{
+		
+	}
+	
 }

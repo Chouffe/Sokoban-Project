@@ -62,6 +62,13 @@ public abstract class Element
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Element [position=" + position + ", onGoal=" + onGoal + "]";
+	}
+	
+	
 	
 	
 }

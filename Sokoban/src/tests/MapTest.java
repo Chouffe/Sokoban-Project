@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import model.Box;
 import model.Cell;
 import model.Map;
+import model.Player;
 import model.Position;
 import model.Cell.ECell;
 
@@ -335,6 +337,78 @@ public class MapTest
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	@Test
+	public final void testSet() throws FileNotFoundException, IllegalMoveException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
+		Map map1 = new Map(br);
+		
+		Player p = map1.getPlayer();
+		Box box1 = map1.getBoxes().get(0);
+		System.out.println(box1);
+		
+		map1.set(box1, new Position(1,3));
+		
+		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,3));
+		
+		System.out.println(map1);
+	}
+	
+	@Test
+	public final void testSetFailure() throws FileNotFoundException, IllegalMoveException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
+		Map map1 = new Map(br);
+		
+		Player p = map1.getPlayer();
+		Box box1 = map1.getBoxes().get(0);
+		System.out.println(box1);
+		
+		try
+		{
+			map1.set(box1, new Position(2,2));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		
+		try
+		{
+			map1.set(box1, new Position(1,1));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		try
+		{
+			map1.set(box1, new Position(0,2));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		
+		map1.set(box1, new Position(1,2));
+		
+		
+		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,2));
+		
+		System.out.println(map1);
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map2.txt"));
+		Map map2 = new Map(br);
+		
+		map2.set(map2.getBoxes().get(0), new Position(2,3));
+		map2.set(map2.getPlayer(), new Position(2,2));
+		
+		System.out.println(map2);
 	}
 
 }

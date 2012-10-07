@@ -5,12 +5,31 @@
 		import static model.Cell.ECell.*;
 		import model.Cell.ECell;
 
+<<<<<<< OURS
 		import exception.PathNotFoundException;
 		import java.io.IOException;
+=======
+import exception.IllegalMoveException;
+import exception.PathNotFoundException;
+import java.io.IOException;
+>>>>>>> THEIRS
 
 		public class PositionFinder {
 
+<<<<<<< OURS
 			public PositionFinder() {
+=======
+	public PositionFinder() {
+	}
+
+	public ArrayList<BoxMove> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException, IllegalMoveException {
+		ArrayList<BoxMove> spaces = new ArrayList<BoxMove>(4);
+		char[] dirs = {'U', 'D', 'L', 'R'};
+		for (int i=0; i<4; i++) {
+			String playerPushPath = new String();
+			if (isValidMove(map, position, what, dirs[i], playerPushPath)) {
+				spaces.add(new BoxMove(position.unboundMove(dirs[i]), playerPushPath));
+>>>>>>> THEIRS
 			}
 
 			public ArrayList<BoxMove> findEmptySpacesAround(Position position, Map map, Cell.ECell what) throws CloneNotSupportedException, IOException {
@@ -128,7 +147,11 @@
 		return 'E';
 	}
 
+<<<<<<< OURS
 	private boolean playerCanPush(Map map, Position dest, char dir, String path) throws CloneNotSupportedException, IOException {
+=======
+	private boolean playerCanPush(Map map, Position position, char dir, String path) throws CloneNotSupportedException, IOException, IllegalMoveException {
+>>>>>>> THEIRS
 		AStarSearch searcher = new AStarSearch();
 		if (dest.equals(map.getPlayerPosition())) return true;
 		try {
@@ -184,7 +207,7 @@
 		}
 	}
 
-	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir, String playerPushPath) throws CloneNotSupportedException, IOException {
+	private boolean isValidMove(Map map, Position position, Cell.ECell what, char dir, String playerPushPath) throws CloneNotSupportedException, IOException, IllegalMoveException {
 		Position dest = position.unboundMove(dir);
 		if (!map.isPositionOnTheMap(dest))
 			return false;

@@ -10,6 +10,7 @@ import java.util.List;
 
 import model.Cell.ECell;
 
+import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 
 
@@ -259,7 +260,12 @@ public class Agent {
 				if(newdir=='L'){newPlayerPos.right(StartMap);}
 				if(newdir=='R'){newPlayerPos.left(StartMap);}
 				//System.out.println(StartMap);
-				PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase(); 
+				try {
+					PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase();
+				} catch (IllegalMoveException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				
 				PlayerPos=newPlayerPos.clone();
 				PlayerPath=PlayerPath+newdir;
@@ -309,7 +315,12 @@ public class Agent {
 			//System.out.println("path:" + paths[boxIndx]);
 
 			//System.out.println(" Box Index : " +boxIndx);
-			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),ECell.BOX);
+			try {
+				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),ECell.BOX);
+			} catch (IllegalMoveException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			
 			//if (cellType == ECell.BOX)
