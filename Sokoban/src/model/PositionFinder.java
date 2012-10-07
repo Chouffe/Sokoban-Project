@@ -163,12 +163,72 @@ public class PositionFinder {
 					if (boxWillStickOnWall(map, position, dir)) {
 					   	return false;
 					}
+                                        if (isDeadEnd(map, position, dir))
+                                            return false;
 					return true;
 				}
 			}
 		}
 		return false;
 
+	}
+        
+        private boolean isDeadEnd(Map map, Position position, char dir) throws CloneNotSupportedException, IOException
+        {
+            int depth =0;
+            Position start = position.clone();
+            while (isTunnel(map, position, dir))
+            {
+                start.unboundIncrement(dir);
+                depth++;
+            }
+            // It is not a tunnel.
+            if (depth ==0)
+                return false;                        
+            // Dead end with goal
+            if (isGoal(map,start))
+                return false;
+            // Dead end
+            start.unboundIncrement(dir);
+            // Is it a wall in the end?
+            if (hasWallsOnOrthogonals(map,start,dir))
+                return true;
+            else
+                return false;
+        }
+        
+        private boolean isTunnel(Map map, Position position, char dir) throws CloneNotSupportedException, IOException
+        {
+            Position target = position.clone();
+            target.unboundIncrement(dir);
+            
+            if (isValidBoxSquare(map,target))
+            {
+                return hasWallsOnOrthogonals(map, target,dir);
+            }
+            else
+                // Not valid square.
+                return false;
+        }
+        
+        private boolean hasWallsOnOrthogonals(Map map, Position position, char dir) throws CloneNotSupportedException
+        {
+            ECell [] orthogonals = getOrthogonalsCellTypes(map, position, dir);
+            if (orthogonals[0]==Cell.ECell.WALL && orthogonals[1]==Cell.ECell.WALL)
+                // Could be a tunnel?
+                return true;
+            else
+                // Can not be a tunnel.
+                return false;
+        }
+        
+        ECell[] getOrthogonalsCellTypes(Map map, Position position, char dir) throws CloneNotSupportedException {
+                ECell[] cells = new ECell[2];
+                char[] orthos = getOrthogonals(dir);
+                
+		cells[0] = getCellType(map, position.unboundMove(orthos[0]));
+		cells[1] = getCellType(map, position.unboundMove(orthos[1]));
+		return cells;
 	}
 
 }
