@@ -215,5 +215,19 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		ArrayList<BoxMove> sol = new ArrayList<BoxMove>(4);
 		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
 	}
+	
+	@Test
+	public final void testBoxNearWall() throws CloneNotSupportedException, IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map21.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<Position> sol = new ArrayList<Position>(2);
+		sol.add(new Position(7,6));
+		sol.add(new Position(7,8));
+		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+	}
 
 }

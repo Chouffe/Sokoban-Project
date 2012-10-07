@@ -98,6 +98,12 @@ public class AStarTest
 	}
 	
 	@Test
+	public final void testFindEmptySpacesAround()
+	{
+		
+	}
+	
+	@Test
 	public final void testSearch() throws PathNotFoundException, CloneNotSupportedException
 	{
 		try
@@ -158,6 +164,7 @@ public class AStarTest
 			map = new Map(br);
 			astar = new AStarSearch(map);
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+			assertEquals(astar.findPath(map.getBoxes().get(0).getPosition(), map.getGoals().get(0), ECell.BOX), "LUUUURRUU");
 			assertEquals(astar.search(ECell.BOX).toString(), "LUUUURRUU");
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(1).getPosition()), new Node(map.getGoals().get(1)));
 			assertEquals(astar.search(ECell.BOX).toString(), "RUUUULLU");
@@ -166,7 +173,6 @@ public class AStarTest
 			assertEquals(astar.search(ECell.PLAYER).toString(), "UULLDD");
 			astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(new Position(7,9)));
 			assertEquals(astar.search(ECell.PLAYER).toString(), "UURRDD");
-			
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 			map = new Map(br);

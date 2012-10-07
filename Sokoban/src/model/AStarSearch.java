@@ -276,22 +276,31 @@ public class AStarSearch
 		setMap(map.clone());
 		setStartAndGoalNode(new Node(position1), new Node(position2));
                 
-                int position1I = position1.getI();
-                int position1J = position1.getJ();
-                int position2I = position2.getI();
-                int position2J = position2.getJ();
+        int position1I = position1.getI();
+        int position1J = position1.getJ();
+        int position2I = position2.getI();
+        int position2J = position2.getJ();
+        
+        // There was a problem with single moving boxes. 
+        if (position1I-position2I==1 && position1J-position2J==0)
+            return "U";
+        else if (position1I-position2I==-1  && position1J-position2J ==0)
+            return "D";
+        else if (position1J-position2J==1   && position1I-position2I ==0)
+            return "L";
+        else if (position1J-position2J==-1  && position1I-position2I ==0)
+            return "R";
+        else
+        	try
+        {
+            return search(cellType).toString();
+        }
+        catch(PathNotFoundException e)
+        {
+        	System.out.println("Path Not Found !!! ");
+        	throw new PathNotFoundException();
+        }
                 
-                // There was a problem with single moving boxes. 
-                if (position1I-position2I==1 && position1J-position2J==0)
-                    return "U";
-                else if (position1I-position2I==-1  && position1J-position2J ==0)
-                    return "D";
-                else if (position1J-position2J==1   && position1I-position2I ==0)
-                    return "L";
-                else if (position1J-position2J==-1  && position1I-position2I ==0)
-                    return "R";
-                else
-                    return search(cellType).toString();
 //            } catch (PathNotFoundException e) {
 //                    
 //                    System.out.println("CAN NOT FIND PATH:");
@@ -300,7 +309,9 @@ public class AStarSearch
 //                    System.out.println();
 //                    throw new
 //                    return "";
-//            }                
+//            }
+                
+                
 		
 	}
 
