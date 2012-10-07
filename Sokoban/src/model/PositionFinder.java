@@ -152,7 +152,8 @@ public class PositionFinder {
 		}
 		
 		else {
-			if (isValidBoxSquare(map, dest)) {
+			Position pushSource = position.unboundMove(getOppositeDirection(dir));
+			if (isValidBoxSquare(map, dest) && isPlayerAccessible(map, pushSource)) {
 				if (playerCanPush(map, position, dir, playerPushPath)) {
 					if (isGoal(map, dest)) {
 						return true;
