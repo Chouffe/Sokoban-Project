@@ -82,7 +82,7 @@ public class AStarSearch
 			closedList.add(current);
 			map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
-			for(Node n : getNodesFromPosition(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
+			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
 				if(closedList.contains(n))
 				{
@@ -661,6 +661,23 @@ public class AStarSearch
 		for(Position p : positionList)
 		{
 			nodeList.add(new Node(p));
+		}
+		
+		return nodeList;
+	}
+	
+	/**
+	 * Convert List of Positions to List of Nodes
+	 * @param positionList
+	 * @return List of Nodes
+	 */
+	public List<Node> getNodesFromBoxMove(List<BoxMove> bmList)
+	{
+		List<Node> nodeList = new ArrayList<Node>();
+		
+		for(BoxMove bm : bmList)
+		{
+			nodeList.add(new Node(bm.getNewPosition()));
 		}
 		
 		return nodeList;
