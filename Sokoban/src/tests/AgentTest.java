@@ -83,7 +83,6 @@ public class AgentTest {
 		
 	}
 	
-<<<<<<< OURS
 //	@Test
 //	public final void testEmptySpaces() throws CloneNotSupportedException
 //	{
@@ -149,70 +148,7 @@ public class AgentTest {
 //		}
 //		
 //	}
-=======
-	@Test
-	public final void testEmptySpaces() throws CloneNotSupportedException
-	{
-		
-		try
-		{
-			br = new BufferedReader(new FileReader("src/tests/maps/map2.txt"));
-			
-			Map map = new Map(br);
-			Position position = new Position(1,2);
-			Position position2 = new Position(1,3);
-			Position position3 = new Position(2,4);
-			
-			// test with a Player
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(position, map).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(position, map, ECell.PLAYER).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(position2, map).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(position2, map, ECell.PLAYER).size());
-			assertEquals(3, agent.getAstar().findEmptySpacesAround(position3, map).size());
-			assertEquals(3, agent.getAstar().findEmptySpacesAround(position3, map, ECell.PLAYER).size());
-			
-			// Test with a Box
-			Position positionBox1 = new Position(1,2);
-			Position positionBox2 = new Position(1,3);
-			Position positionBox3 = new Position(2,4);
-			Position positionBox4 = new Position(3,4);
-			Position positionBox5 = new Position(4,4);
-			Position positionBox6 = new Position(4,2);
-			
-			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox1, map, ECell.BOX).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(positionBox2, map, ECell.BOX).size());
-			assertEquals(2, agent.getAstar().findEmptySpacesAround(positionBox3, map, ECell.BOX).size());
-			assertEquals(2, agent.getAstar().findEmptySpacesAround(positionBox4, map, ECell.BOX).size());
-			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox5, map, ECell.BOX).size());
-			assertEquals(0, agent.getAstar().findEmptySpacesAround(positionBox6, map, ECell.BOX).size());
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/map6.txt"));
-			Map map2 = new Map(br);
-			
-			Position position4 = map2.getPlayerPosition();
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(position4, map2).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(map2.getPlayerPosition(), map2, ECell.PLAYER).size());
-			
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/map8.txt"));
-			
-			Map map3 = new Map(br);
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(map3.getPlayerPosition(), map3).size());
-			assertEquals(1, agent.getAstar().findEmptySpacesAround(map3.getPlayerPosition(), map3, ECell.PLAYER).size());
-			
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-		
-	}
->>>>>>> THEIRS
+
 	
 		
 	@Test
