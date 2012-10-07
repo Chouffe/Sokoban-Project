@@ -100,18 +100,6 @@ public class PositionFinderTest {
 	}
 
 	@Test
-	public final void testBoxInDeadEnd() throws CloneNotSupportedException, IOException {
-
-		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map9.txt"));
-		Map map = new Map(br);
-		System.out.println(map);
-
-		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
-	}
-
-	@Test
 	public final void testBoxNearTwoOtherBoxes() throws CloneNotSupportedException, IOException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map10.txt"));
