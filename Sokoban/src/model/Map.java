@@ -458,7 +458,8 @@ public class Map implements Cloneable
 	{
 		Position boxPos = box.getPosition();
 		ECell boxCellType = getCellFromPosition(boxPos).getType();
-		Position playerPos = goal.clone();
+		char lastMove = boxPath.charAt(boxPath.length()-1);
+		Position playerPos = goal.unboundMove(PositionFinder.getOppositeDirection(lastMove));
 		ECell playerPosType = getCellFromPosition(playerPos).getType();
 //                if (!boxPath.isEmpty())
 //                {
@@ -481,10 +482,14 @@ public class Map implements Cloneable
 		else if (boxCellType == BOX)
 			set(EMPTY_FLOOR, boxPos);
 
-//		if (playerPosType == GOAL_SQUARE)
-//			set(PLAYER_ON_GOAL_SQUARE, playerPos);
-//		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED)
-//			set(PLAYER, playerPos);
+		if (playerPosType == GOAL_SQUARE) {
+			set(PLAYER_ON_GOAL_SQUARE, playerPos);
+			player = new Player(playerPos, true);
+			}
+		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED) {
+			set(PLAYER, playerPos);
+			player = new Player(playerPos, false);
+			}
 
 
 		box.setPosition(goal.clone());
