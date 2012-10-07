@@ -151,6 +151,10 @@ import model.Cell.ECell;
 		return (isValidBoxSquare(map, dest) && isPlayerAccessible(map, source));
 	}
 
+	private boolean sourceIsWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
+		return (getCellType(map, pos.unboundMove(getOppositeDirection(dir))) == WALL);
+	}
+
 	private boolean isValidBoxMove(Map map, Position source, Position dest, char dir, String playerPushPath) throws CloneNotSupportedException, IOException, IllegalMoveException {
 
 		if (boxWillDeadlock(map, dest))
@@ -193,9 +197,12 @@ import model.Cell.ECell;
 			return false;
 		boolean isPlayer = (what == PLAYER || what == PLAYER_ON_GOAL_SQUARE);
 
-		if (isPlayer) {
+		if (isPlayer)
 			return (isPlayerAccessible(map, dest));
-		}
+		
+		if (sourceIsWall(map, position, dir))
+			return false;
+
 		else {
 			Map maap = map.clone();
 			return clearSides(maap, position, dir, playerPushPath);

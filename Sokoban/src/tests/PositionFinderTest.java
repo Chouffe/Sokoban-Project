@@ -243,7 +243,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling1() throws CloneNotSupportedException, IOException {
+	public final void testBoxShuffling1() throws CloneNotSupportedException, IOException, IllegalMoveException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map20.txt"));
 		Map map = new Map(br);
