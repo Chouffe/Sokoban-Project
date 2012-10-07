@@ -67,18 +67,18 @@ public class AStarSearch
 	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
 	{
 		
-		
 		PositionFinder pf = new PositionFinder();
 		
 		while(!openedList.isEmpty())
 		{
-			System.out.println(map);
+			//System.out.println(map);
 			//System.out.println("Opened List : " + openedList);
 			//System.out.println("Closed List : " + closedList);
 			
 			Collections.sort(openedList);
 			Node current = (Node) ((LinkedList<Node>) openedList).getFirst();
 			
+			// If we have reached the goal we construct the path
 			if(current.isGoal(goal))
 			{
 				return reconstructPath(current);
@@ -95,7 +95,8 @@ public class AStarSearch
 		
 			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
-				System.out.println("Node " + n);
+				//System.out.println("Node " + n);
+				
 				if(closedList.contains(n))
 				{
 					continue;
@@ -116,52 +117,25 @@ public class AStarSearch
 					n.setH(n.goalDistanceEstimate(goal));
 					n.setF(n.getG() + n.getH());
 					
-					Element e = null;
-					
 					//System.out.println(map);
 					// We update the map
-					if(map.getCellFromPosition(current.getPosition()).getType() == ECell.PLAYER_ON_GOAL_SQUARE || map.getCellFromPosition(current.getPosition()).getType() == ECell.BOX_ON_GOAL)
+					Moves m = new Moves();
+					m.addMove(n.parent.getPosition(), n.getPosition());
+					Map mapCopy = map.clone();
+					
+					try
 					{
-						if(cellType == ECell.PLAYER)
-						{
-							e = new Player(current.getPosition(), true);
-						}
-						else
-						{
-							// We have to move the box and the player
-							e = new Box(current.getPosition(), true);
-							
-//							map.set(e, n.getPosition());
-//							map.set(new Player(map.getPlayerPosition(), false), n.parent.getPosition());
-//							map.setPlayerPosition(n.parent.getPosition());
-							
-						}
-						
-						map.set(e, n.getPosition());
+						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+						mapCopy.applyMoves(m.toString());
 					}
-					else
+					catch(IllegalMoveException ill)
 					{
-						if(cellType == ECell.BOX)
-						{
-							// We have to move the box and the player
-							e = new Box(n.parent.getPosition(), false);
-							
-							map.set(e, n.getPosition());
-							map.set(new Player(map.getPlayerPosition(), false), n.parent.getPosition());
-							map.setPlayerPosition(n.parent.getPosition());
-						}
-						else
-						{
-							e = new Player(n.parent.getPosition(), false);
-						}
-						//System.out.println(e);
-						//System.out.println(n.getPosition());
-						
 						
 					}
 					
-					//map.set(ECell.VISITED, n.getPosition());
-					//System.out.println(map);
+					// We store the map in the node
+					n.setMap(mapCopy);
+					
 				}
 			}
 		}
@@ -182,6 +156,7 @@ public class AStarSearch
 		if(currentNode.getParent() != null)
 		{
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
+			System.out.println(currentNode.getMap());
 			return reconstructPath(currentNode.getParent());	
 		}
 		else
@@ -194,8 +169,11 @@ public class AStarSearch
 			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
-			map.set(ECell.BOX, start.getPosition());
+			//map.set(ECell.BOX, start.getPosition());
 			Moves result = movesResult.clone();
+//			System.out.println("Final map : " + map);
+//			System.out.println("Number boxes : " + map.getBoxes().size());
+//			System.out.println("Box position : " + map.getBoxes().get(0));
 			clean();
 			return result;
 		}
@@ -755,7 +733,9 @@ public class AStarSearch
 		
 		for(BoxMove bm : bmList)
 		{
-			nodeList.add(new Node(bm.getNewPosition()));
+			Node n = new Node(bm.getNewPosition());
+			n.setBoxMove(bm);
+			nodeList.add(n);
 		}
 		
 		return nodeList;
