@@ -27,7 +27,7 @@ public class PositionFinder {
 
 	private boolean isPlayerAccessible(Map map, Position position) {
 		ECell cellType = getCellType(map, position);	
-		return (cellType == VISITED || cellType == EMPTY_FLOOR || cellType == GOAL_SQUARE);
+		return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL));
 	}
 
 	private ECell getCellType(Map map, Position pos) {
