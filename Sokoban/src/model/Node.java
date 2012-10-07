@@ -8,6 +8,7 @@ public class Node implements Comparable<Node>
 {
 	
 	protected Position position;
+	protected BoxMove boxMove;
 	protected Node parent;
 	protected Node child;
 	protected int f, g, h;
@@ -18,6 +19,7 @@ public class Node implements Comparable<Node>
 		parent = null;
 		child = null;
 		position = null;
+		boxMove = null;
 		
 		f = 0;
 		g = 0;
@@ -98,10 +100,11 @@ public class Node implements Comparable<Node>
 	}
 
 	public Position getPosition() {
-		return position;
+		return boxMove.getNewPosition();
 	}
 
 	public void setPosition(Position position) {
+		this.boxMove = new BoxMove(position, "");
 		this.position = position;
 	}
 

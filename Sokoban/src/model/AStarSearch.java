@@ -80,6 +80,25 @@ public class AStarSearch
 			
 			// We add current to closedList
 			closedList.add(current);
+			
+			Element e = null;
+			
+			
+			
+			// We update the map
+			if(map.getCellFromPosition(current.getPosition()).getType() == ECell.PLAYER_ON_GOAL_SQUARE || map.getCellFromPosition(current.getPosition()).getType() == ECell.BOX_ON_GOAL)
+			{
+				if(cellType == ECell.PLAYER)
+				{
+					e = new Player(current.getPosition(), true);
+				}
+				//map.set();
+			}
+			else
+			{
+				
+			}
+			
 			map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
 			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
