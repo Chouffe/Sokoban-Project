@@ -26,12 +26,10 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getPlayerPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('L'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(3).getNewPosition());
 	}
 	
 	@Test
@@ -42,10 +40,8 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getPlayerPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER));
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
 	}
 
 	@Test
@@ -56,9 +52,7 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
 	}
 
 	@Test
@@ -69,7 +63,7 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(1).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
+		ArrayList<BoxMove> sol = new ArrayList<BoxMove>(4);
 		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
 	}
 		
@@ -81,9 +75,7 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
 	}
 
 	@Test
@@ -94,9 +86,7 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('L'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
 	}
 
 	@Test
@@ -107,12 +97,10 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('L'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(3).getNewPosition());
 	}
 
 	@Test
@@ -123,11 +111,9 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('L'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
 	}
 
 	@Test
@@ -138,11 +124,9 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('L'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
 	}
 
 	@Test
@@ -153,11 +137,9 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
 	}
 
 	@Test
@@ -168,10 +150,8 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
 	}
 
 	@Test
@@ -182,11 +162,9 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
 	}
 
 	@Test
@@ -197,12 +175,10 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		sol.add(pos.unboundMove('L'));
-		sol.add(pos.unboundMove('R'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(3).getNewPosition());
 	}
 
 	@Test
@@ -213,10 +189,8 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('L'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
 	}
 
 	@Test
@@ -227,10 +201,8 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
-		sol.add(pos.unboundMove('U'));
-		sol.add(pos.unboundMove('D'));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.PLAYER).get(1).getNewPosition());
 	}
 
 	@Test
@@ -241,7 +213,7 @@ public class PositionFinderTest {
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(4);
+		ArrayList<BoxMove> sol = new ArrayList<BoxMove>(4);
 		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
 	}
 
