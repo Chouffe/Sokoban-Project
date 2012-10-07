@@ -216,4 +216,18 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
 	}
 
+	@Test
+	public final void testBoxShuffling1() throws CloneNotSupportedException, IOException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map20.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(3).getNewPosition());
+	}
+
 }
