@@ -228,8 +228,38 @@ public class Map implements Cloneable
 					default:
 						throw new IllegalMoveException();
 				}
+				
+				Box b = getBox(e.getPosition());
+				
+				// We update  the position of the box
+				if(b!= null)
+				{
+					b.setOnGoal(e.isOnGoal());
+					b.setPosition(e.getPosition());
+				}
 			}
 			
+//			else if (e instanceof Box)
+//			{
+//				Box b = getBox(e.getPosition());
+//				
+//				switch(oldCell.type)
+//				{
+//					case BOX_ON_GOAL:
+//						set(ECell.GOAL_SQUARE, e.getPosition());
+//						b.setPosition(e.getPosition());
+//					break;
+//					case BOX:
+//						set(ECell.EMPTY_FLOOR, e.getPosition());
+//					break;
+//					default:
+//						throw new IllegalMoveException();
+//				}
+//				
+//				// We update  the position of the box
+//				b.setOnGoal(e.isOnGoal());
+//				b.setPosition(e.getPosition());
+//			}
 			
 		}
 		
@@ -250,8 +280,25 @@ public class Map implements Cloneable
 						throw new IllegalMoveException();
 				}
 			}
+//			else if (e instanceof Box)
+//			{
+//				switch(oldCell.type)
+//				{
+//					case BOX_ON_GOAL:
+//						set(ECell.GOAL_SQUARE, e.getPosition());
+//					break;
+//					case BOX:
+//						set(ECell.EMPTY_FLOOR, e.getPosition());
+//					break;
+//					default:
+//						throw new IllegalMoveException();
+//				}
+//			}
+			
 			else if (e instanceof Box)
 			{
+			
+				
 				switch(oldCell.type)
 				{
 					case BOX_ON_GOAL:
@@ -263,6 +310,8 @@ public class Map implements Cloneable
 					default:
 						throw new IllegalMoveException();
 				}
+				
+				
 			}
 			
 		}
@@ -517,8 +566,17 @@ public class Map implements Cloneable
 		return boxes;
 	}
 
-	public Box getBox(Position position) {
-		return boxHashMap.get(position);
+	public Box getBox(Position position) 
+	{
+		for(Box b : boxes)
+		{
+			if(b.getPosition().equals(position))
+			{
+				return b;
+			}
+		}
+		return null;
+		//return boxHashMap.get(position);
 	}
 
 	public int getNumberOfBoxes() {
@@ -605,12 +663,70 @@ public class Map implements Cloneable
 	}
 	
 	/**
-	 * Altered the map according to the String moves
+	 * 
+	 * Altered the map according to the String moves (a player move)
+	 * 
+	 * @author arthur
 	 * @param moves
 	 * @throws IllegalMoveException
+	 * @throws CloneNotSupportedException 
 	 */
-	public void applyMoves(String moves) throws IllegalMoveException
+	public void applyMoves(String moves) throws IllegalMoveException, CloneNotSupportedException
 	{
+		moves = moves.toUpperCase();
+		Moves m = new Moves(moves);
+		
+		for(EMove emove : m.getMoves())
+		{
+			applyOneMove(emove);
+			//System.out.println(this);
+//			try {
+//				System.in.read();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+	}
+	
+	public void applyOneMove(EMove emove) throws IllegalMoveException, CloneNotSupportedException
+	{
+		Position newLocation = Moves.getPositionFromInitialPositionAndMove(player.getPosition(), emove);
+		
+		if(getCellFromPosition(newLocation).getType() == EMPTY_FLOOR || getCellFromPosition(newLocation).getType() == GOAL_SQUARE)
+		{
+			set(player, newLocation);
+		}
+		else if(getCellFromPosition(newLocation).getType() == BOX || getCellFromPosition(newLocation).getType() == BOX_ON_GOAL)
+		{
+			boolean isOnGoal;
+			
+			if(getCellFromPosition(newLocation).getType() == BOX)
+			{
+				isOnGoal = false;
+			}
+			else
+			{
+				isOnGoal = true;
+			}
+			// we move first the box
+			Position newLocationBox = Moves.getPositionFromInitialPositionAndMove(newLocation, emove);
+			//System.out.println(newLocation);
+			Box box = getBox(newLocation);
+			//System.out.println(box);
+			if(box != null)
+			{
+				set(box, newLocationBox);
+			}
+				
+			
+			// We move the player
+			set(player, newLocation);
+		}
+		else
+		{
+			throw new IllegalMoveException();
+		}
 		
 	}
 	
