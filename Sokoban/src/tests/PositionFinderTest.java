@@ -178,6 +178,16 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(1).getNewPosition());
 		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(2).getNewPosition());
 		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(3).getNewPosition());
+	
+			br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map22.txt"));
+		map = new Map(br);
+		System.out.println(map);
+
+		pos = map.getBoxes().get(0).getPosition();
+		assertEquals(2, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).size());
+		pos = map.getBoxes().get(1).getPosition();
+		assertEquals(2, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).size());
+	
 	}
 
 	@Test
