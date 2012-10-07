@@ -17,4 +17,11 @@ public class BoxMove {
 		return pPath;
 	}
 
+	@Override
+	public String toString() {
+		return "BoxMove [pos=" + pos + ", pPath=" + pPath + "]";
+	}
+	
+	
+
 }

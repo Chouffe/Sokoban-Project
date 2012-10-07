@@ -27,6 +27,30 @@ public class Moves implements Cloneable
 		}
 	}
 	
+	public Moves(String m)
+	{
+		this.moves = new ArrayList<EMove>();
+		for(Character c : m.toCharArray())
+		{
+			if(c == 'U')
+			{
+				this.moves.add(EMove.UP);
+			}
+			else if(c == 'D')
+			{
+				this.moves.add(EMove.DOWN);
+			}
+			else if(c == 'L')
+			{
+				this.moves.add(EMove.LEFT);
+			}
+			else if(c == 'R')
+			{
+				this.moves.add(EMove.RIGHT);
+			}
+		}
+	}
+	
 	public void up()
 	{
 		moves.add(EMove.UP);
@@ -173,6 +197,35 @@ public class Moves implements Cloneable
 		}
 		
 		moves = reversedMoves;
+	}
+	
+	public static Position getPositionFromInitialPositionAndMove(Position initial, EMove emove) throws CloneNotSupportedException
+	{
+		if(initial != null)
+		{
+			Position result = initial.clone();
+			switch(emove)
+			{
+			case UP:
+				result.unboundUp();
+				break;
+			case DOWN:
+				result.unboundDown();
+				break;
+			case LEFT:
+				result.unboundLeft();
+				break;
+			case RIGHT:
+				result.unboundRight();
+				break;
+			}
+			
+			return result;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 }

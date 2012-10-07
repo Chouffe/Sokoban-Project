@@ -9,6 +9,7 @@ public class Node implements Comparable<Node>
 	
 	protected Position position;
 	protected BoxMove boxMove;
+	protected Map map;
 	protected Node parent;
 	protected Node child;
 	protected int f, g, h;
@@ -20,6 +21,7 @@ public class Node implements Comparable<Node>
 		child = null;
 		position = null;
 		boxMove = null;
+		map = null;
 		
 		f = 0;
 		g = 0;
@@ -30,6 +32,12 @@ public class Node implements Comparable<Node>
 	{
 		this();
 		setPosition(position);
+	}
+	
+	public Node(Position position, Map map)
+	{
+		this(position);
+		this.map = map;
 	}
 	
 	/**
@@ -139,6 +147,25 @@ public class Node implements Comparable<Node>
 			return false;
 		return true;
 	}
+
+	public BoxMove getBoxMove() {
+		return boxMove;
+	}
+
+	public void setBoxMove(BoxMove boxMove) {
+		this.boxMove = boxMove;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
+	
+	
+	
 
 	
 	

@@ -7,6 +7,7 @@ import java.util.List;
 
 import model.Cell.ECell;
 
+import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 import java.io.IOException;
 
@@ -61,15 +62,23 @@ public class AStarSearch
 	 * @return
 	 * @throws PathNotFoundException
 	 * @throws CloneNotSupportedException 
+	 * @throws IllegalMoveException 
 	 */
-	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException
+	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
 	{
+		
 		PositionFinder pf = new PositionFinder();
+		
 		while(!openedList.isEmpty())
 		{
+			//System.out.println(map);
+			//System.out.println("Opened List : " + openedList);
+			//System.out.println("Closed List : " + closedList);
+			
 			Collections.sort(openedList);
 			Node current = (Node) ((LinkedList<Node>) openedList).getFirst();
 			
+			// If we have reached the goal we construct the path
 			if(current.isGoal(goal))
 			{
 				return reconstructPath(current);
@@ -81,28 +90,13 @@ public class AStarSearch
 			// We add current to closedList
 			closedList.add(current);
 			
-			Element e = null;
-			
-			
-			
-			// We update the map
-			if(map.getCellFromPosition(current.getPosition()).getType() == ECell.PLAYER_ON_GOAL_SQUARE || map.getCellFromPosition(current.getPosition()).getType() == ECell.BOX_ON_GOAL)
-			{
-				if(cellType == ECell.PLAYER)
-				{
-					e = new Player(current.getPosition(), true);
-				}
-				//map.set();
-			}
-			else
-			{
-				
-			}
-			
-			map.set(ECell.EMPTY_FLOOR, current.getPosition());
+			// System.out.println("Initial map " + map);
+			// map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
 			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), map, cellType)))
 			{
+				//System.out.println("Node " + n);
+				
 				if(closedList.contains(n))
 				{
 					continue;
@@ -123,8 +117,25 @@ public class AStarSearch
 					n.setH(n.goalDistanceEstimate(goal));
 					n.setF(n.getG() + n.getH());
 					
-					//map.set(ECell.VISITED, n.getPosition());
 					//System.out.println(map);
+					// We update the map
+					Moves m = new Moves();
+					m.addMove(n.parent.getPosition(), n.getPosition());
+					Map mapCopy = map.clone();
+					
+					try
+					{
+						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+						mapCopy.applyMoves(m.toString());
+					}
+					catch(IllegalMoveException ill)
+					{
+						
+					}
+					
+					// We store the map in the node
+					n.setMap(mapCopy);
+					
 				}
 			}
 		}
@@ -145,6 +156,7 @@ public class AStarSearch
 		if(currentNode.getParent() != null)
 		{
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
+			System.out.println(currentNode.getMap());
 			return reconstructPath(currentNode.getParent());	
 		}
 		else
@@ -157,8 +169,11 @@ public class AStarSearch
 			// We need to reverse the way to get 
 			movesResult.reverse();
 			movesResult.addMove(currentNode.getPosition(), goal.getPosition());
-			map.set(ECell.BOX, start.getPosition());
+			//map.set(ECell.BOX, start.getPosition());
 			Moves result = movesResult.clone();
+//			System.out.println("Final map : " + map);
+//			System.out.println("Number boxes : " + map.getBoxes().size());
+//			System.out.println("Box position : " + map.getBoxes().get(0));
 			clean();
 			return result;
 		}
@@ -169,9 +184,10 @@ public class AStarSearch
 	 * Find empty space around a given position
 	 * @param position
 	 * @return
+	 * @throws IllegalMoveException 
 	 * @see findEmptySpacesAround
 	 */
-	public ArrayList<Position> findEmptySpacesAround(Position position) throws CloneNotSupportedException, IOException
+	public ArrayList<Position> findEmptySpacesAround(Position position) throws CloneNotSupportedException, IOException, IllegalMoveException
 	{
 		return findEmptySpacesAround(position, map, Cell.ECell.BOX);
 	}
@@ -251,8 +267,9 @@ public class AStarSearch
 	 * @return 
 	 * @throws CloneNotSupportedException 
 	 * @throws PathNotFoundException 
+     * @throws IllegalMoveException 
 	 */
-        public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException
+        public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
 	{
 		
 		return findPath(map, position1, position2, cellType);
@@ -267,8 +284,9 @@ public class AStarSearch
 	 * @return The moves that the player has to do to complete the path
 	 * @throws CloneNotSupportedException
 	 * @throws PathNotFoundException
+	 * @throws IllegalMoveException 
 	 */
-	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
 	{
 
 		clean();
@@ -276,22 +294,38 @@ public class AStarSearch
 		setMap(map.clone());
 		setStartAndGoalNode(new Node(position1), new Node(position2));
                 
-                int position1I = position1.getI();
-                int position1J = position1.getJ();
-                int position2I = position2.getI();
-                int position2J = position2.getJ();
+        int position1I = position1.getI();
+        int position1J = position1.getJ();
+        int position2I = position2.getI();
+        int position2J = position2.getJ();
+        
+        // There was a problem with single moving boxes. 
+        if (position1I-position2I==1 && position1J-position2J==0)
+            return "U";
+        else if (position1I-position2I==-1  && position1J-position2J ==0)
+            return "D";
+        else if (position1J-position2J==1   && position1I-position2I ==0)
+            return "L";
+        else if (position1J-position2J==-1  && position1I-position2I ==0)
+            return "R";
+        else
+        {
+	        try
+	        {
+	            return search(cellType).toString();
+	        }
+	        catch(PathNotFoundException e)
+	        {
+	        	System.out.println("Path Not Found !!! ");
+	        	throw new PathNotFoundException();
+	        }
+	        catch(IllegalMoveException e)
+	        {
+	        	System.out.println("Illegal Move !!!!");
+	        	throw new IllegalMoveException();
+	        }
+        }
                 
-                // There was a problem with single moving boxes. 
-                if (position1I-position2I==1 && position1J-position2J==0)
-                    return "U";
-                else if (position1I-position2I==-1  && position1J-position2J ==0)
-                    return "D";
-                else if (position1J-position2J==1   && position1I-position2I ==0)
-                    return "L";
-                else if (position1J-position2J==-1  && position1I-position2I ==0)
-                    return "R";
-                else
-                    return search(cellType).toString();
 //            } catch (PathNotFoundException e) {
 //                    
 //                    System.out.println("CAN NOT FIND PATH:");
@@ -300,7 +334,9 @@ public class AStarSearch
 //                    System.out.println();
 //                    throw new
 //                    return "";
-//            }                
+//            }
+                
+                
 		
 	}
 
@@ -317,10 +353,11 @@ public class AStarSearch
 	* @throws IOException 
 	* @throws IOException 
     * @throws PathNotFoundException 
+     * @throws IllegalMoveException 
 	*/
         
         //Check if box can be moved in direction
-	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException, PathNotFoundException{
+	public String checkBoxDir(char Boxdir, Map map, Position PlayerPos, Position BoxPos) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException{
 		String PlayerPath=new String();
 		Position newPlayerPos=new Position();
 		newPlayerPos=BoxPos.clone();
@@ -410,7 +447,7 @@ public class AStarSearch
          * to a certain position. The player position is searched on the map.
          * 
          */    
-        public boolean playerCanMoveBox (Position boxPosition, Map map, char moveWhere) throws CloneNotSupportedException, IOException, PathNotFoundException
+        public boolean playerCanMoveBox (Position boxPosition, Map map, char moveWhere) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException
         {
             
             // Search for the player movement.
@@ -437,7 +474,7 @@ public class AStarSearch
          * Upgrade: If the box should not move to a wall if there is no goal 
          *          in it.
          */
-        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving) throws CloneNotSupportedException, IOException
+        public ArrayList<Position> findEmptySpacesAround(Position position, Map map, Cell.ECell whoIsMoving) throws CloneNotSupportedException, IOException, IllegalMoveException
 	{
 		ArrayList<Position> positions = new ArrayList<Position>();
 
@@ -696,7 +733,9 @@ public class AStarSearch
 		
 		for(BoxMove bm : bmList)
 		{
-			nodeList.add(new Node(bm.getNewPosition()));
+			Node n = new Node(bm.getNewPosition());
+			n.setBoxMove(bm);
+			nodeList.add(n);
 		}
 		
 		return nodeList;

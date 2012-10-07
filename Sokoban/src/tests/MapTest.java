@@ -7,8 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import model.Box;
 import model.Cell;
+import model.EMove;
 import model.Map;
+import model.Player;
 import model.Position;
 import model.Cell.ECell;
 
@@ -309,6 +312,14 @@ public class MapTest
 			map1.set(map1.getBoxes().get(0), oldBoxPosition);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
 			
+			// We test moves to reach goals
+			br = new BufferedReader(new FileReader("src/tests/maps/setting/map3.txt"));
+			Map map3 = new Map(br);
+			
+			map3.set(map3.getPlayer(), map3.getGoals().get(1));
+			map3.set(map3.getBoxes().get(0), map3.getGoals().get(0));
+			System.out.println(map3);
+			
 //			assertTrue(map1.setPlayer(player).getI() == 0);
 //			assertTrue(map1.getPlayerPosition().getJ() == 2);
 //			
@@ -335,6 +346,228 @@ public class MapTest
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	@Test
+	public final void testSet() throws FileNotFoundException, IllegalMoveException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
+		Map map1 = new Map(br);
+		
+		Player p = map1.getPlayer();
+		Box box1 = map1.getBoxes().get(0);
+		System.out.println(box1);
+		
+		map1.set(box1, new Position(1,3));
+		
+		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,3));
+		
+		System.out.println(map1);
+	}
+	
+	@Test
+	public final void testSetFailure() throws FileNotFoundException, IllegalMoveException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
+		Map map1 = new Map(br);
+		
+		Player p = map1.getPlayer();
+		Box box1 = map1.getBoxes().get(0);
+		System.out.println(box1);
+		
+		try
+		{
+			map1.set(box1, new Position(2,2));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		
+		try
+		{
+			map1.set(box1, new Position(1,1));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		try
+		{
+			map1.set(box1, new Position(0,2));
+			fail();
+		}
+		catch(IllegalMoveException e)
+		{
+			
+		}
+		
+		map1.set(box1, new Position(1,2));
+		
+		
+		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,2));
+		
+		System.out.println(map1);
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map2.txt"));
+		Map map2 = new Map(br);
+		
+		map2.set(map2.getBoxes().get(0), new Position(2,3));
+		map2.set(map2.getPlayer(), new Position(2,2));
+		
+		System.out.println(map2);
+	}
+	
+	@Test
+	public final void testApplyOneMoveSuccess() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	{
+		
+		// Test LEFT && RIGHT
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map1.txt"));
+		Map map = new Map(br);
+		
+		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT);
+		
+		assertEquals(new Position(1,6), map.getPlayerPosition());
+		
+		map.applyOneMove(EMove.LEFT);
+		map.applyOneMove(EMove.LEFT);
+		
+		assertEquals(new Position(1,4), map.getPlayerPosition());
+		
+		// Test UP && DOWN
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map2.txt"));
+		map = new Map(br);
+		
+		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.DOWN);
+		
+		assertEquals(new Position(3,1), map.getPlayerPosition());
+		
+		map.applyOneMove(EMove.DOWN);
+		assertEquals(new Position(4,1), map.getPlayerPosition());
+		
+		map.applyOneMove(EMove.UP);
+		map.applyOneMove(EMove.UP);
+		map.applyOneMove(EMove.UP);
+		
+		assertEquals(new Position(1,1), map.getPlayerPosition());
+		
+		// Test with boxes on the path
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
+		map = new Map(br);
+		
+		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.DOWN);
+		
+		assertEquals(new Position(3, 5), map.getPlayerPosition());
+		
+		map.applyOneMove(EMove.LEFT);
+		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.RIGHT);
+		
+		assertEquals(new Box(new Position(4,6), true), map.getBoxes().get(0));
+		
+		map.applyOneMove(EMove.RIGHT);
+		
+		assertEquals(true, map.getPlayer().isOnGoal());
+		assertEquals(new Box(new Position(4,7), false), map.getBoxes().get(0));
+		
+		//System.out.println(map.getBoxes());
+		
+	}
+	
+	@Test
+	public final void testApplyOneMoveFailure() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	{
+		// Test LEFT && RIGHT
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map1.txt"));
+		Map map = new Map(br);
+		
+		try
+		{
+			map.applyOneMove(EMove.UP);
+			fail("");
+		}
+		catch(IllegalMoveException e)
+		{
+		}
+		
+		try
+		{
+			map.applyOneMove(EMove.DOWN);
+			fail("");
+		}
+		catch(IllegalMoveException e)
+		{
+		}
+			
+			
+			// Test UP && DOWN
+			br = new BufferedReader(new FileReader("src/tests/maps/applymove/map2.txt"));
+			map = new Map(br);
+			
+			try
+			{
+				map.applyOneMove(EMove.LEFT);
+				fail("");
+			}
+			catch(IllegalMoveException e)
+			{
+			}
+			
+			try
+			{
+				map.applyOneMove(EMove.RIGHT);
+				fail("");
+			}
+			catch(IllegalMoveException e)
+			{
+			}
+			
+//			
+//			map.applyOneMove(EMove.RIGHT);
+//			
+//			assertEquals(new Position(3,1), map.getPlayerPosition());
+//			
+//			map.applyOneMove(EMove.DOWN);
+//			assertEquals(new Position(4,1), map.getPlayerPosition());
+//			
+//			map.applyOneMove(EMove.UP);
+//			map.applyOneMove(EMove.UP);
+//			map.applyOneMove(EMove.UP);
+//			
+//			assertEquals(new Position(1,1), map.getPlayerPosition());
+	}
+	
+	@Test
+	public final void testGetBox() throws FileNotFoundException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
+		Map map = new Map(br);
+		
+		assertEquals(3, map.getBoxes().size());
+		Box b = new Box(new Position(2,5), false);
+		//System.out.println();
+		assertEquals(map.getBox(new Position(2,5)), b);
+	}
+	
+	@Test
+	public final void testApplyMoves() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
+		Map map = new Map(br);
+		
+		assertEquals(3, map.getBoxes().size());
+		map.applyMoves("DUDDRRRUULLDDUURRDLLLULDD");
+		//System.out.println(map.getBoxes());
+		//System.out.println(map.getPlayer());
 	}
 
 }
