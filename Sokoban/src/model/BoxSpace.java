@@ -197,11 +197,11 @@ public class BoxSpace extends Box implements Cloneable {
                 // If the boxes are not adjacent on the solution any more... 
                 // split but do not add the next box.
                 if (!solution.isEmpty())
-                    if(!isAdjacent(b,solution)){
+                    if(!isAdjacent(b.getPosition(),solution)){
                         // Check if the box has other adjacent boxes to come.
                         split(solution,BoxGroups,null);
                         if (!boxes.isEmpty())
-                            if(!isAdjacent(b,boxes)){
+                            if(!isAdjacent(b.getPosition(),boxes)){
 //                                System.out.println("No more adjacent boxes in boxes.");
                                 split(solution,BoxGroups,null);
                                 
@@ -383,16 +383,6 @@ public class BoxSpace extends Box implements Cloneable {
             return false;
         }
         
-        public boolean isAdjacent(Box start, ArrayList<Box> solution) throws CloneNotSupportedException 
-        {
-            Box one = start.clone();
-            boolean group = true;
-            for (Box b: solution)
-            {
-                group = group && isAdjacent(start,b);
-            }
-            return group;
-        }
         public boolean isAdjacent(Box start, Box solution) throws CloneNotSupportedException
         {
             Box one = start.clone();
