@@ -65,6 +65,7 @@ public class Map implements Cloneable
 		// Clone the goals
 		copie.goals = new ArrayList<Position>();
 		copie.boxes = new ArrayList<Box>();
+		copie.boxHashMap = new HashMap<Position, Box>();
 
 		for(Position position : goals)
 		{
@@ -72,7 +73,8 @@ public class Map implements Cloneable
 		}
 
 		for(Box box: boxes) {
-			copie.boxes.add(box.clone());
+			copie.addBox(box.getPosition().clone(), box.isOnGoal());
+	//		copie.boxes.add(box.clone());
 		}
 		
 		copie.player = player.clone();
@@ -125,7 +127,7 @@ public class Map implements Cloneable
 	public void movePlayer(Position position) throws CloneNotSupportedException, IllegalMoveException
 	{
 		
-		set(player, position);
+		set(player, position, false);
 		
 //		if(getCellFromPosition(position).getType().equals(Cell.ECell.GOAL_SQUARE))
 //		{
@@ -182,7 +184,7 @@ public class Map implements Cloneable
 	 * If we try to move an element to a wall, or to an other box ...
 	 * @see set(Cell.ECell cell, Position position)
 	 */
-	public Map set(Element e, Position p) throws IllegalMoveException
+	public Map set(Element e, Position p, boolean isFinal) throws IllegalMoveException
 	{
 		Cell oldCell = getCellFromPosition(e.getPosition());
 		Cell newCell = getCellFromPosition(p);
@@ -218,7 +220,8 @@ public class Map implements Cloneable
 				switch(newCell.type)
 				{
 					case GOAL_SQUARE:
-						set(ECell.BOX_ON_GOAL, p);
+						if (isFinal) set(ECell.FINAL_BOX_ON_GOAL, p);
+						else set(ECell.BOX_ON_GOAL, p);
 						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
@@ -485,6 +488,8 @@ public class Map implements Cloneable
 				case VISITED:
 					row.set(k, new Cell(Cell.ECell.VISITED));
 					break;
+				case FINAL_BOX_ON_GOAL:
+					row.set(k, new Cell(Cell.ECell.FINAL_BOX_ON_GOAL));
 				}
 				k++;
 			}
@@ -576,7 +581,7 @@ public class Map implements Cloneable
 			}
 		}
 		return null;
-		//return boxHashMap.get(position);
+	//	return boxHashMap.get(position);
 	}
 
 	public int getNumberOfBoxes() {
@@ -593,7 +598,7 @@ public class Map implements Cloneable
 
 	protected void addBox(Position position, boolean onGoal) {
 		boxes.add(new Box(position, onGoal));
-		boxHashMap.put(position, boxes.get(0));
+		boxHashMap.put(position, boxes.get(boxes.size()-1));
 	}
 	
 	protected void addGoal(Position position)
@@ -678,7 +683,7 @@ public class Map implements Cloneable
 		
 		for(EMove emove : m.getMoves())
 		{
-			applyOneMove(emove);
+			applyOneMove(emove, false);
 			//System.out.println(this);
 //			try {
 //				System.in.read();
@@ -688,46 +693,62 @@ public class Map implements Cloneable
 //			}
 		}
 	}
-	
-	public void applyOneMove(EMove emove) throws IllegalMoveException, CloneNotSupportedException
+
+	public void applyMoves(String moves, boolean endsOnGoal) throws IllegalMoveException, CloneNotSupportedException
 	{
-		Position newLocation = Moves.getPositionFromInitialPositionAndMove(player.getPosition(), emove);
-		
-		if(getCellFromPosition(newLocation).getType() == EMPTY_FLOOR || getCellFromPosition(newLocation).getType() == GOAL_SQUARE)
-		{
-			set(player, newLocation);
+		if (!endsOnGoal) applyMoves(moves);
+		else {
+			moves = moves.toUpperCase();
+			Moves m = new Moves(moves);
+			int M = m.getMoves().size();
+
+			for(int i=0; i<M-1; i++) {
+				applyOneMove(m.getMoves().get(i), false);
+			}
+			applyOneMove(m.getMoves().get(M-1), endsOnGoal);
+
 		}
-		else if(getCellFromPosition(newLocation).getType() == BOX || getCellFromPosition(newLocation).getType() == BOX_ON_GOAL)
+	}
+	
+	public void applyOneMove(EMove emove, boolean isFinalGoal) throws IllegalMoveException, CloneNotSupportedException
 		{
-			boolean isOnGoal;
+			Position newLocation = Moves.getPositionFromInitialPositionAndMove(player.getPosition(), emove);
 			
-			if(getCellFromPosition(newLocation).getType() == BOX)
+			if(getCellFromPosition(newLocation).getType() == EMPTY_FLOOR || getCellFromPosition(newLocation).getType() == GOAL_SQUARE)
 			{
-				isOnGoal = false;
+				set(player, newLocation, false);
+			}
+			else if(getCellFromPosition(newLocation).getType() == BOX || getCellFromPosition(newLocation).getType() == BOX_ON_GOAL)
+			{
+				boolean isOnGoal;
+				
+				if(getCellFromPosition(newLocation).getType() == BOX)
+				{
+					isOnGoal = false;
+				}
+				else
+				{
+					isOnGoal = true;
+				}
+				// we move first the box
+				Position newLocationBox = Moves.getPositionFromInitialPositionAndMove(newLocation, emove);
+				//System.out.println(newLocation);
+				Box box = getBox(newLocation);
+				//System.out.println(box);
+				if(box != null)
+				{
+					set(box, newLocationBox, false);
+				}
+					
+				
+				// We move the player
+				set(player, newLocation, false);
 			}
 			else
 			{
-				isOnGoal = true;
+				throw new IllegalMoveException();
 			}
-			// we move first the box
-			Position newLocationBox = Moves.getPositionFromInitialPositionAndMove(newLocation, emove);
-			//System.out.println(newLocation);
-			Box box = getBox(newLocation);
-			//System.out.println(box);
-			if(box != null)
-			{
-				set(box, newLocationBox);
-			}
-				
 			
-			// We move the player
-			set(player, newLocation);
 		}
-		else
-		{
-			throw new IllegalMoveException();
-		}
-		
-	}
 	
 }

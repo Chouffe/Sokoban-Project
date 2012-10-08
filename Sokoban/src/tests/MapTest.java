@@ -268,7 +268,7 @@ public class MapTest
 			
 			
 			// We make the move : it updates the map
-			map1.set(map1.getPlayer(), map1.getGoals().get(0));
+			map1.set(map1.getPlayer(), map1.getGoals().get(0), false);
 			
 			assertEquals(map1.getPlayer().isOnGoal(), true);
 			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
@@ -278,22 +278,22 @@ public class MapTest
 			assertEquals(map1.getCellFromPosition(emptyFloor).getType(), ECell.EMPTY_FLOOR);
 			
 			// We make the move : it updates the map
-			map1.set(map1.getPlayer(), map1.getGoals().get(1));
+			map1.set(map1.getPlayer(), map1.getGoals().get(1), false);
 			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
 			assertEquals(map1.getCellFromPosition(map1.getGoals().get(0)).getType(), ECell.GOAL_SQUARE);
 			
 			// We make the same move
-			map1.set(map1.getPlayer(), map1.getGoals().get(1));
+			map1.set(map1.getPlayer(), map1.getGoals().get(1),false);
 			assertEquals(map1.getCellFromPosition(map1.getPlayer().getPosition()).getType(), ECell.PLAYER_ON_GOAL_SQUARE);
 			assertEquals(map1.getCellFromPosition(map1.getGoals().get(0)).getType(), ECell.GOAL_SQUARE);
 			
-			map1.set(map1.getPlayer(), emptyFloor);
+			map1.set(map1.getPlayer(), emptyFloor, false);
 			assertEquals(map1.getPlayer().isOnGoal(), false);
 			
 			// We move the box now
 			Position oldBoxPosition = new Position(1,4);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
-			map1.set(map1.getBoxes().get(0), map1.getGoals().get(0));
+			map1.set(map1.getBoxes().get(0), map1.getGoals().get(0), false);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), true);
 			assertEquals(map1.getCellFromPosition(oldBoxPosition).getType(), ECell.EMPTY_FLOOR);
 			assertEquals(map1.getCellFromPosition(map1.getBoxes().get(0).getPosition()).getType(), ECell.BOX_ON_GOAL);
@@ -301,23 +301,23 @@ public class MapTest
 			// Test illegal moves
 			try
 			{
-				map1.set(map1.getPlayer(), new Position(0,0));
-				map1.set(map1.getBoxes().get(0), new Position(0,1));
+				map1.set(map1.getPlayer(), new Position(0,0), false);
+				map1.set(map1.getBoxes().get(0), new Position(0,1), false);
 			}
 			catch(IllegalMoveException e)
 			{
 				
 			}
 			
-			map1.set(map1.getBoxes().get(0), oldBoxPosition);
+			map1.set(map1.getBoxes().get(0), oldBoxPosition, false);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
 			
 			// We test moves to reach goals
 			br = new BufferedReader(new FileReader("src/tests/maps/setting/map3.txt"));
 			Map map3 = new Map(br);
 			
-			map3.set(map3.getPlayer(), map3.getGoals().get(1));
-			map3.set(map3.getBoxes().get(0), map3.getGoals().get(0));
+			map3.set(map3.getPlayer(), map3.getGoals().get(1), false);
+			map3.set(map3.getBoxes().get(0), map3.getGoals().get(0), false);
 			System.out.println(map3);
 			
 //			assertTrue(map1.setPlayer(player).getI() == 0);
@@ -349,6 +349,21 @@ public class MapTest
 	}
 	
 	@Test
+	public final void testBoxEquality() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map27.txt"));
+		Map map = new Map(br);
+		Map clone = map.clone();
+
+		for (Box b : map.getBoxes()) {
+			assertEquals(b, map.getBox(b.getPosition()));
+			assertEquals(b, clone.getBox(b.getPosition()));
+			System.out.println(clone.getBox(b.getPosition()));
+		}
+	}
+		
+	
+	@Test
 	public final void testSet() throws FileNotFoundException, IllegalMoveException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
@@ -358,7 +373,7 @@ public class MapTest
 		Box box1 = map1.getBoxes().get(0);
 		System.out.println(box1);
 		
-		map1.set(box1, new Position(1,3));
+		map1.set(box1, new Position(1,3), false);
 		
 		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,3));
 		
@@ -377,7 +392,7 @@ public class MapTest
 		
 		try
 		{
-			map1.set(box1, new Position(2,2));
+			map1.set(box1, new Position(2,2), false);
 			fail();
 		}
 		catch(IllegalMoveException e)
@@ -387,7 +402,7 @@ public class MapTest
 		
 		try
 		{
-			map1.set(box1, new Position(1,1));
+			map1.set(box1, new Position(1,1), false);
 			fail();
 		}
 		catch(IllegalMoveException e)
@@ -396,7 +411,7 @@ public class MapTest
 		}
 		try
 		{
-			map1.set(box1, new Position(0,2));
+			map1.set(box1, new Position(0,2), false);
 			fail();
 		}
 		catch(IllegalMoveException e)
@@ -404,7 +419,7 @@ public class MapTest
 			
 		}
 		
-		map1.set(box1, new Position(1,2));
+		map1.set(box1, new Position(1,2), false);
 		
 		
 		assertEquals(map1.getBoxes().get(0).getPosition(), new Position(1,2));
@@ -414,8 +429,8 @@ public class MapTest
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/map2.txt"));
 		Map map2 = new Map(br);
 		
-		map2.set(map2.getBoxes().get(0), new Position(2,3));
-		map2.set(map2.getPlayer(), new Position(2,2));
+		map2.set(map2.getBoxes().get(0), new Position(2,3), false);
+		map2.set(map2.getPlayer(), new Position(2,2), false);
 		
 		System.out.println(map2);
 	}
@@ -428,16 +443,16 @@ public class MapTest
 		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map1.txt"));
 		Map map = new Map(br);
 		
-		map.applyOneMove(EMove.RIGHT);
-		map.applyOneMove(EMove.RIGHT);
-		map.applyOneMove(EMove.RIGHT);
-		map.applyOneMove(EMove.RIGHT);
-		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT, false);
+		map.applyOneMove(EMove.RIGHT, false);
+		map.applyOneMove(EMove.RIGHT, false);
+		map.applyOneMove(EMove.RIGHT, false);
+		map.applyOneMove(EMove.RIGHT, false);
 		
 		assertEquals(new Position(1,6), map.getPlayerPosition());
 		
-		map.applyOneMove(EMove.LEFT);
-		map.applyOneMove(EMove.LEFT);
+		map.applyOneMove(EMove.LEFT, false);
+		map.applyOneMove(EMove.LEFT, false);
 		
 		assertEquals(new Position(1,4), map.getPlayerPosition());
 		
@@ -445,17 +460,17 @@ public class MapTest
 		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map2.txt"));
 		map = new Map(br);
 		
-		map.applyOneMove(EMove.DOWN);
-		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.DOWN, false);
+		map.applyOneMove(EMove.DOWN, false);
 		
 		assertEquals(new Position(3,1), map.getPlayerPosition());
 		
-		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.DOWN, false);
 		assertEquals(new Position(4,1), map.getPlayerPosition());
 		
-		map.applyOneMove(EMove.UP);
-		map.applyOneMove(EMove.UP);
-		map.applyOneMove(EMove.UP);
+		map.applyOneMove(EMove.UP, false);
+		map.applyOneMove(EMove.UP, false);
+		map.applyOneMove(EMove.UP, false);
 		
 		assertEquals(new Position(1,1), map.getPlayerPosition());
 		
@@ -463,18 +478,18 @@ public class MapTest
 		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
 		map = new Map(br);
 		
-		map.applyOneMove(EMove.DOWN);
-		map.applyOneMove(EMove.DOWN);
+		map.applyOneMove(EMove.DOWN, false);
+		map.applyOneMove(EMove.DOWN, false);
 		
 		assertEquals(new Position(3, 5), map.getPlayerPosition());
 		
-		map.applyOneMove(EMove.LEFT);
-		map.applyOneMove(EMove.DOWN);
-		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.LEFT, false);
+		map.applyOneMove(EMove.DOWN, false);
+		map.applyOneMove(EMove.RIGHT, false);
 		
 		assertEquals(new Box(new Position(4,6), true), map.getBoxes().get(0));
 		
-		map.applyOneMove(EMove.RIGHT);
+		map.applyOneMove(EMove.RIGHT, false);
 		
 		assertEquals(true, map.getPlayer().isOnGoal());
 		assertEquals(new Box(new Position(4,7), false), map.getBoxes().get(0));
@@ -492,7 +507,7 @@ public class MapTest
 		
 		try
 		{
-			map.applyOneMove(EMove.UP);
+			map.applyOneMove(EMove.UP, false);
 			fail("");
 		}
 		catch(IllegalMoveException e)
@@ -501,7 +516,7 @@ public class MapTest
 		
 		try
 		{
-			map.applyOneMove(EMove.DOWN);
+			map.applyOneMove(EMove.DOWN, false);
 			fail("");
 		}
 		catch(IllegalMoveException e)
@@ -515,7 +530,7 @@ public class MapTest
 			
 			try
 			{
-				map.applyOneMove(EMove.LEFT);
+				map.applyOneMove(EMove.LEFT, false);
 				fail("");
 			}
 			catch(IllegalMoveException e)
@@ -524,7 +539,7 @@ public class MapTest
 			
 			try
 			{
-				map.applyOneMove(EMove.RIGHT);
+				map.applyOneMove(EMove.RIGHT, false);
 				fail("");
 			}
 			catch(IllegalMoveException e)
