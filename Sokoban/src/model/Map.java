@@ -220,7 +220,11 @@ public class Map implements Cloneable
 				switch(newCell.type)
 				{
 					case GOAL_SQUARE:
-						if (isFinal) set(ECell.FINAL_BOX_ON_GOAL, p);
+						if (isFinal) {
+							set(ECell.FINAL_BOX_ON_GOAL, p);
+							goals.remove(p);
+							map.remove((Box)e);
+						}
 						else set(ECell.BOX_ON_GOAL, p);
 						e.setOnGoal(true);
 					break;
