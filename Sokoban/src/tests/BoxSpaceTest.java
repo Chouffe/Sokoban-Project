@@ -69,7 +69,7 @@ public class BoxSpaceTest {
     
     @Test
     public void testSearch() throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/map13 copy.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/map13.txt"));
         Map map = new Map(br);
 	System.out.println(map);
         
@@ -96,7 +96,7 @@ public class BoxSpaceTest {
 //                }
 //            }
 //        }
-        
+//        
         
         instance = new BoxSpace(boxes, map);    
         boxes = instance.sort(boxes,true);
@@ -106,6 +106,7 @@ public class BoxSpaceTest {
         
         
         ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
+//        result = instance.groupBoxes(resultV, result);
         
         System.out.println("Return Vertical:");
         if (result.isEmpty())
