@@ -14,6 +14,7 @@ import model.Cell.ECell;
 import model.Map;
 import model.Node;
 import model.Position;
+import model.SokobanChecker;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +76,7 @@ public class AStarTest
 		assertEquals(2, astar.getStart().getH());
 		
 		assertEquals(1, astar.getOpenedList().size());
-		assertEquals(0, astar.getClosedList().size());
+		//assertEquals(0, astar.().size());
 		assertEquals(start, astar.getOpenedList().get(0));
 	}
 	
@@ -243,6 +244,7 @@ public class AStarTest
 	@Test
 	public final void testEasyLeftSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
 	{
+		
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/easy/left/map1.txt"));
 		Map map = new Map(br);
 		
@@ -409,112 +411,112 @@ public class AStarTest
 	}
 	
 	
-//	@Test
-//	public final void testSearchWithBoxPathNotFound() throws CloneNotSupportedException, IOException, IllegalMoveException, PathNotFoundException
-//	{
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map1.txt"));
-//		Map map = new Map(br);
-//		
-//		astar = new AStarSearch(map);
-//		System.out.println(map.getGoals());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-//		
+	@Test
+	public final void testSearchWithBoxPathNotFound() throws CloneNotSupportedException, IOException, IllegalMoveException, PathNotFoundException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map1.txt"));
+		Map map = new Map(br);
+		
+		astar = new AStarSearch(map);
+		System.out.println(map.getGoals());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+		
+		try
+		{
+			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
+			fail("Should have thrown a fuckin' exception");
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map2.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(new Position(3,1)));
+		
+		assertEquals(astar.search(ECell.BOX).toString(), "DD");
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+		
+		try
+		{
+			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
+			fail("Should have thrown a fuckin' exception");
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(new Position(4, 2)));
+		
+		try
+		{
+			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
+			fail("Should have thrown a fuckin' exception");
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map3.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+		
+		try
+		{
+		
+			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
+			fail("Should have thrown a fucking exception");
+		
+		}
+		catch(PathNotFoundException e)
+		{	
+		}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map4.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+		
+		try
+		{
+			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
+			fail("Should have thrown a fucking exception");
+		}
+		catch(PathNotFoundException e)
+		{		
+		}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map6.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+		
+		// Failure
 //		try
 //		{
-//			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
-//			fail("Should have thrown a fuckin' exception");
-//		}
-//		catch(PathNotFoundException e)
-//		{
-//		}
-//		
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map2.txt"));
-//		map = new Map(br);
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(new Position(4,1)));
-//		
-//		assertEquals(astar.search(ECell.BOX).toString(), "DD");
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-//		
-//		try
-//		{
-//			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
-//			fail("Should have thrown a fuckin' exception");
-//		}
-//		catch(PathNotFoundException e)
-//		{
-//		}
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(new Position(4, 2)));
-//		
-//		try
-//		{
-//			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
-//			fail("Should have thrown a fuckin' exception");
-//		}
-//		catch(PathNotFoundException e)
-//		{
-//		}
-//		
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map3.txt"));
-//		map = new Map(br);
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-//		
-//		try
-//		{
-//		
 //			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
 //			fail("Should have thrown a fucking exception");
-//		
 //		}
 //		catch(PathNotFoundException e)
-//		{	
-//		}
-//		
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map4.txt"));
-//		map = new Map(br);
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-//		
-//		try
 //		{
-//			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
-//			fail("Should have thrown a fucking exception");
 //		}
-//		catch(PathNotFoundException e)
-//		{		
-//		}
-//		
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map6.txt"));
-//		map = new Map(br);
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-//		
-//		// Failure
-////		try
-////		{
-////			assertEquals(astar.search(ECell.BOX).toString(), "WHATEVER");
-////			fail("Should have thrown a fucking exception");
-////		}
-////		catch(PathNotFoundException e)
-////		{
-////		}
-//		
-//		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map7.txt"));
-//		map = new Map(br);
-//		
-//		astar = new AStarSearch(map.clone());
-//		astar.setStartAndGoalNode(new Node(map.getBoxes().get(2).getPosition()), new Node(map.getGoals().get(0)));
-//		assertEquals("UU", astar.search(ECell.BOX).toString());
-//	}
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map7.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map.clone());
+		astar.setStartAndGoalNode(new Node(map.getBoxes().get(2).getPosition()), new Node(map.getGoals().get(0)));
+		assertEquals("UU", astar.search(ECell.BOX).toString());
+	}
 	
 	@Test
 	public final void testSearchWithBoxWithShuffling() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
@@ -525,6 +527,10 @@ public class AStarTest
 		astar = new AStarSearch(map.clone());
 		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
 		assertEquals("RRRLLLLLLLLDL", astar.search(ECell.BOX).toString());
+		
+		System.out.println(astar.getFinalString());
+		assertTrue(true == SokobanChecker.mapIsSolved(map, astar.getFinalString().toString().toUpperCase()));
+		assertTrue(true == SokobanChecker.mapIsSolved(map, astar.getFinalString().toString().toUpperCase()));
 	}
 	
 	

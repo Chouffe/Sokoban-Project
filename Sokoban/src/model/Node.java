@@ -124,10 +124,7 @@ public class Node implements Comparable<Node>
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((map == null) ? 0 : map.hashCode());
-		return result;
+		return map.hashCode();
 	}
 
 	
