@@ -69,23 +69,53 @@ public class BoxSpaceTest {
     
     @Test
     public void testSearch() throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map11.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/map13 copy.txt"));
         Map map = new Map(br);
 	System.out.println(map);
         
         ArrayList<Box> boxes = map.getBoxes();        
         
-        BoxSpace instance = new BoxSpace(boxes, map);        
-        ArrayList<ArrayList<Box>> result = instance.Search(boxes);
+        BoxSpace instance = new BoxSpace(boxes, map);    
+        boxes = instance.sort(boxes,false);
+//        ArrayList<ArrayList<Box>> result = instance.Search(boxes);
         
-        System.out.println("Return:");
+        
+        
+        ArrayList<ArrayList<Box>> resultH = instance.Search(boxes);        
+//        System.out.println("Return Horizontal:");
+//        if (result.isEmpty())
+//            System.out.print("FAIL");
+//        else{
+//            System.out.println("Size"+result.size());
+//            for (int t=0;t<result.size();t++){
+//                
+//                ArrayList<Box> temp = result.get(t);
+//                System.out.println("Group:"+(t+1) + " size of group:"+ temp.size());
+//                for (int r=0; r<temp.size();r++){                    
+//                    System.out.println(temp.get(r).getPosition());
+//                }
+//            }
+//        }
+        
+        
+        instance = new BoxSpace(boxes, map);    
+        boxes = instance.sort(boxes,true);
+        ArrayList<ArrayList<Box>> resultV = instance.Search(boxes);
+//        result = instance.Search(boxes);
+
+        
+        
+        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
+        
+        System.out.println("Return Vertical:");
         if (result.isEmpty())
             System.out.print("FAIL");
         else{
             System.out.println("Size"+result.size());
             for (int t=0;t<result.size();t++){
-                System.out.println("Group:"+(t+1));
+                
                 ArrayList<Box> temp = result.get(t);
+                System.out.println("Group:"+(t+1) + " size of group:"+ temp.size());
                 for (int r=0; r<temp.size();r++){                    
                     System.out.println(temp.get(r).getPosition());
                 }
