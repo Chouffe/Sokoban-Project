@@ -124,12 +124,10 @@ public class Node implements Comparable<Node>
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((position == null) ? 0 : position.hashCode());
-		return result;
+		return map.hashCode();
 	}
+
+	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -140,10 +138,10 @@ public class Node implements Comparable<Node>
 		if (getClass() != obj.getClass())
 			return false;
 		Node other = (Node) obj;
-		if (position == null) {
-			if (other.position != null)
+		if (map == null) {
+			if (other.map != null)
 				return false;
-		} else if (!position.equals(other.position))
+		} else if (!map.equals(other.map))
 			return false;
 		return true;
 	}
@@ -163,11 +161,5 @@ public class Node implements Comparable<Node>
 	public void setMap(Map map) {
 		this.map = map;
 	}
-	
-	
-	
-
-	
-	
 	
 }

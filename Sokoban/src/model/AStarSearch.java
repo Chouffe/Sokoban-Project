@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,10 +23,14 @@ public class AStarSearch
 	protected Node start, goal;
 	protected Map map;
 	
+//	protected Hashtable<Integer, Node> openedTable = new Hashtable<Integer, Node>();
+	protected Hashtable<Integer, Node> closedTable = new Hashtable<Integer, Node>();
+	
 	protected List<Node> openedList = new LinkedList<Node>();
-	protected List<Node> closedList = new LinkedList<Node>();
+//	protected List<Node> closedList = new LinkedList<Node>();
 	
 	protected Moves movesResult = new Moves();
+	protected StringBuffer finalString = new StringBuffer("");
 	
 	public AStarSearch()
 	{
@@ -57,6 +62,7 @@ public class AStarSearch
 		this.movesResult = new Moves();
 		
 		// We add the start node into the open List
+		//openedTable.put(start.hashCode(), start);
 		openedList.add(start);
 		
 	}
@@ -75,8 +81,10 @@ public class AStarSearch
 		
 		PositionFinder pf = new PositionFinder();
 		
+		
 		while(!openedList.isEmpty())
 		{
+			
 			//System.out.println(map);
 			//System.out.println("Opened List : " + openedList);
 			//System.out.println("Closed List : " + closedList);
@@ -94,16 +102,52 @@ public class AStarSearch
 			openedList.remove(current);
 			
 			// We add current to closedList
-			closedList.add(current);
+			closedTable.put(current.hashCode(), current);
+			//closedList.add(current);
 			
 			// System.out.println("Initial map " + map);
 			// map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
 			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition().clone(), current.getMap(), cellType)))
 			{
+				n.parent = current;
+				
+				//System.out.println(map);
+				// We update the map
+				Moves m = new Moves();
+				m.addMove(n.parent.getPosition(), n.getPosition());
+				Map mapCopy = n.parent.getMap().clone();
+				
+				try
+				{	
+					if(n.getBoxMove().getPlayerPath().equals("") || n.getBoxMove().getPlayerPath() == null)
+					{
+						mapCopy.applyMoves(m.toString());
+					}
+					else
+					{
+						System.out.println("Path : " + n.getBoxMove().getPlayerPath());
+						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+						// TODO : better pruning to avoid infinite loops !!
+						// Uncomment it for the last test
+						//closedList.clear();
+					}
+					
+					
+					//if(n.getBoxMove().getPlayerPath() == null || n.getBoxMove().getPlayerPath().equals(""))
+						
+				}
+				catch(IllegalMoveException ill)
+				{
+					System.out.println("FAILLLLLL");
+				}
+				
+				// We store the map in the node
+				n.setMap(mapCopy);
 				//System.out.println("Node " + n);
 				
-				if(closedList.contains(n))
+				//if(closedList.contains(n))
+				if(closedTable.containsKey(n.hashCode()))
 				{
 					continue;
 				}
@@ -125,9 +169,9 @@ public class AStarSearch
 					
 					//System.out.println(map);
 					// We update the map
-					Moves m = new Moves();
+					m = new Moves();
 					m.addMove(n.parent.getPosition(), n.getPosition());
-					Map mapCopy = n.parent.getMap().clone();
+					mapCopy = n.parent.getMap().clone();
 					
 					try
 					{	
@@ -176,6 +220,10 @@ public class AStarSearch
 		{
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
 			//movesResult.addMoves(currentNode.getBoxMove().getPlayerPath().toUpperCase());
+			StringBuffer path = new StringBuffer(currentNode.getBoxMove().getPlayerPath());
+			path.append(finalString);
+			finalString = path;
+			System.out.println("Path : " + currentNode.getBoxMove().getPlayerPath());
 			System.out.println("Reconstruction \n" + currentNode.getMap());
 			
 			return reconstructPath(currentNode.getParent());	
@@ -197,6 +245,8 @@ public class AStarSearch
 //			System.out.println("Number boxes : " + map.getBoxes().size());
 //			System.out.println("Box position : " + map.getBoxes().get(0));
 			clean();
+			System.out.println(finalString.toString());
+			//return new Moves(finalString.toString());
 			return result;
 		}
 	}
@@ -334,7 +384,9 @@ public class AStarSearch
         {
 	        try
 	        {
-	            return search(cellType).toString();
+	        	String result = search(cellType).toString();
+	        	//String result2 = finalString.toString();
+	            return result;
 	        }
 	        catch(PathNotFoundException e)
 	        {
@@ -796,21 +848,37 @@ public class AStarSearch
 		this.openedList = openedList;
 	}
 
-	public List<Node> getClosedList() {
-		return closedList;
-	}
-
-	public void setClosedList(List<Node> closedList) {
-		this.closedList = closedList;
-	}
+//	public List<Node> getClosedList() {
+//		return closedList;
+//	}
+//
+//	public void setClosedList(List<Node> closedList) {
+//		this.closedList = closedList;
+//	}
 	
 	protected void clean()
 	{
 		
 		openedList = new LinkedList<Node>();
-		closedList = new LinkedList<Node>();
+		//closedList = new LinkedList<Node>();
+		closedTable.clear();
 		
 		movesResult = new Moves();
 	}
-	
+
+	public Moves getMovesResult() {
+		return movesResult;
+	}
+
+	public void setMovesResult(Moves movesResult) {
+		this.movesResult = movesResult;
+	}
+
+	public StringBuffer getFinalString() {
+		return finalString;
+	}
+
+	public void setFinalString(StringBuffer finalString) {
+		this.finalString = finalString;
+	}
 }

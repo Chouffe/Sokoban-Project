@@ -584,5 +584,18 @@ public class MapTest
 		//System.out.println(map.getBoxes());
 		//System.out.println(map.getPlayer());
 	}
+	
+	@Test
+	public final void testHashCode() throws FileNotFoundException, CloneNotSupportedException 
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
+		Map map = new Map(br);
+		
+		Map map2 = map.clone();
+		assertEquals(map2.hashCode(), map.hashCode());
+		
+		map2.setPlayer(new Player(new Position(1, 1), false));
+		assertFalse(map2.hashCode() == map.hashCode());
+	}
 
 }
