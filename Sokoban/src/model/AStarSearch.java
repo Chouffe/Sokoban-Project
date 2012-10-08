@@ -130,9 +130,23 @@ public class AStarSearch
 					Map mapCopy = n.parent.getMap().clone();
 					
 					try
-					{
-						mapCopy.applyMoves(m.toString());
-						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+					{	
+						if(n.getBoxMove().getPlayerPath().equals("") || n.getBoxMove().getPlayerPath() == null)
+						{
+							mapCopy.applyMoves(m.toString());
+						}
+						else
+						{
+							System.out.println("Path : " + n.getBoxMove().getPlayerPath());
+							mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+							// TODO : better pruning to avoid infinite loops !!
+							// Uncomment it for the last test
+							//closedList.clear();
+						}
+						
+						
+						//if(n.getBoxMove().getPlayerPath() == null || n.getBoxMove().getPlayerPath().equals(""))
+							
 					}
 					catch(IllegalMoveException ill)
 					{
@@ -141,7 +155,6 @@ public class AStarSearch
 					
 					// We store the map in the node
 					n.setMap(mapCopy);
-					
 				}
 			}
 		}
@@ -162,7 +175,9 @@ public class AStarSearch
 		if(currentNode.getParent() != null)
 		{
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
-			System.out.println(currentNode.getMap());
+			//movesResult.addMoves(currentNode.getBoxMove().getPlayerPath().toUpperCase());
+			System.out.println("Reconstruction \n" + currentNode.getMap());
+			
 			return reconstructPath(currentNode.getParent());	
 		}
 		else

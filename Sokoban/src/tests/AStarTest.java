@@ -524,7 +524,7 @@ public class AStarTest
 		
 		astar = new AStarSearch(map.clone());
 		astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
-		assertEquals("UU", astar.search(ECell.BOX).toString());
+		assertEquals("RRRLLLLLLLLDL", astar.search(ECell.BOX).toString());
 	}
 	
 	
