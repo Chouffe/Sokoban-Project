@@ -18,6 +18,7 @@ import model.Position;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 
 public class AStarTest 
@@ -61,6 +62,8 @@ public class AStarTest
 	{
 		Node goal = new Node(new Position(2,2));
 		Node start = new Node(new Position(1,1));
+		Map map = new Map();
+		astar.setMap(map);
 		
 		astar.setStartAndGoalNode(start, goal);
 		assertEquals(start, astar.getStart());
@@ -97,43 +100,138 @@ public class AStarTest
 		assertEquals(lNodes.get(3).getPosition(), lPositions.get(3));
 	}
 	
+	
 	@Test
-	public final void testSearch() throws PathNotFoundException, CloneNotSupportedException
+	public final void testSearchWithPlayer() throws PathNotFoundException, CloneNotSupportedException, IllegalMoveException, IOException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
+		Map map = new Map(br);
+		astar = new AStarSearch(map);
+		
+		Position pos1 = new Position(1,1);
+		Position pos2 = new Position(3,1);
+		
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(pos2));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "DD");
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
+		map = new Map(br);
+		pos1 = new Position(1,1);
+		pos2 = new Position(6,6);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(pos2));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "DDRRRRRDDD");
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
+		map = new Map(br);
+		pos1 = new Position(1,1);
+		pos2 = new Position(6,1);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(pos2));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "DDDDD");
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
+		map = new Map(br);
+		pos1 = new Position(1,3);
+		pos2 = new Position(12,17);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+		
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map3.txt"));
+		map = new Map(br);
+		astar = new AStarSearch(map);
+		
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(new Position(7,5)));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "UULLDD");
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(new Position(7,9)));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "UURRDD");
+		
+		// Large Map
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath4.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(map.getGoals().get(0)));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+		
+		
+		// Real map
+		br = new BufferedReader(new FileReader("src/tests/maps/map10.txt"));
+		map = new Map(br);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(map.getGoals().get(0)));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRRRRRRRRDR");
+		
+		
+	}
+	
+	@Test
+	public final void testSearchWithPlayerEdgeCases() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/astar/map3.txt"));
+		Map map = new Map(br);
+		Position pos = new Position(1,3);
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(pos), new Node(pos));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "");
+		
+	}
+	
+	@Test
+	public final void testSearchWithPlayerFailure() throws CloneNotSupportedException, IOException, IllegalMoveException
+	{
+		// TODO
+		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
+		Map map = new Map(br);
+		Position pos1 = new Position(1,3);
+		Position pos2 = new Position(5,3);
+		
+		astar = new AStarSearch(map);
+		astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
+		try
+		{
+			assertEquals(astar.search(ECell.PLAYER).toString(), "");
+			fail("Should have thrown an exception");
+		}
+		catch(PathNotFoundException e)
+		{
+		}
+	}
+	
+	@Test
+	public final void testSearchWithBox()
+	{
+		// TODO
+	}
+	
+	@Test
+	public final void testSearchWithBoxEdgeCases()
+	{
+		// TODO
+	}
+	
+	
+	@Test
+	public final void testSearchWithBoxFailure()
+	{
+		// TODO
+	}
+	
+	
+	// TODO : break it down in small tests
+	@Test
+	public final void testSearch() throws PathNotFoundException, CloneNotSupportedException, IllegalMoveException
 	{
 		try
 		{
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
-			
-			Map map = new Map(br);
-			
-			astar = new AStarSearch(map);
-			
-			Position pos1 = new Position(1,1);
-			Position pos2 = new Position(3,1);
-			
-			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "DD");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath2.txt"));
-			map = new Map(br);
-			pos1 = new Position(1,1);
-			pos2 = new Position(6,6);
-			
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "DDRRRRRDDD");
-			
-			// Try some edge cases
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(pos1), new Node(pos1));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "");
-			
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(pos2), new Node(pos2));
-			assertEquals(astar.search(ECell.BOX).toString(), "");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/astar/map1.txt"));
-			map = new Map(br);
+			Map map = new Map(br);
 			astar = new AStarSearch(map);
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
 			assertEquals(astar.search(ECell.BOX).toString(), "RRRRRRRRRRRRR");
@@ -152,56 +250,23 @@ public class AStarTest
 
 			assertEquals(map.getBoxes().get(1).getPosition(), new Position(3, 3));
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(1).getPosition()), new Node(map.getGoals().get(0)));
-			assertEquals(astar.search(ECell.BOX).toString(), "RRRRRRRRRRRUR");
+			assertEquals(astar.search(ECell.BOX).toString(), "RURRRRRRRRRRR");
 			
 			br = new BufferedReader(new FileReader("src/tests/maps/astar/map3.txt"));
 			map = new Map(br);
 			astar = new AStarSearch(map);
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(0).getPosition()), new Node(map.getGoals().get(0)));
+			assertEquals(astar.findPath(map.getBoxes().get(0).getPosition(), map.getGoals().get(0), ECell.BOX), "LUUUURRUU");
 			assertEquals(astar.search(ECell.BOX).toString(), "LUUUURRUU");
 			astar.setStartAndGoalNode(new Node(map.getBoxes().get(1).getPosition()), new Node(map.getGoals().get(1)));
 			assertEquals(astar.search(ECell.BOX).toString(), "RUUUULLU");
 			
-			astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(new Position(7,5)));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "UULLDD");
-			astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(new Position(7,9)));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "UURRDD");
 			
 			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			map = new Map(br);
-			pos1 = new Position(1,3);
-			pos2 = new Position(12,17);
 			
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
-			map = new Map(br);
-			pos1 = new Position(1,3);
-			pos2 = new Position(5,3);
-			
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-			try
-			{
-				assertEquals(astar.search(ECell.PLAYER).toString(), "");
-				fail("Should have thrown an exception");
-			}
-			catch(PathNotFoundException e)
-			{
-			}
 			
 			// Test fucking large map
 			
-			// 1 : with a PLAYER
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath4.txt"));
-			map = new Map(br);
-			
-			astar = new AStarSearch(map);
-			astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(map.getGoals().get(0)));
-			assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
 			
 		//	// 1 : with a BOX
 		//	astar = new AStarSearch(map);
@@ -239,92 +304,4 @@ public class AStarTest
 		}
 		
 	}
-	
-	@Test
-	public final void testCheckBoxDir() throws CloneNotSupportedException, IOException, PathNotFoundException
-	{
-		br = new BufferedReader(new FileReader("src/tests/maps/astar/map4.txt"));
-		Map map = new Map(br);
-		AStarSearch astar = new AStarSearch(); 
-		
-		assertEquals("rururrddlU", astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
-		assertEquals("rururD", astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
-		assertEquals("rururrdL", astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
-		assertEquals("rurR", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(1).getPosition()));
-		
-		
-		assertEquals("uU", astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		br = new BufferedReader(new FileReader("src/tests/maps/astar/map5.txt"));
-		map = new Map(br);
-		astar = new AStarSearch(); 
-		
-		assertEquals("rR", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('L', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		br = new BufferedReader(new FileReader("src/tests/maps/astar/map6.txt"));
-		map = new Map(br);
-		Map clonedMap = map.clone();
-		astar = new AStarSearch(); 
-		
-		assertEquals("R", astar.checkBoxDir('R', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('U', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		try
-		{
-			assertEquals(null, astar.checkBoxDir('D', map, map.getPlayerPosition(), map.getBoxes().get(0).getPosition()));
-			
-		}
-		catch(PathNotFoundException e)
-		{
-		}
-		
-		// Test cloning
-		assertEquals(clonedMap.toString(), map.clone().toString());
-		
-	}
-	
 }

@@ -39,6 +39,18 @@ public class MovesTest
 	{
 		assertFalse(moves.getMoves() == null);
 		assertEquals(moves.getMoves().size(), 0);
+		
+		moves = new Moves("UUDDLRLR");
+		assertEquals(moves.getMoves().get(0), EMove.UP);
+		assertEquals(moves.getMoves().get(1), EMove.UP);
+		assertEquals(moves.getMoves().get(2), EMove.DOWN);
+		assertEquals(moves.getMoves().get(3), EMove.DOWN);
+		assertEquals(moves.getMoves().get(4), EMove.LEFT);
+		assertEquals(moves.getMoves().get(5), EMove.RIGHT);
+		assertEquals(moves.getMoves().get(6), EMove.LEFT);
+		assertEquals(moves.getMoves().get(7), EMove.RIGHT);
+		assertEquals(8, moves.getMoves().size());
+		
 	}
 	
 	/**
@@ -78,5 +90,23 @@ public class MovesTest
 		moves2.addMove(position3, position1);
 		assertEquals(moves2.getMoves().size(), 1);
 		assertEquals(moves2.getMoves().get(0), EMove.DOWN);
+	}
+	
+	@Test
+	public final void testGetPositionFromInitialPositionAndMove() throws CloneNotSupportedException
+	{
+		Position init = new Position(1, 2);
+		
+		Position expected = new Position(1, 3);
+		assertEquals(expected, Moves.getPositionFromInitialPositionAndMove(init, EMove.RIGHT));
+		
+		expected = new Position(2,2);
+		assertEquals(expected, Moves.getPositionFromInitialPositionAndMove(init, EMove.DOWN));
+		
+		expected = new Position(1,1);
+		assertEquals(expected, Moves.getPositionFromInitialPositionAndMove(init, EMove.LEFT));
+		
+		expected = new Position(0,2);
+		assertEquals(expected, Moves.getPositionFromInitialPositionAndMove(init, EMove.UP));
 	}
 }
