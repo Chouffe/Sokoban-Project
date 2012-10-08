@@ -108,6 +108,8 @@ public class BoxSpaceTest {
 //        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
         result = instance.groupBoxes(resultV, result);        
         
+//        result = instance.TryToMergeV(result);
+        
         System.out.println("Return Vertical:");
         if (result.isEmpty())
             System.out.print("FAIL");
