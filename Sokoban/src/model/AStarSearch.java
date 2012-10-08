@@ -99,7 +99,7 @@ public class AStarSearch
 			// System.out.println("Initial map " + map);
 			// map.set(ECell.EMPTY_FLOOR, current.getPosition());
 		
-			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition(), current.getMap(), cellType)))
+			for(Node n : getNodesFromBoxMove(pf.findEmptySpacesAround(current.getPosition().clone(), current.getMap(), cellType)))
 			{
 				//System.out.println("Node " + n);
 				
@@ -133,11 +133,10 @@ public class AStarSearch
 					{
 						mapCopy.applyMoves(m.toString());
 						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
-						
 					}
 					catch(IllegalMoveException ill)
 					{
-						
+						System.out.println("FAILLLLLL");
 					}
 					
 					// We store the map in the node
