@@ -76,12 +76,12 @@ public class BoxSpaceTest {
         ArrayList<Box> boxes = map.getBoxes();        
         
         BoxSpace instance = new BoxSpace(boxes, map);    
-        boxes = instance.sort(boxes,false);
+//        boxes = instance.sort(boxes,false);
 //        ArrayList<ArrayList<Box>> result = instance.Search(boxes);
         
         
         
-        ArrayList<ArrayList<Box>> resultH = instance.Search(boxes);        
+        ArrayList<ArrayList<Box>> result = instance.Search(boxes);        
 //        System.out.println("Return Horizontal:");
 //        if (result.isEmpty())
 //            System.out.print("FAIL");
@@ -96,7 +96,7 @@ public class BoxSpaceTest {
 //                }
 //            }
 //        }
-//        
+        
         
         instance = new BoxSpace(boxes, map);    
         boxes = instance.sort(boxes,true);
@@ -105,8 +105,8 @@ public class BoxSpaceTest {
 
         
         
-        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
-//        result = instance.groupBoxes(resultV, result);        
+//        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
+        result = instance.groupBoxes(resultV, result);        
         
         System.out.println("Return Vertical:");
         if (result.isEmpty())

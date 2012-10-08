@@ -136,69 +136,17 @@ public class BoxSpace extends Box implements Cloneable {
             }
                 
         }
+        
         ArrayList<ArrayList<Box>> newGrouped = new ArrayList<ArrayList<Box>>();
         newGrouped = tryToGroup(notGrouped);        
         for (ArrayList<Box> b: newGrouped)
         {
             solution.add(b);
         }
-//        newGrouped = tryToGroupV(notGrouped);        
-//        for (ArrayList<Box> b: newGrouped)
-//        {
-//            solution.add(b);
-//        }
         return solution;
         
     }
     
-    public ArrayList<ArrayList<Box>> groupBoxesV(ArrayList<ArrayList<Box>> Vertical, ArrayList<ArrayList<Box>> Horizontal ) throws CloneNotSupportedException
-    {
-        LinkedHashSet solutionTest = new LinkedHashSet(); 
-        ArrayList<ArrayList<Box>> solution = new ArrayList<ArrayList<Box>>();
-        ArrayList<Box> notGrouped = new ArrayList<Box>();
-        while (!Horizontal.isEmpty())
-        {
-            ArrayList<Box> boxes = Horizontal.remove(0);
-            if (boxes.size()>5){
-                for (Box b: boxes){
-                    Position temp = b.getPosition();
-                    solutionTest.add(""+ temp.getI() +":"+ temp.getJ());
-                }
-            solution.add(boxes);
-            }
-        }
-        while (!Vertical.isEmpty())
-        {
-            ArrayList<Box> boxes = Vertical.remove(0);
-            ArrayList<Box> boxes2 = new ArrayList<Box>();
-            if (boxes.size()>1){
-                for (Box b: boxes){
-                    Position temp = b.getPosition();
-                    if (solutionTest.add(""+ temp.getI() +":"+ temp.getJ()))
-                        boxes2.add(b);
-                }
-                if (!boxes2.isEmpty())
-                    solution.add(boxes2);
-            }
-            else
-            {
-                for (Box b: boxes){
-                    Position temp = b.getPosition();
-                    if (solutionTest.add(""+ temp.getI() +":"+ temp.getJ()))
-                        notGrouped.add(b);                
-                }
-            }
-                
-        }
-        ArrayList<ArrayList<Box>> newGrouped = new ArrayList<ArrayList<Box>>();
-        newGrouped = tryToGroupV(notGrouped);        
-        for (ArrayList<Box> b: newGrouped)
-        {
-            solution.add(b);
-        }
-        return solution;
-        
-    }
     
     public ArrayList<ArrayList<Box>> Search(ArrayList<Box> Allboxes) throws CloneNotSupportedException
     {
@@ -250,16 +198,11 @@ public class BoxSpace extends Box implements Cloneable {
                 // split but do not add the next box.
                 if (!solution.isEmpty())
                     if(!isAdjacent(b.getPosition(),solution)){
-//                        if (solution.size()!=1){
-////                            System.out.println("Split!");
-//                            split(solution,BoxGroups,null);  
-//                        }
-//                        System.out.println("No more adjacent boxes in solution.");
-                        
                         // Check if the box has other adjacent boxes to come.
+                        split(solution,BoxGroups,null);
                         if (!boxes.isEmpty())
                             if(!isAdjacent(b.getPosition(),boxes)){
-                                System.out.println("No more adjacent boxes in boxes.");
+//                                System.out.println("No more adjacent boxes in boxes.");
                                 split(solution,BoxGroups,null);
                                 
                             }
@@ -361,37 +304,6 @@ public class BoxSpace extends Box implements Cloneable {
             return directions;
         }
         
-        public boolean [] LookUpDown (Box boxInSquare) throws CloneNotSupportedException
-        {
-            
-            // Always initialize as he can go no where.
-            boolean [] directions = {false, false};
-            
-            
-            Position box = boxInSquare.getPosition();            
-            
-            Position up = box.clone().up(board);//.unboundMove('R');
-            
-            Position down = box.clone().down(board);//.unboundMove('L');
-                        
-            // UP
-            Cell.ECell leftType = board.getCellFromPosition(up).getType();
-            if (leftType == Cell.ECell.EMPTY_FLOOR ||
-                    leftType == Cell.ECell.VISITED ||
-                    leftType == Cell.ECell.PLAYER ||
-                    leftType == Cell.ECell.GOAL_SQUARE)               
-                directions[0]=true;
-            
-            // DOWN
-            Cell.ECell rightType = board.getCellFromPosition(down).getType();
-            if (rightType == Cell.ECell.EMPTY_FLOOR ||
-                    rightType == Cell.ECell.VISITED ||
-                    rightType == Cell.ECell.PLAYER ||
-                    rightType == Cell.ECell.GOAL_SQUARE)
-                directions[1]=true;
-            
-            return directions;
-        }
         
         // Method that checks if a box has already been 
         // checked in that position.
@@ -428,35 +340,12 @@ public class BoxSpace extends Box implements Cloneable {
             return false;
         }
         
-        public boolean isAdjacent3(Position one, ArrayList<Box> solution) throws CloneNotSupportedException
-        {
-            boolean group = true;
-
-            for (Box box: solution)
-            {
-                Position two = box.getPosition();
-//                System.out.println("Comparing....:"+one + " and " + two);
-                if (Math.abs(one.getI()-two.getI())==0) 
-                {
-                    
-                    boolean [] directionsSides = LookUpDown(box);
-            
-                    // Check if there is a ... up/down/left/right
-                    for (boolean flag: directionsSides)
-                    {
-                        group = group && flag;
-                    }                    
-                    return group;
-                }
-                
-            }
-            return false;
-        }   
         
         public boolean isAdjacent2(Position one, ArrayList<Box> solution) throws CloneNotSupportedException
         {
             boolean group = true;
-
+            if (solution.get(0).getPosition().equals(one))
+                return true;
             for (Box box: solution)
             {
                 Position two = box.getPosition();
@@ -471,7 +360,12 @@ public class BoxSpace extends Box implements Cloneable {
                     {
                         group = group && flag;
                     }                    
-                    return group;
+                    if (group){
+                        if (one.getJ()-two.getJ()>0)
+                            return isAdjacent2(one.clone().left(board), solution);
+                        else
+                            return isAdjacent2(one.clone().right(board),solution);
+                    } 
                 }
                 
             }
@@ -530,56 +424,6 @@ public class BoxSpace extends Box implements Cloneable {
             return BoxGroups;
         }
         
-        public ArrayList<ArrayList<Box>> tryToGroupV (ArrayList<Box> Allboxes) throws CloneNotSupportedException
-        {
-            ArrayList<Box> solution = new ArrayList<Box>();
-            ArrayList<Box> notGroup = new ArrayList<Box>();
-            LinkedHashSet solutionKeepOut = new LinkedHashSet(); 
-            ArrayList<Box> boxes = new ArrayList<Box>();
-            for (Box b: Allboxes){
-                boxes.add(b.clone());
-            }        
-        
-            // To return the BoxSpaces.
-            ArrayList<ArrayList<Box>> BoxGroups = new ArrayList<ArrayList<Box>>();            
-
-            // Continue while there are still boxes to look.
-            while (!boxes.isEmpty())
-            {
-                // Get new box.
-                Box b = boxes.remove(0);
-
-                if (solution.isEmpty())
-                    addBox(b,solutionKeepOut,solution);
-                else
-                {
-                    if (isAdjacent3(b.getPosition(),solution))
-                        addBox(b,solutionKeepOut,solution);
-                    else
-                        addBox(b,solutionKeepOut,notGroup);
-                }                                
-            }
-            
-            // When you finish checking all ... Add the last group.
-            if (!solution.isEmpty())
-                BoxGroups.add(solution);
-            if (!solution.isEmpty()){            
-                ArrayList<ArrayList<Box>> temp = tryToGroupV(notGroup);
-                for (ArrayList<Box> b: temp)
-                {
-                    BoxGroups.add(b);
-                }
-            }
-            for (Box b: notGroup)
-            {
-                ArrayList<Box> temp = new ArrayList<Box>();
-                if (wasVisited(b.getPosition(),solutionKeepOut)){
-                    temp.add(b);
-                    BoxGroups.add(temp);
-                }
-            }
-            return BoxGroups;
-        }
         
         public boolean isVAdjacent(Position one, ArrayList<Box> boxes)
         {
