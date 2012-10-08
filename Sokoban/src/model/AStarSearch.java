@@ -26,6 +26,7 @@ public class AStarSearch
 	protected List<Node> closedList = new LinkedList<Node>();
 	
 	protected Moves movesResult = new Moves();
+	protected StringBuffer finalString = new StringBuffer("");
 	
 	public AStarSearch()
 	{
@@ -141,7 +142,7 @@ public class AStarSearch
 							mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
 							// TODO : better pruning to avoid infinite loops !!
 							// Uncomment it for the last test
-							//closedList.clear();
+							closedList.clear();
 						}
 						
 						
@@ -176,6 +177,10 @@ public class AStarSearch
 		{
 			movesResult.addMove(currentNode.getPosition(), currentNode.getParent().getPosition());
 			//movesResult.addMoves(currentNode.getBoxMove().getPlayerPath().toUpperCase());
+			StringBuffer path = new StringBuffer(currentNode.getBoxMove().getPlayerPath());
+			path.append(finalString);
+			finalString = path;
+			System.out.println("Path : " + currentNode.getBoxMove().getPlayerPath());
 			System.out.println("Reconstruction \n" + currentNode.getMap());
 			
 			return reconstructPath(currentNode.getParent());	
@@ -197,6 +202,7 @@ public class AStarSearch
 //			System.out.println("Number boxes : " + map.getBoxes().size());
 //			System.out.println("Box position : " + map.getBoxes().get(0));
 			clean();
+			System.out.println(finalString.toString());
 			return result;
 		}
 	}

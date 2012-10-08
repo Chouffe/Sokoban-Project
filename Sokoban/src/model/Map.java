@@ -754,5 +754,54 @@ public class Map implements Cloneable
 			}
 			
 		}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		final int prime2 = 211;
+		
+		int result = 1;
+		result = prime * result
+				+ ((boxHashMap == null) ? 0 : boxHashMap.hashCode());
+		result = prime2 * result + ((boxes == null) ? 0 : boxes.hashCode());
+		result = prime * result + ((goals == null) ? 0 : goals.hashCode());
+		result = prime * result + ((player == null) ? 0 : player.hashCode());
+		
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Map other = (Map) obj;
+		if (boxHashMap == null) {
+			if (other.boxHashMap != null)
+				return false;
+		} else if (!boxHashMap.equals(other.boxHashMap))
+			return false;
+		if (boxes == null) {
+			if (other.boxes != null)
+				return false;
+		} else if (!boxes.equals(other.boxes))
+			return false;
+		if (goals == null) {
+			if (other.goals != null)
+				return false;
+		} else if (!goals.equals(other.goals))
+			return false;
+		if (player == null) {
+			if (other.player != null)
+				return false;
+		} else if (!player.equals(other.player))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
