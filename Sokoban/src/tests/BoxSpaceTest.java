@@ -106,7 +106,7 @@ public class BoxSpaceTest {
         
         
         ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
-//        result = instance.groupBoxes(resultV, result);
+//        result = instance.groupBoxes(resultV, result);        
         
         System.out.println("Return Vertical:");
         if (result.isEmpty())
