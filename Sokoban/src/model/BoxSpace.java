@@ -43,8 +43,8 @@ public class BoxSpace extends Box implements Cloneable {
     {
         return this.boxes.get(index);
     }
-    // A hash set to add all the visited squares in the board.
-    public LinkedHashSet lhashSet = new LinkedHashSet();
+    
+    
     
     public ArrayList<ArrayList<Box>> Search(ArrayList<Box> Allboxes) throws CloneNotSupportedException
     {
@@ -53,8 +53,7 @@ public class BoxSpace extends Box implements Cloneable {
         LinkedHashSet solutionString = new LinkedHashSet(); 
         ArrayList<Box> boxes = new ArrayList<Box>();
         for (Box b: Allboxes){
-            boxes.add(b.clone());
-            wasVisited(b.clone().getPosition(),this.lhashSet);
+            boxes.add(b.clone());            
         }
         
         
@@ -66,7 +65,7 @@ public class BoxSpace extends Box implements Cloneable {
         boolean [] directionsToLook = new boolean[4];
         
         // To split the box groups.
-        boolean split = false;
+        boolean group = false;
         
         // Continue while there are still boxes to look.
         while (!boxes.isEmpty())
@@ -74,45 +73,37 @@ public class BoxSpace extends Box implements Cloneable {
             // Get new box.
             Box b = boxes.remove(0);
             
+//            System.out.println("Checking .... "+ b.getPosition());
             // Check for boxes around.
             directionsToLook = LookAround(b);
 
-            split = false;
+            group = false;
             
             // Check if there is a box... up/down/left/right
             for (boolean flag: directionsToLook)
             {
-                split = split || flag;
+                group = group || flag;
             }
+//            System.out.println("Split has:"+split);
+            
             // If there was .... Form a group.
-            if (split)
+            if (group)
             {
+                // If the boxes are not adjacent any more... split but not add the next.
+                if (!solution.isEmpty())
+                    if(!isAdjacent(b.getPosition(),solution.get(solution.size()-1).getPosition()))
+                        split(solution,BoxGroups,null);                                            
                 addBox(b,solutionString,solution);                                
             }                
             // if not ...
             else
             {
-                // Split the groups.
-                if (!solution.isEmpty()){
-                    System.out.println("Spliting .... "+split);
-                    BoxGroups.add((ArrayList<Box>)solution.clone());
-                    for (Box t: solution)
-                        System.out.println(t.getPosition());
-                }
-                
-                // Add the ones that have no Group as singles.
-                ArrayList<Box> temp = new ArrayList<Box>();
-                temp.add(b);
-                BoxGroups.add( (ArrayList<Box>)temp.clone() );
-                solution.clear();
+                //Split and add the box left alone.
+                split(solution,BoxGroups,b);
             }
         }
         // When you finish checking all ... Add the last group.
-        if (!solution.isEmpty()){
-            BoxGroups.add((ArrayList<Box>)solution.clone());
-            for (Box t: solution)
-                        System.out.println(t.getPosition());
-        }
+        split(solution,BoxGroups,null);
         return BoxGroups;
         
     }
@@ -183,11 +174,10 @@ public class BoxSpace extends Box implements Cloneable {
          * @param receives two positions to compare.
          */
         public boolean isAdjacent(Position one, Position two)
-        {
-            if (one.getI()==two.getI())
-                return true;
-            if (one.getJ()==two.getJ())
-                return true;
+        {            
+            if (Math.abs(one.getI()-two.getI())<=2)
+                if (Math.abs(one.getJ()-two.getJ())<=2)
+                    return true;
             return false;
         }
         
@@ -203,55 +193,40 @@ public class BoxSpace extends Box implements Cloneable {
         public void addBox(Box b,LinkedHashSet solutionString, ArrayList<Box> solution) throws CloneNotSupportedException
         {
             if (wasVisited(b.getPosition(),solutionString)){
-                System.out.println("Adding ..."+b.getPosition());
-                if (!solution.isEmpty())
-                    System.out.println("Adjacent: **** "+
-                            isAdjacent(b.getPosition(),solution.get(solution.size()-1).getPosition()));
+//                System.out.println("Adding ..."+b.getPosition());
                 solution.add(b);
             }
         }
-
-        //Garbage ------
-//        if (directionsToLook[1])
-//            {
-//                Box temp = b.clone();
-//                temp.getPosition().clone().down(board);
-////                if (wasVisited(temp.getPosition(), this.lhashSet))
-////                    boxes.add(temp);
-//                if (wasVisited(b.getPosition(),solutionString)){
-//                    System.out.println("Adding ..."+b.getPosition());
-//                    if (!solution.isEmpty())System.out.println("Adjacent"+isAdjacent(b.getPosition(),solution.get(solution.size()-1).getPosition()));
-//                    solution.add(b);
-//                }
-//                split=false;
-//            }
-//            if (directionsToLook[2])
-//            {
-//                Box temp = b.clone();
-//                temp.getPosition().clone().left(board);
-////                if (wasVisited(temp.getPosition(), this.lhashSet))
-////                    boxes.add(temp);
-//                if (wasVisited(b.getPosition(),solutionString)){
-//                    System.out.println("Adding ..."+b.getPosition());
-//                    if (!solution.isEmpty())System.out.println("Adjacent"+isAdjacent(b.getPosition(),solution.get(solution.size()-1).getPosition()));
-//                    solution.add(b);
-//                }
-//                split=false;
-//            }
-//            if (directionsToLook[3])
-//            {
-//                Box temp = b.clone();
-//                temp.getPosition().clone().right(board);
-////                if (wasVisited(temp.getPosition(), this.lhashSet))
-////                    boxes.add(temp);
-//                if (wasVisited(b.getPosition(),solutionString)){
-//                    System.out.println("Adding ..."+b.getPosition());
-//                    if (!solution.isEmpty())
-//                    System.out.println("Adjacent"+isAdjacent(b.getPosition(),solution.get(solution.size()-1).getPosition()));
-//                    solution.add(b);
-//                }
-//                split=false;
-//            }
         
+        /*
+         * @author Luis
+         * @description splits a group of BoxSpace with the next one.
+         * @param   -  solution contains the Boxes.
+         *          -  BoxGroups contains the BoxSpaces.
+         *          -  Box b, contains the box under analysis.
+         * **Note**: If b is null, b is not added as a BoxSpace of length 1.
+         */
+        
+        public void split(ArrayList<Box> solution, ArrayList<ArrayList<Box>> BoxGroups, Box b)
+        {
+            // Split the gruoups
+            if (!solution.isEmpty()){                    
+                BoxGroups.add((ArrayList<Box>)solution.clone());
+
+                /*
+                 * For debugging
+                 */
+//                System.out.println("Spliting .... ");
+//                for (Box t: solution)
+//                    System.out.println(t.getPosition());
+            }
+            if (b!=null){
+                // Add the ones that have no Group as singles.
+                ArrayList<Box> temp = new ArrayList<Box>();
+                temp.add(b);
+                BoxGroups.add( (ArrayList<Box>)temp.clone() );                
+            }
+            solution.clear();
+        }        
     
 }

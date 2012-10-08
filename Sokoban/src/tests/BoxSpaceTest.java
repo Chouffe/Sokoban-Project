@@ -91,15 +91,7 @@ public class BoxSpaceTest {
                 }
             }
         }
-        
-//        System.out.println("Result:");
-//        sending.remove(0);
-//        System.out.println(sending.size());
-//        for (Box r: sending)
-//            System.out.println(r.getPosition());
-//        //boxes.remove(0);
-//        System.out.println("....");
-        assertEquals(boxes,result);
+//        assertEquals(boxes,result);
         
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
