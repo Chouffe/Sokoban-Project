@@ -442,25 +442,16 @@ public class Agent {
          * @throws CloneNotSupportedException
          * @throws IOException
          */
-        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException
-        {
-		int i = 0;
-		String result = "";
-        Map init = map.clone();
-		for(String s : getBoxToGoalPaths(map))
-		{
-			//System.out.println(map);
-            String r =findPlayerPathFromBoxPath(s, map, map.getPlayerPosition(), map.getBoxes().get(i).getPosition());
-            System.out.println(r);
-			result += r; 
-			//result += '\n';
-			i++;
-		}
+        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException {
+        
+			String result = "";
+    	    Map init = map.clone();
+			for(String s : getBoxToGoalPaths(map)) {
+				result += s;
+			}
 
-        solveBoardMoves(result,init);
-		//System.out.println(result.toUpperCase());
-		return result.toUpperCase();
-	}
+			return result;
+		}
 
 		public AStarSearch getAstar() {
 			return astar;
