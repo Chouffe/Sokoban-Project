@@ -236,10 +236,10 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		ArrayList<Position> sol = new ArrayList<Position>(2);
-		sol.add(new Position(7,6));
-		sol.add(new Position(7,8));
-		assertEquals(sol, pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX));
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+
+		assertEquals(pos.unboundMove('L'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(1).getNewPosition());
 	}
 
 	@Test
@@ -250,10 +250,97 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		System.out.println(map);
 
 		Position pos = map.getBoxes().get(0).getPosition();
-		assertEquals(pos.unboundMove('U'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(0).getNewPosition());
-		assertEquals(pos.unboundMove('D'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(1).getNewPosition());
-		assertEquals(pos.unboundMove('L'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(2).getNewPosition());
-		assertEquals(pos.unboundMove('R'), pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX).get(3).getNewPosition());
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		System.out.println(moves.get(0));
+		System.out.println(moves.get(1));
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
 	}
+
+	@Test
+	public final void testBoxShuffling2() throws CloneNotSupportedException, IOException, IllegalMoveException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map23.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		System.out.println(moves.get(0));
+		System.out.println(moves.get(1));
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+
+	@Test
+	public final void testBoxShuffling3() throws CloneNotSupportedException, IOException, IllegalMoveException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map24.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		for (BoxMove m : moves)
+		System.out.println(m);
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+
+	@Test
+	public final void testBoxShuffling5() throws CloneNotSupportedException, IOException, IllegalMoveException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map25.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		for (BoxMove m : moves)
+		System.out.println(m);
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+
+	@Test
+	public final void testBoxShuffling10() throws CloneNotSupportedException, IOException, IllegalMoveException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map26.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(5).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		for (BoxMove m : moves)
+		System.out.println(m);
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+
+	@Test
+	public final void testBoxShufflingXtreme() throws CloneNotSupportedException, IOException, IllegalMoveException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map27.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+
+		Position pos = map.getBoxes().get(13).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+
 
 }
