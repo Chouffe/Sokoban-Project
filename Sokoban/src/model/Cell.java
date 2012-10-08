@@ -21,7 +21,8 @@ public class Cell
 		BOX_ON_GOAL, 
 		GOAL_SQUARE, 
 		EMPTY_FLOOR, 
-		VISITED;
+		VISITED,
+		FINAL_BOX_ON_GOAL;
 	}
 	
 	public Cell(Cell.ECell type)
@@ -49,6 +50,8 @@ public class Cell
 			return '.';
 		case VISITED:
 			return ':';
+		case FINAL_BOX_ON_GOAL:
+			return '§';
 		default:
 			return null;
 		}
@@ -88,6 +91,10 @@ public class Cell
 		else if(c.equals(':'))
 		{
 			return Cell.ECell.VISITED;
+		}
+		else if(c.equals('§'))
+		{
+			return Cell.ECell.FINAL_BOX_ON_GOAL;
 		}
 		else
 		{

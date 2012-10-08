@@ -219,7 +219,7 @@ public class PositionTest
 			
 			System.out.println(map);
 			//System.out.println(map.getPlayerPosition().right(map));
-			System.out.println(map.set(map.getPlayer(), map.getPlayerPosition().clone().right(map)));
+			System.out.println(map.set(map.getPlayer(), map.getPlayerPosition().clone().right(map), false));
 			//System.out.println(map);
 		}
 		catch (IOException e) {

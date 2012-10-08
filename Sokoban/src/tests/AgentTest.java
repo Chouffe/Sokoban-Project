@@ -256,7 +256,7 @@ public class AgentTest {
 	}
 	
 	@Test
-	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException
+	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException
 	{
 		try
 		{

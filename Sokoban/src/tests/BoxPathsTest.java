@@ -10,6 +10,7 @@ import model.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 
 public class BoxPathsTest {
@@ -21,7 +22,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPath() throws FileNotFoundException{
+	public final void TestSequentialBoxPath() throws FileNotFoundException, IllegalMoveException{
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map1.txt"));
 	Map map = new Map(br);
@@ -44,7 +45,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPaths() throws FileNotFoundException{
+	public final void TestSequentialBoxPaths() throws FileNotFoundException, IllegalMoveException{
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map3.txt"));
 	Map map = new Map(br);
@@ -70,7 +71,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPathsFailure() throws FileNotFoundException{
+	public final void TestSequentialBoxPathsFailure() throws FileNotFoundException, IllegalMoveException{
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map2.txt"));
 	Map map = new Map(br);
@@ -96,7 +97,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestFindBoxToGoalPaths() throws FileNotFoundException{
+	public final void TestFindBoxToGoalPaths() throws FileNotFoundException, IllegalMoveException{
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map2.txt"));
 	Map map = new Map(br);

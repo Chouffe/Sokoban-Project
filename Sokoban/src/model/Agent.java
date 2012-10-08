@@ -150,7 +150,7 @@ public class Agent {
 	* @author Alden Coots <ialden.coots@gmail.com>
 	* @throws CloneNotSupportedException 
 	*/
-	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
 		String[] paths = new String[map.getNumberOfBoxes()];
 		ArrayList<Box> orderedBoxes = new ArrayList<Box>();
 		findBoxToGoalPaths(orderedBoxes, map, paths);
@@ -158,7 +158,7 @@ public class Agent {
 		return paths;
 	}
 
-	public boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
 			return (findSequentialBoxToGoalPaths(map, paths, 0));
@@ -193,21 +193,22 @@ public class Agent {
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	* @throws CloneNotSupportedException 
 	*/
-	public boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
 		if (map.getBoxes().isEmpty()) return true;
 		else {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					//System.out.println("G : " + g);
 					if (map.getCellFromPosition(map.getGoals().get(g)).getType() != Cell.ECell.BOX_ON_GOAL) {
-						if (pathExists(map, paths, boxIndx, g)) {
-							Map newMap = map.clone();
-							newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
-							newMap.getGoals().remove(g);
-							newMap.getBoxes().remove(0);
-							isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
-							if (isSolved) break;
-						}
+							if (pathExists(map, paths, boxIndx, g)) {
+								Map newMap = map.clone();
+								newMap.applyMoves(paths[boxIndx], true);
+						//		newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
+						//		newMap.getGoals().remove(g);
+						//		newMap.getBoxes().remove(0);
+								isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
+								if (isSolved) break;
+								}
 					}
 				}
 				return isSolved;
@@ -441,7 +442,7 @@ public class Agent {
          * @throws CloneNotSupportedException
          * @throws IOException
          */
-        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException
+        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException
         {
 		int i = 0;
 		String result = "";
