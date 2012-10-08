@@ -336,6 +336,8 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 
 		Position pos = map.getBoxes().get(13).getPosition();
 		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+		for (BoxMove m : moves)
+		System.out.println(m);
 		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
 		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
 		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
