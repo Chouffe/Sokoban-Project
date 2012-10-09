@@ -223,9 +223,12 @@ public class AStarSearch
 			StringBuffer path = new StringBuffer(currentNode.getBoxMove().getPlayerPath());
 			path.append(finalString);
 			finalString = path;
-			System.out.println("Path : " + currentNode.getBoxMove().getPlayerPath());
-			System.out.println("Reconstruction \n" + currentNode.getMap());
-			System.out.println("Current final String : " + finalString.toString());
+
+//			System.out.println("Path : " + currentNode.getBoxMove().getPlayerPath());
+//			System.out.println("Reconstruction \n" + currentNode.getMap());
+//			System.out.println("Current final String : " + finalString.toString());
+			
+			
 			return reconstructPath(currentNode.getParent());	
 		}
 		else
@@ -400,7 +403,7 @@ public class AStarSearch
 	        }
 	        catch(PathNotFoundException e)
 	        {
-	        	System.out.println("Path Not Found !!! ");
+	        	//System.out.println("Path Not Found !!! ");
 	        	throw new PathNotFoundException();
 	        }
 	        catch(IllegalMoveException e)
