@@ -85,58 +85,58 @@ public class Agent {
 	}
 	
 	
-	/**
-	 * 
-	 * Set the cells to accessible when the player can reach them
-	 * 
-	 * @author arthur
-	 * @param map
-	 * @return
-	 */
-	public Map setCellAccessible(Map map)
-	{
-		
-		List<Node> lNodes = new LinkedList<Node>();
-		List<Node> lNodesVisited = new LinkedList<Node>();
-		
-		if(map.getPlayerPosition().equals(null))
-		{
-			// TODO : throw an exception instead
-			return null;
-		}
-		lNodes.add(new Node(map.getPlayerPosition()));
-		map.getCellFromPosition(map.getPlayerPosition()).setAccessible(true);
-		//System.out.println("Nodes : "+ lNodes);
-		
-		Position current;
-		
-		while(!lNodes.isEmpty())
-		{
-			current = ((LinkedList<Node>)lNodes).getFirst().getPosition();
-			//System.out.println(current);
-			
-			
-			for(Position p : astar.findEmptySpacesAround(current, map))
-			{
-				Node n = new Node(p);
-				
-				//System.out.println("visited : "+ lNodesVisited);
-				if(!lNodesVisited.contains(n))
-				{
-					//System.out.println("test" + p);
-					map.getCellFromPosition(p).setAccessible(true);
-					
-					lNodes.add(n);
-				}	
-			}
-			
-			lNodesVisited.add(new Node(current));
-			lNodes.remove(new Node(current));
-		}
-		
-		//map.toStringAccessible();
-		return map;
-	}
+//	/**
+//	 * 
+//	 * Set the cells to accessible when the player can reach them
+//	 * 
+//	 * @author arthur
+//	 * @param map
+//	 * @return
+//	 */
+//	public Map setCellAccessible(Map map)
+//	{
+//		
+//		List<Node> lNodes = new LinkedList<Node>();
+//		List<Node> lNodesVisited = new LinkedList<Node>();
+//		
+//		if(map.getPlayerPosition().equals(null))
+//		{
+//			// TODO : throw an exception instead
+//			return null;
+//		}
+//		lNodes.add(new Node(map.getPlayerPosition()));
+//		map.getCellFromPosition(map.getPlayerPosition()).setAccessible(true);
+//		//System.out.println("Nodes : "+ lNodes);
+//		
+//		Position current;
+//		
+//		while(!lNodes.isEmpty())
+//		{
+//			current = ((LinkedList<Node>)lNodes).getFirst().getPosition();
+//			//System.out.println(current);
+//			
+//			
+//			for(Position p : astar.findEmptySpacesAround(current, map))
+//			{
+//				Node n = new Node(p);
+//				
+//				//System.out.println("visited : "+ lNodesVisited);
+//				if(!lNodesVisited.contains(n))
+//				{
+//					//System.out.println("test" + p);
+//					map.getCellFromPosition(p).setAccessible(true);
+//					
+//					lNodes.add(n);
+//				}	
+//			}
+//			
+//			lNodesVisited.add(new Node(current));
+//			lNodes.remove(new Node(current));
+//		}
+//		
+//		//map.toStringAccessible();
+//		return map;
+//	}
 	
 
 	

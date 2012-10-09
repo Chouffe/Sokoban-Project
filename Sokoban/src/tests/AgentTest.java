@@ -201,44 +201,44 @@ public class AgentTest {
 	}
 
 	
-	@Test
-	public final void testSetCellAccessible()
-	{
-		try
-		{
-			
-			// TODO : add some assert
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
-			Map map = new Map(br);
-			//System.out.println(map);
-			
-			agent.setCellAccessible(map).toStringAccessible();
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
-			map = new Map(br);
-			//System.out.println(map);
-			
-			//agent.setCellAccessible(map).toStringAccessible();
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
-			map = new Map(br);
-			//System.out.println(map);
-			
-			//agent.setCellAccessible(map).toStringAccessible();
-			
-			
-			//assertEquals("", "");
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
+//	@Test
+//	public final void testSetCellAccessible()
+//	{
+//		try
+//		{
+//			
+//			// TODO : add some assert
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
+//			Map map = new Map(br);
+//			//System.out.println(map);
+//			
+//			agent.setCellAccessible(map).toStringAccessible();
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
+//			map = new Map(br);
+//			//System.out.println(map);
+//			
+//			//agent.setCellAccessible(map).toStringAccessible();
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
+//			map = new Map(br);
+//			//System.out.println(map);
+//			
+//			//agent.setCellAccessible(map).toStringAccessible();
+//			
+//			
+//			//assertEquals("", "");
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if (br != null)br.close();
+//			} catch (IOException ex) {
+//				ex.printStackTrace();
+//			}
+//		}
+//	}
 
 	
 	@Test
