@@ -173,7 +173,6 @@ public class AStarSearch
 //			System.out.println("Reconstruction \n" + currentNode.getMap());
 //			System.out.println("Current final String : " + finalString.toString());
 			
-			
 			return reconstructPath(currentNode.getParent());	
 		}
 		else
