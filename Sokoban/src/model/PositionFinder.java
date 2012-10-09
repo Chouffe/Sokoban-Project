@@ -46,7 +46,8 @@ public class PositionFinder {
 		cells[3] = getCellType(map, position.unboundMove('R'));
 		return cells;
 	}
-
+	
+	// Not used yet
 	private ECell[] getSurroundingCellTypes(Map map, Position position) throws CloneNotSupportedException {
 		char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
 		ECell[] surr = new ECell[8];
