@@ -51,7 +51,7 @@ public class Cell
 		case VISITED:
 			return ':';
 		case FINAL_BOX_ON_GOAL:
-			return '§';
+			return '-';
 		default:
 			return null;
 		}
@@ -92,7 +92,7 @@ public class Cell
 		{
 			return Cell.ECell.VISITED;
 		}
-		else if(c.equals('§'))
+		else if(c.equals('-'))
 		{
 			return Cell.ECell.FINAL_BOX_ON_GOAL;
 		}
