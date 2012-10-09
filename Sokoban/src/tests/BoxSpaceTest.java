@@ -81,7 +81,7 @@ public class BoxSpaceTest {
         
         
         
-        ArrayList<ArrayList<Box>> result = instance.Search(boxes);        
+        ArrayList<ArrayList<Box>> result = instance.Search(boxes,map);        
 //        System.out.println("Return Horizontal:");
 //        if (result.isEmpty())
 //            System.out.print("FAIL");
@@ -100,17 +100,17 @@ public class BoxSpaceTest {
         
         instance = new BoxSpace(boxes, map);    
         boxes = instance.sort(boxes,true);
-        ArrayList<ArrayList<Box>> resultV = instance.Search(boxes);
+        ArrayList<ArrayList<Box>> resultV = instance.Search(boxes,map);
 //        result = instance.Search(boxes);
 
         
         
 //        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
-        result = instance.groupBoxes(resultV, result);        
+        result = instance.groupBoxes(resultV, result,map);        
         
 //        result = instance.TryToMergeV(result);
         
-        System.out.println("Return Vertical:");
+        System.out.println("Return:");
         if (result.isEmpty())
             System.out.print("FAIL");
         else{

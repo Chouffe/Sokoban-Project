@@ -28,6 +28,7 @@ public class Map implements Cloneable
 	
 	protected int height = 0;
 	protected int width = 0;
+        protected BoxSpace BoxAreas;
 	
 	public Map()
 	{
@@ -729,5 +730,14 @@ public class Map implements Cloneable
 		}
 		
 	}
+        
+        public void initBoxSpaces()
+        {
+//            BoxAreas = new BoxSpace(this.boxes);
+        }
+        public BoxSpace getBoxSpaces()
+        {            
+            return this.BoxAreas;
+        }
 	
 }
