@@ -55,6 +55,24 @@ public class Map implements Cloneable
 		height = map.size();
 		fillTheMapWithEmptyFloor();
 	}
+
+	public void moveBox(Position from, Position to) {
+		Box b = boxHashMap.remove(from);
+		if (b != null) {
+			b.setPosition(to);
+			boxHashMap.put(to, b);
+		}
+	}
+
+	public void removeBox(Box b) {
+		boxes.remove(b);
+		boxHashMap.remove(b.getPosition());
+	}
+
+	public void removeBox(Position p) {
+		Box b = boxHashMap.remove(p);
+		boxes.remove(b);
+	}
 	
 	@Override
 	public Map clone() throws CloneNotSupportedException {
@@ -111,6 +129,12 @@ public class Map implements Cloneable
 						break;
 					case VISITED:
 						cloneRow.add(new Cell(Cell.ECell.VISITED));
+						break;
+					case PLAYER_ON_GOAL_SQUARE:
+						cloneRow.add(new Cell(Cell.ECell.PLAYER_ON_GOAL_SQUARE));
+						break;
+					case FINAL_BOX_ON_GOAL:
+						cloneRow.add(new Cell(Cell.ECell.FINAL_BOX_ON_GOAL));
 						break;
 				}
 				
@@ -188,6 +212,7 @@ public class Map implements Cloneable
 	{
 		Cell oldCell = getCellFromPosition(e.getPosition());
 		Cell newCell = getCellFromPosition(p);
+		Position oldPos = e.getPosition();
 		
 		
 		// If we want to move to the same position
@@ -220,15 +245,17 @@ public class Map implements Cloneable
 				switch(newCell.type)
 				{
 					case GOAL_SQUARE:
+						moveBox(e.getPosition(), p);
 						if (isFinal) {
 							set(ECell.FINAL_BOX_ON_GOAL, p);
 							goals.remove(p);
-							map.remove((Box)e);
+							removeBox((Box)e);
 						}
 						else set(ECell.BOX_ON_GOAL, p);
 						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
+						moveBox(e.getPosition(), p);
 						set(ECell.BOX, p);
 						e.setOnGoal(false);
 					break;
@@ -236,14 +263,7 @@ public class Map implements Cloneable
 						throw new IllegalMoveException();
 				}
 				
-				Box b = getBox(e.getPosition());
-				
 				// We update  the position of the box
-				if(b!= null)
-				{
-					b.setOnGoal(e.isOnGoal());
-					b.setPosition(e.getPosition());
-				}
 			}
 			
 //			else if (e instanceof Box)
@@ -271,17 +291,17 @@ public class Map implements Cloneable
 		}
 		
 		// We update the old position
-		if(isPositionOnTheMap(e.getPosition()))
+		if(isPositionOnTheMap(oldPos))
 		{
 			if(e instanceof Player)
 			{
 				switch(oldCell.type)
 				{
 					case PLAYER_ON_GOAL_SQUARE:
-						set(ECell.GOAL_SQUARE, e.getPosition());
+						set(ECell.GOAL_SQUARE, oldPos);
 					break;
 					case PLAYER:
-						set(ECell.EMPTY_FLOOR, e.getPosition());
+						set(ECell.EMPTY_FLOOR, oldPos);
 					break;
 					default:
 						throw new IllegalMoveException();
@@ -309,10 +329,10 @@ public class Map implements Cloneable
 				switch(oldCell.type)
 				{
 					case BOX_ON_GOAL:
-						set(ECell.GOAL_SQUARE, e.getPosition());
+						set(ECell.GOAL_SQUARE, oldPos);
 					break;
 					case BOX:
-						set(ECell.EMPTY_FLOOR, e.getPosition());
+						set(ECell.EMPTY_FLOOR, oldPos);
 					break;
 					default:
 						throw new IllegalMoveException();
@@ -577,15 +597,15 @@ public class Map implements Cloneable
 
 	public Box getBox(Position position) 
 	{
-		for(Box b : boxes)
-		{
-			if(b.getPosition().equals(position))
-			{
-				return b;
-			}
-		}
-		return null;
-	//	return boxHashMap.get(position);
+//		for(Box b : boxes)
+//		{
+//			if(b.getPosition().equals(position))
+//			{
+//				return b;
+//			}
+//		}
+//		return null;
+		return boxHashMap.get(position);
 	}
 
 	public int getNumberOfBoxes() {
@@ -741,7 +761,7 @@ public class Map implements Cloneable
 				//System.out.println(box);
 				if(box != null)
 				{
-					set(box, newLocationBox, false);
+					set(box, newLocationBox, isFinalGoal);
 				}
 					
 				

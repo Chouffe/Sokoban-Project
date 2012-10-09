@@ -41,7 +41,7 @@ public class BoxPathsTest {
 		e.printStackTrace();
 	}
 
-	assertEquals(paths[0], "LULLDD");
+	assertEquals("ddLdlUruLLulDD", paths[0]);
 	}
 
 	@Test
@@ -65,8 +65,8 @@ public class BoxPathsTest {
 		e.printStackTrace();
 	}
 
-	assertEquals("DD", paths[0]);
-	assertEquals("LULLD", paths[1]);
+	assertEquals("llllDD", paths[0]);
+	assertEquals("urrrrdLdlUruLLulD", paths[1]);
 	assertEquals(true, success);
 	}
 
@@ -119,7 +119,7 @@ public class BoxPathsTest {
 	}
 
 	assertEquals("RR", paths[0]);
-	assertEquals("RRRR", paths[1]);
+	assertEquals("lllulldRRRR", paths[1]);
 	assertEquals(true, success);
 	}
 }

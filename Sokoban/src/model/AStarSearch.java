@@ -367,32 +367,36 @@ public class AStarSearch
 		setMap(map.clone());
 		setStartAndGoalNode(new Node(position1), new Node(position2));
                 
-        int position1I = position1.getI();
-        int position1J = position1.getJ();
-        int position2I = position2.getI();
-        int position2J = position2.getJ();
-        
-        // There was a problem with single moving boxes. 
-        if (position1I-position2I==1 && position1J-position2J==0)
-            return "U";
-        else if (position1I-position2I==-1  && position1J-position2J ==0)
-            return "D";
-        else if (position1J-position2J==1   && position1I-position2I ==0)
-            return "L";
-        else if (position1J-position2J==-1  && position1I-position2I ==0)
-            return "R";
-        else
+      //  int position1I = position1.getI();
+      //  int position1J = position1.getJ();
+      //  int position2I = position2.getI();
+      //  int position2J = position2.getJ();
+      //  
+      //  // There was a problem with single moving boxes. 
+      //  if (position1I-position2I==1 && position1J-position2J==0)
+      //      return "U";
+      //  else if (position1I-position2I==-1  && position1J-position2J ==0)
+      //      return "D";
+      //  else if (position1J-position2J==1   && position1I-position2I ==0)
+      //      return "L";
+      //  else if (position1J-position2J==-1  && position1I-position2I ==0)
+      //      return "R";
+      //  else
         {
 	        try
 	        {
-	        	String result = search(cellType).toString();
-	        	String result2 = finalString.toString();
-	        	System.out.println("FINAL RESPONSE : " + result2);
-	        	
-	        	if(cellType == ECell.PLAYER)
-	        		return result;
-	        	else
-	        		return result2;
+	       // 	String result = search(cellType).toString();
+	       // 	String result2 = finalString.toString();
+	       // 	System.out.println("FINAL RESPONSE : " + result2);
+	       // 	
+	       // 	if(cellType == ECell.PLAYER)
+	       // 		return result;
+	       // 	else
+	       // 		return result2;
+
+	        	search(cellType).toString();
+				return finalString.toString();
+
 	        }
 	        catch(PathNotFoundException e)
 	        {

@@ -30,10 +30,10 @@ public class PositionFinder {
 
 	private boolean isPlayerAccessible(Map map, Position position) {
 		ECell cellType = getCellType(map, position);	
-		return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL));
+		return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL || cellType == FINAL_BOX_ON_GOAL));
 	}
 
-	private ECell getCellType(Map map, Position pos) {
+	public static ECell getCellType(Map map, Position pos) {
 		return map.getCellFromPosition(pos).getType();
 	}
 	
@@ -107,7 +107,7 @@ public class PositionFinder {
 
 	private boolean isValidBoxSquare(Map map, Position pos) {
 		ECell type = getCellType(map, pos);
-		return (!(type == BOX || type == WALL || type == BOX_ON_GOAL));
+		return (!(type == BOX || type == WALL || type == BOX_ON_GOAL || type == FINAL_BOX_ON_GOAL));
 	}
 
 	private boolean boxWillStickOnWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
@@ -200,6 +200,8 @@ public class PositionFinder {
 
 	private boolean clearSides(Map map, Position boxPos, char dir, StringBuffer path) throws CloneNotSupportedException, IOException, IllegalMoveException {
 		ECell type = getCellType(map, boxPos);
+		if (type == WALL || type == FINAL_BOX_ON_GOAL)
+			return false;
 		if (type != BOX && type != BOX_ON_GOAL)
 			return true;
 
@@ -249,8 +251,10 @@ public class PositionFinder {
 			return false;
 		boolean isPlayer = (what == PLAYER || what == PLAYER_ON_GOAL_SQUARE);
 
-		if (isPlayer)
+		if (isPlayer) {
+			playerPushPath.append(dir);
 			return (isPlayerAccessible(map, dest));
+		}
 		
 		if (sourceIsWall(map, position, dir) || isWall(map, dest))
 			return false;

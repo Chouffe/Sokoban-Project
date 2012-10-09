@@ -293,10 +293,12 @@ public class MapTest
 			// We move the box now
 			Position oldBoxPosition = new Position(1,4);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), false);
+			System.out.println(map1);
 			map1.set(map1.getBoxes().get(0), map1.getGoals().get(0), false);
+			System.out.print(map1);
 			assertEquals(map1.getBoxes().get(0).isOnGoal(), true);
-			assertEquals(map1.getCellFromPosition(oldBoxPosition).getType(), ECell.EMPTY_FLOOR);
-			assertEquals(map1.getCellFromPosition(map1.getBoxes().get(0).getPosition()).getType(), ECell.BOX_ON_GOAL);
+			assertEquals(ECell.EMPTY_FLOOR, map1.getCellFromPosition(oldBoxPosition).getType());
+			assertEquals(ECell.BOX_ON_GOAL, map1.getCellFromPosition(map1.getBoxes().get(0).getPosition()).getType());
 			
 			// Test illegal moves
 			try

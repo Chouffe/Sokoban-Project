@@ -199,7 +199,8 @@ public class Agent {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					//System.out.println("G : " + g);
-					if (map.getCellFromPosition(map.getGoals().get(g)).getType() != Cell.ECell.BOX_ON_GOAL) {
+					Cell.ECell type = PositionFinder.getCellType(map, map.getGoals().get(g));
+					if (type != Cell.ECell.BOX_ON_GOAL && type != Cell.ECell.FINAL_BOX_ON_GOAL) {
 							if (pathExists(map, paths, boxIndx, g)) {
 								Map newMap = map.clone();
 								newMap.applyMoves(paths[boxIndx], true);
@@ -317,7 +318,7 @@ public class Agent {
 
 			//System.out.println(" Box Index : " +boxIndx);
 			try {
-				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g),ECell.BOX);
+				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), ECell.BOX);
 			} catch (IllegalMoveException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
