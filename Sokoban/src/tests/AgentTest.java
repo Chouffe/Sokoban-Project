@@ -242,14 +242,14 @@ public class AgentTest {
 
 	
 	@Test
-	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException
+	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/pathExist/map1.txt"));
 		Map map = new Map(br);
 		String[] paths = new String[2];
 	
-		assertEquals(false, agent.pathExists(map, paths, 0, 0));
-		assertEquals(true, agent.pathExists(map, paths, 1, 1));
+		assertEquals(false, agent.boxPathExists(map, paths, 0, 0));
+		assertEquals(true, agent.boxPathExists(map, paths, 1, 1));
 		
 		assertTrue(paths[1].length() > 0);
 		assertEquals(null, paths[0]);

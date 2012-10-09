@@ -27,7 +27,8 @@ public class Agent {
 	protected Moves moves;
 	protected LinkedList<Node> nodes = new LinkedList<Node>();
 	protected AStarSearch astar = new AStarSearch();
-	protected HashMap<BoxToGoalPath, String> pathMap = new HashMap<BoxToGoalPath, String>;
+	protected HashMap<BoxToGoalPath, String> pathMap = new HashMap<BoxToGoalPath, String>();
+	int hashedUsed = 0;
 		
 	
 	public Agent()
@@ -147,9 +148,9 @@ public class Agent {
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					Cell.ECell type = PositionFinder.getCellType(map, map.getGoals().get(g));
 					if (type != Cell.ECell.BOX_ON_GOAL && type != Cell.ECell.FINAL_BOX_ON_GOAL) {
-							Position boxPos = map.getBoxes.get(0).getPosition().clone();
-							Position goal = map.getGoals.get(g).clone();
-							BoxToGoalPath boxToGoalPath = new BoxToGoalPath(boxPos, goal);
+							Box box = map.getBoxes().get(0).clone();
+							Position goal = map.getGoals().get(g).clone();
+							BoxToGoalPath boxToGoalPath = new BoxToGoalPath(box, goal);
 							if (playerPathExistsToPreviouslyExploredBox(map, paths, boxIndx, boxToGoalPath)
 								|| boxPathExists(map, paths, boxIndx, g)) {
 									Map newMap = map.clone();
@@ -169,40 +170,40 @@ public class Agent {
 	/**
 	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
 	* @throws CloneNotSupportedException 
+	* @throws IllegalMoveException 
 	*
 	*
 	*/
-	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, PathNotFoundException, IOException {
-		try 
-		{
-			
+	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, IOException, IllegalMoveException {
 			try {
 				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), ECell.BOX);
-			} catch (IllegalMoveException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				return true;
+			} 
+			catch (PathNotFoundException e) {
+				return false;
 			}
-			
-			return true;
-		} 
-		catch (PathNotFoundException e) 
-		{
-			return false;
-		}
 	}
 
-	public boolean playerPathExistsToPreviouslyExploredBox(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public boolean playerPathExistsToPreviouslyExploredBox(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath) throws CloneNotSupportedException, IOException {
 		if (!pathMap.containsKey(boxToGoalPath))
 			return false;
 		else {
 			String boxToGoalString = pathMap.get(boxToGoalPath);
 			char firstPushDir = boxToGoalString.charAt(0);
-			Position playerPushStart = boxPos.unboundMove(PositionFinder.getOppositeDirection(firstPushDir));
+			Position playerPushStart = boxToGoalPath.getBoxPosition().unboundMove(PositionFinder.getOppositeDirection(firstPushDir));
 			try {
-				path[boxIndx] = astar.findPath(m, boxToGoalPath.getBoxPosition(), boxToGoalPath.getGoalPosition(), ECell.PLAYER) + boxToGoalString;
+				paths[boxIndx] = astar.findPath(m, m.getPlayerPosition(), playerPushStart, ECell.PLAYER).toLowerCase() + boxToGoalString;
+				Map illegalMoveTestClone = m.clone();
+				illegalMoveTestClone.applyMoves(paths[boxIndx]);
+				hashedUsed++;
 				return true;
 			}
 			catch (PathNotFoundException e) {
+				System.out.println("Path not found");
+				return false;
+			}
+			catch (IllegalMoveException il) {
+				System.out.println("String no longer valid");
 				return false;
 			}
 			
@@ -264,6 +265,8 @@ public class Agent {
 		for(String s : getBoxToGoalPaths(map)) {
 			result += s;
 		}
+		System.out.println("Number strings hashed: " + pathMap.size());
+		System.out.println("Times string used from hash map: " + hashedUsed);
 
 		return result;
 	}
