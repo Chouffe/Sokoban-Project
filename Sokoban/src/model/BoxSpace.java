@@ -18,16 +18,30 @@ public class BoxSpace extends Box implements Cloneable {
     protected int minY;
     protected int boxCount;
     protected ArrayList<Box> boxes;
-    protected ArrayList<Position> Exits;
-    protected Map board;
+    protected ArrayList<Position> Positions;
     protected LinkedHashSet boxPositions;
     
     
-    public BoxSpace(ArrayList<Box> boxes, Map map) throws CloneNotSupportedException            
+    public BoxSpace(ArrayList<Box> boxes) 
     {        
-        board = map.clone();
-        this.boxes = map.getBoxes();
-        this.boxCount=this.boxes.size();        
+        this.boxCount=this.boxes.size();
+        maxY=-1;
+        maxX=-1;
+        minX=Integer.MAX_VALUE;
+        minY=Integer.MAX_VALUE;
+        for (Box b: boxes)
+        {
+            
+            addBox(b);
+            if(b.getPosition().getJ()>maxY)
+                maxY=b.getPosition().getJ();
+            if(b.getPosition().getJ()<minY)
+                minY=b.getPosition().getJ();
+            if(b.getPosition().getI()>maxX)
+                maxX = b.getPosition().getI();
+            if(b.getPosition().getI()<minX)
+                minX = b.getPosition().getI();
+        }
     }
     
     // Returns true if was added or false if was already in the BoxSpace.
@@ -38,6 +52,7 @@ public class BoxSpace extends Box implements Cloneable {
         if (add)
         {
             boxes.add(new_box);
+            Positions.add(new_box.getPosition());
             return true;
         }
         else
@@ -49,6 +64,7 @@ public class BoxSpace extends Box implements Cloneable {
         boxCount--;
         // Remove from the boxSpace.
         Box temp = this.boxes.remove(index);
+        this.Positions.remove(index);
         // remove from the HashSet
         boxPositions.remove(""+ temp.getPosition().getI() +":"+ temp.getPosition().getJ());        
         return temp;
@@ -57,6 +73,16 @@ public class BoxSpace extends Box implements Cloneable {
     public Box getBox(int index)
     {
         return this.boxes.get(index);
+    }
+    
+    public Position getPosition(Box box)
+    {
+        return this.Positions.get( this.boxes.indexOf(box) );
+    }
+    
+    public int getBoxCount()
+    {
+        return boxes.size();
     }
     
     private boolean isIncluded(Position point)

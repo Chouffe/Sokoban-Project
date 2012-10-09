@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
  *
  * @author lfreina
  */
-public class BoxSpaceSearch extends Box implements Cloneable {
+public class GoalSpaceSearch extends Box implements Cloneable {
     protected int maxX;
     protected int minX;
     protected int maxY;
@@ -24,7 +24,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
     protected int SPACES = 1;
     
     
-    public BoxSpaceSearch(ArrayList<Box> boxes, Map map) throws CloneNotSupportedException            
+    public GoalSpaceSearch(ArrayList<Box> boxes, Map map) throws CloneNotSupportedException            
     {        
         board = map.clone();
         this.boxes = map.getBoxes();
@@ -313,9 +313,8 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             if (rightType == Cell.ECell.EMPTY_FLOOR ||
                     rightType == Cell.ECell.VISITED ||
                     rightType == Cell.ECell.PLAYER ||
-                    rightType == Cell.ECell.GOAL_SQUARE ||
-                    rightType == Cell.ECell.BOX ||
-                    rightType == Cell.ECell.BOX_ON_GOAL){
+                    rightType == Cell.ECell.GOAL_SQUARE) 
+                    {
                 
                 return true;
             }
@@ -335,9 +334,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             if (leftType == Cell.ECell.EMPTY_FLOOR ||
                     leftType == Cell.ECell.VISITED ||
                     leftType == Cell.ECell.PLAYER ||
-                    leftType == Cell.ECell.GOAL_SQUARE ||
-                    leftType == Cell.ECell.BOX ||
-                    leftType == Cell.ECell.BOX_ON_GOAL)  {             
+                    leftType == Cell.ECell.GOAL_SQUARE)  {             
                 
 //                System.out.println("Left "+ left +" is free.");
                 return true;
@@ -358,9 +355,8 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             if (leftType == Cell.ECell.EMPTY_FLOOR ||
                     leftType == Cell.ECell.VISITED ||
                     leftType == Cell.ECell.PLAYER ||
-                    leftType == Cell.ECell.GOAL_SQUARE ||
-                    leftType == Cell.ECell.BOX ||
-                    leftType == Cell.ECell.BOX_ON_GOAL)  {             
+                    leftType == Cell.ECell.GOAL_SQUARE)
+            {             
                 
 //                System.out.println("Up "+ up +" is free.");
                 return true;
@@ -381,9 +377,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             if (leftType == Cell.ECell.EMPTY_FLOOR ||
                     leftType == Cell.ECell.VISITED ||
                     leftType == Cell.ECell.PLAYER ||
-                    leftType == Cell.ECell.GOAL_SQUARE ||
-                    leftType == Cell.ECell.BOX ||
-                    leftType == Cell.ECell.BOX_ON_GOAL)  {             
+                    leftType == Cell.ECell.GOAL_SQUARE )  {             
                 
 //                System.out.println("Down "+ down +" is free.");
                 return true;

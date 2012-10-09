@@ -75,9 +75,9 @@ public class BoxSpaceTest {
         Map map = new Map(br);
 	System.out.println(map);
         
-        ArrayList<Box> boxes = map.getBoxes();        
+        ArrayList<Element> goals = map.getGoals();  
         
-        BoxSpaceSearch instance = new BoxSpaceSearch(boxes, map);    
+        BoxSpaceSearch instance = new BoxSpaceSearch(goals, map);    
         
         ArrayList<BoxSpace> result = instance.getBoxSpaces();        
 //        instance.print(result);
