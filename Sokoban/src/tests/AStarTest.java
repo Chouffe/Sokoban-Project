@@ -140,8 +140,8 @@ public class AStarTest
 		pos2 = new Position(12,17);
 		
 		astar = new AStarSearch(map);
-		astar.setStartAndGoalNode(new Node(pos1), new Node(pos2));
-		assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
+		astar.setStartAndGoalNode(new Node(map.getPlayerPosition()), new Node(pos2));
+		assertEquals(astar.search(ECell.PLAYER).toString(), "RRRRRDDDDRRRRUURRDDRRDDDDLLDDRRD");
 		
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/map3.txt"));
 		map = new Map(br);
@@ -529,8 +529,8 @@ public class AStarTest
 		assertEquals("RRRLLLLLLLLDL", astar.search(ECell.BOX).toString());
 		
 		System.out.println(astar.getFinalString());
-		assertTrue(true == SokobanChecker.mapIsSolved(map, astar.getFinalString().toString().toUpperCase()));
-		assertTrue(true == SokobanChecker.mapIsSolved(map, astar.getFinalString().toString().toUpperCase()));
+		assertTrue(true == SokobanChecker.mapIsSolved(map.clone(), astar.getFinalString().toString().toUpperCase()));
+		assertTrue(true == SokobanChecker.mapIsSolved(map.clone(), astar.getFinalString().toString().toUpperCase()+"U"));
 	}
 	
 	

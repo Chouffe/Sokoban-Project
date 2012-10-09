@@ -126,7 +126,7 @@ public class AStarSearch
 					}
 					else
 					{
-						System.out.println("Path : " + n.getBoxMove().getPlayerPath());
+						//System.out.println("Path : " + n.getBoxMove().getPlayerPath());
 						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
 						// TODO : better pruning to avoid infinite loops !!
 						// Uncomment it for the last test
@@ -181,7 +181,7 @@ public class AStarSearch
 						}
 						else
 						{
-							System.out.println("Path : " + n.getBoxMove().getPlayerPath());
+							//System.out.println("Path : " + n.getBoxMove().getPlayerPath());
 							mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
 							// TODO : better pruning to avoid infinite loops !!
 							// Uncomment it for the last test
@@ -225,7 +225,7 @@ public class AStarSearch
 			finalString = path;
 			System.out.println("Path : " + currentNode.getBoxMove().getPlayerPath());
 			System.out.println("Reconstruction \n" + currentNode.getMap());
-			
+			System.out.println("Current final String : " + finalString.toString());
 			return reconstructPath(currentNode.getParent());	
 		}
 		else
@@ -245,7 +245,7 @@ public class AStarSearch
 //			System.out.println("Number boxes : " + map.getBoxes().size());
 //			System.out.println("Box position : " + map.getBoxes().get(0));
 			clean();
-			System.out.println(finalString.toString());
+			//System.out.println(finalString.toString());
 			//return new Moves(finalString.toString());
 			return result;
 		}
@@ -362,6 +362,7 @@ public class AStarSearch
 	{
 
 		clean();
+		finalString = new StringBuffer();
 		
 		setMap(map.clone());
 		setStartAndGoalNode(new Node(position1), new Node(position2));
@@ -385,8 +386,13 @@ public class AStarSearch
 	        try
 	        {
 	        	String result = search(cellType).toString();
-	        	//String result2 = finalString.toString();
-	            return result;
+	        	String result2 = finalString.toString();
+	        	System.out.println("FINAL RESPONSE : " + result2);
+	        	
+	        	if(cellType == ECell.PLAYER)
+	        		return result;
+	        	else
+	        		return result2;
 	        }
 	        catch(PathNotFoundException e)
 	        {
@@ -399,19 +405,6 @@ public class AStarSearch
 	        	throw new IllegalMoveException();
 	        }
         }
-                
-//            } catch (PathNotFoundException e) {
-//                    
-//                    System.out.println("CAN NOT FIND PATH:");
-//                    System.out.println("From: "+position1.toString()+"Type: "+map.getCellFromPosition(position1).getType());
-//                    System.out.println("To: "+position2.toString()+"Type: "+map.getCellFromPosition(position2).getType());
-//                    System.out.println();
-//                    throw new
-//                    return "";
-//            }
-                
-                
-		
 	}
 
     /**
