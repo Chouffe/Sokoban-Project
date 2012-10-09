@@ -76,54 +76,10 @@ public class BoxSpaceTest {
         ArrayList<Box> boxes = map.getBoxes();        
         
         BoxSpace instance = new BoxSpace(boxes, map);    
-//        boxes = instance.sort(boxes,false);
-//        ArrayList<ArrayList<Box>> result = instance.Search(boxes);
         
-        
-        
-        ArrayList<ArrayList<Box>> result = instance.Search(boxes,map);        
-//        System.out.println("Return Horizontal:");
-//        if (result.isEmpty())
-//            System.out.print("FAIL");
-//        else{
-//            System.out.println("Size"+result.size());
-//            for (int t=0;t<result.size();t++){
-//                
-//                ArrayList<Box> temp = result.get(t);
-//                System.out.println("Group:"+(t+1) + " size of group:"+ temp.size());
-//                for (int r=0; r<temp.size();r++){                    
-//                    System.out.println(temp.get(r).getPosition());
-//                }
-//            }
-//        }
-        
-        
-        instance = new BoxSpace(boxes, map);    
-        boxes = instance.sort(boxes,true);
-        ArrayList<ArrayList<Box>> resultV = instance.Search(boxes,map);
-//        result = instance.Search(boxes);
+        ArrayList<ArrayList<Box>> result = instance.getBoxSpaces(boxes);        
+        instance.print(result);
 
-        
-        
-//        ArrayList<ArrayList<Box>> result = instance.groupBoxes(resultV, resultH);
-        result = instance.groupBoxes(resultV, result,map);        
-        
-//        result = instance.TryToMergeV(result);
-        
-        System.out.println("Return:");
-        if (result.isEmpty())
-            System.out.print("FAIL");
-        else{
-            System.out.println("Size"+result.size());
-            for (int t=0;t<result.size();t++){
-                
-                ArrayList<Box> temp = result.get(t);
-                System.out.println("Group:"+(t+1) + " size of group:"+ temp.size());
-                for (int r=0; r<temp.size();r++){                    
-                    System.out.println(temp.get(r).getPosition());
-                }
-            }
-        }
 //        assertEquals(boxes,result);
         
         // TODO review the generated test code and remove the default call to fail.
