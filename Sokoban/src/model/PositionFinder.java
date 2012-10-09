@@ -63,15 +63,6 @@ public class PositionFinder {
 		return ((cells[0] == WALL || cells[1] == WALL) && (cells[2] == WALL || cells[3] == WALL));
 	}
 
-	private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
-		int numAdjBoxes = -1;
-		for (ECell c : getSurroundingCellTypes(map, pos)) {
-			if (c == BOX || c == BOX_ON_GOAL)
-				numAdjBoxes++;
-		}
-		return (numAdjBoxes > 2);
-	}
-
 	private boolean boxWillDeadlock(Map map, Position dest, char dir) throws CloneNotSupportedException {
 		Position twoAway = dest.unboundMove(dir);
 		if (!isBox(map, twoAway))
@@ -84,7 +75,7 @@ public class PositionFinder {
 	}
 
 	public static char[] getOrthogonals(char dir) {
-			char[] orthos = new char[2];
+			
 			if (dir == 'U' || dir == 'D') {
 				char[] lr = {'L', 'R'};
 				return lr;
@@ -154,14 +145,14 @@ public class PositionFinder {
 		if (dest.equals(map.getPlayerPosition())) {
 			path.append(dir);
 			map.applyMoves(""+dir);
-			System.out.println(map);
+			//System.out.println(map);
 			return true;
 		}
 		try {
 			String newPath = searcher.findPath(map, map.getPlayerPosition(), dest, Cell.ECell.PLAYER).toLowerCase() + dir;
 			path.append(newPath);
 			map.applyMoves(newPath);
-			System.out.println(map);
+			//System.out.println(map);
 			return true;
 		}
 		catch (PathNotFoundException e) {
@@ -229,11 +220,6 @@ public class PositionFinder {
 					}
 				}
 			}
-
-//			return
-//				((clearSides(map, newBoxPos1, orthos[0], path) || clearSides(map, newBoxPos1, orthos[1], path))
-//				&& (clearSides(map, newBoxPos2, orthos[0], path) || clearSides(map, newBoxPos2, orthos[1], path))
-//				&& isValidBoxMove(map, pushSource, dest, dir, path));
 		}
 		return false;
 	}
