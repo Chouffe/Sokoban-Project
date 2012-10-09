@@ -2,11 +2,12 @@ package model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collections;
-
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
 
 import model.Cell.ECell;
 
@@ -26,6 +27,7 @@ public class Agent {
 	protected Moves moves;
 	protected LinkedList<Node> nodes = new LinkedList<Node>();
 	protected AStarSearch astar = new AStarSearch();
+	protected HashMap<BoxToGoalPath, String> pathMap = new HashMap<BoxToGoalPath, String>;
 		
 	
 	public Agent()
@@ -145,12 +147,17 @@ public class Agent {
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
 					Cell.ECell type = PositionFinder.getCellType(map, map.getGoals().get(g));
 					if (type != Cell.ECell.BOX_ON_GOAL && type != Cell.ECell.FINAL_BOX_ON_GOAL) {
-							if (pathExists(map, paths, boxIndx, g)) {
-								Map newMap = map.clone();
-								newMap.applyMoves(paths[boxIndx], true);
-								isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
-								if (isSolved) break;
-								}
+							Position boxPos = map.getBoxes.get(0).getPosition().clone();
+							Position goal = map.getGoals.get(g).clone();
+							BoxToGoalPath boxToGoalPath = new BoxToGoalPath(boxPos, goal);
+							if (playerPathExistsToPreviouslyExploredBox(map, paths, boxIndx, boxToGoalPath)
+								|| boxPathExists(map, paths, boxIndx, g)) {
+									Map newMap = map.clone();
+									newMap.applyMoves(paths[boxIndx], true);
+									pathMap.put(boxToGoalPath, BoxToGoalPath.removeFirstPlayerMoves(paths[boxIndx]));
+									isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
+									if (isSolved) break;
+							}
 					}
 				}
 				return isSolved;
@@ -165,7 +172,7 @@ public class Agent {
 	*
 	*
 	*/
-	public boolean pathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, PathNotFoundException, IOException {
+	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, PathNotFoundException, IOException {
 		try 
 		{
 			
@@ -181,6 +188,24 @@ public class Agent {
 		catch (PathNotFoundException e) 
 		{
 			return false;
+		}
+	}
+
+	public boolean playerPathExistsToPreviouslyExploredBox(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath) throws CloneNotSupportedException, PathNotFoundException, IOException {
+		if (!pathMap.containsKey(boxToGoalPath))
+			return false;
+		else {
+			String boxToGoalString = pathMap.get(boxToGoalPath);
+			char firstPushDir = boxToGoalString.charAt(0);
+			Position playerPushStart = boxPos.unboundMove(PositionFinder.getOppositeDirection(firstPushDir));
+			try {
+				path[boxIndx] = astar.findPath(m, boxToGoalPath.getBoxPosition(), boxToGoalPath.getGoalPosition(), ECell.PLAYER) + boxToGoalString;
+				return true;
+			}
+			catch (PathNotFoundException e) {
+				return false;
+			}
+			
 		}
 	}
 	
