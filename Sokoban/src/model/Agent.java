@@ -85,61 +85,6 @@ public class Agent {
 	}
 	
 	
-//	/**
-//	 * 
-//	 * Set the cells to accessible when the player can reach them
-//	 * 
-//	 * @author arthur
-//	 * @param map
-//	 * @return
-//	 */
-//	public Map setCellAccessible(Map map)
-//	{
-//		
-//		List<Node> lNodes = new LinkedList<Node>();
-//		List<Node> lNodesVisited = new LinkedList<Node>();
-//		
-//		if(map.getPlayerPosition().equals(null))
-//		{
-//			// TODO : throw an exception instead
-//			return null;
-//		}
-//		lNodes.add(new Node(map.getPlayerPosition()));
-//		map.getCellFromPosition(map.getPlayerPosition()).setAccessible(true);
-//		//System.out.println("Nodes : "+ lNodes);
-//		
-//		Position current;
-//		
-//		while(!lNodes.isEmpty())
-//		{
-//			current = ((LinkedList<Node>)lNodes).getFirst().getPosition();
-//			//System.out.println(current);
-//			
-//			
-//			for(Position p : astar.findEmptySpacesAround(current, map))
-//			{
-//				Node n = new Node(p);
-//				
-//				//System.out.println("visited : "+ lNodesVisited);
-//				if(!lNodesVisited.contains(n))
-//				{
-//					//System.out.println("test" + p);
-//					map.getCellFromPosition(p).setAccessible(true);
-//					
-//					lNodes.add(n);
-//				}	
-//			}
-//			
-//			lNodesVisited.add(new Node(current));
-//			lNodes.remove(new Node(current));
-//		}
-//		
-//		//map.toStringAccessible();
-//		return map;
-//	}
-	
-
-	
 	
 	/**
 	* Finds a box-to-goal path for each box.
@@ -198,15 +143,11 @@ public class Agent {
 		else {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
-					//System.out.println("G : " + g);
 					Cell.ECell type = PositionFinder.getCellType(map, map.getGoals().get(g));
 					if (type != Cell.ECell.BOX_ON_GOAL && type != Cell.ECell.FINAL_BOX_ON_GOAL) {
 							if (pathExists(map, paths, boxIndx, g)) {
 								Map newMap = map.clone();
 								newMap.applyMoves(paths[boxIndx], true);
-						//		newMap.putBoxOnGoal(newMap.getBoxes().get(0), newMap.getGoals().get(g), paths[boxIndx]);
-						//		newMap.getGoals().remove(g);
-						//		newMap.getBoxes().remove(0);
 								isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
 								if (isSolved) break;
 								}
@@ -215,91 +156,6 @@ public class Agent {
 				return isSolved;
 			}
 		}
-        
-//        private void updateMapWithBoxOnGoal(Map map, int goalIndx) {
-//			map.set(Cell.ECell.WALL, map.getGoals().get(goalIndx));
-//			map.set(Cell.ECell.EMPTY_FLOOR, map.getBoxes().get(0).getPosition());
-//			map.getGoals().remove(goalIndx);
-//			map.getBoxes().remove(0);
-//	}
-
-	/**
-	* Finds a player path for the given box path.
-	*
-	*
-	* @author Joakim Andrén <joaandr@kth.se>
-	* @param Startmap map Should be a clone, as it is altered
-	* @param Boxpath String with the given box path
-	* @param BoxPos Position, initial position of the box
-	* @throws CloneNotSupportedException 
-	 * @throws IOException 
-	*/
-
-	//Converts a box path to the required player path.
-	public String findPlayerPathFromBoxPath(String BoxPath, Map StartMap, Position PlayerPos, Position BoxPos) throws PathNotFoundException, CloneNotSupportedException, IOException{
-		String PlayerPath=new String();
-		char lastdir=' ';
-		Position newPlayerPos=new Position();
-		Position initialPositionPlayer = PlayerPos;
-
-
-		for(int i=0;i<BoxPath.length();i++){                    
-			//System.in.read();
-			//System.out.println(StartMap);
-			char newdir=BoxPath.charAt(i);
-			if(lastdir==newdir){ //If the box path follows the same direction, just move the player one additional step in that direction.
-				PlayerPath=PlayerPath+newdir;
-
-				if(newdir=='U'){PlayerPos.up(StartMap);}
-				if(newdir=='D'){PlayerPos.down(StartMap);}
-				if(newdir=='L'){PlayerPos.left(StartMap);}
-				if(newdir=='R'){PlayerPos.right(StartMap);}
-			}	
-			else{   //Else find a path for the player to the correct side of the box.
-				newPlayerPos=BoxPos.clone();
-				if(newdir=='U'){newPlayerPos.down(StartMap);}
-				if(newdir=='D'){newPlayerPos.up(StartMap);}
-				if(newdir=='L'){newPlayerPos.right(StartMap);}
-				if(newdir=='R'){newPlayerPos.left(StartMap);}
-				//System.out.println(StartMap);
-				try {
-					PlayerPath=PlayerPath+astar.findPath(StartMap,PlayerPos,newPlayerPos, ECell.PLAYER).toLowerCase();
-				} catch (IllegalMoveException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-				
-				PlayerPos=newPlayerPos.clone();
-				PlayerPath=PlayerPath+newdir;
-				if(newdir=='U'){PlayerPos.up(StartMap);}
-				if(newdir=='D'){PlayerPos.down(StartMap);}
-				if(newdir=='L'){PlayerPos.left(StartMap);}
-				if(newdir=='R'){PlayerPos.right(StartMap);}
-				//System.out.println(StartMap);
-			}
-
-			StartMap.set(Cell.ECell.EMPTY_FLOOR,BoxPos);
-			if(newdir=='U'){BoxPos.up(StartMap);}
-			if(newdir=='D'){BoxPos.down(StartMap);}
-			if(newdir=='L'){BoxPos.left(StartMap);}
-			if(newdir=='R'){BoxPos.right(StartMap);}
-			StartMap.set(Cell.ECell.BOX,BoxPos);
-			//System.out.println(StartMap);
-			lastdir=newdir;
-		}
-		
-		StartMap.setPlayerPosition(PlayerPos);
-		StartMap.set(ECell.EMPTY_FLOOR, initialPositionPlayer);
-		StartMap.set(Cell.ECell.BOX_ON_GOAL,BoxPos);
-		StartMap.set(ECell.PLAYER, PlayerPos);
-
-
-		//System.out.println(StartMap);
-
-
-		return PlayerPath;	
-	}
-
 
 
 
@@ -310,26 +166,20 @@ public class Agent {
 	*
 	*/
 	public boolean pathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, PathNotFoundException, IOException {
-		try {
+		try 
+		{
 			
-			//System.out.println(m.getBoxes());
-
-			//System.out.println("path:" + paths[boxIndx]);
-
-			//System.out.println(" Box Index : " +boxIndx);
 			try {
 				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), ECell.BOX);
 			} catch (IllegalMoveException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 			
-			//if (cellType == ECell.BOX)
-                        //    paths[boxIndx] = paths[boxIndx].substring(0, paths[boxIndx].length()-1);
-                        //System.out.println("path:" + paths[boxIndx]);
 			return true;
-		} catch (PathNotFoundException e) {
+		} 
+		catch (PathNotFoundException e) 
+		{
 			return false;
 		}
 	}
@@ -370,97 +220,36 @@ public class Agent {
 	public void setMoves(Moves moves) {
 		this.moves = moves;
 	}
-        /*
-         * @author: Luis
-         * Prints the moves we get for an answer.
-         */
-        public void solveBoardMoves(String moves, Map map) throws IOException, CloneNotSupportedException
-        {            
-            Position start_position = map.getPlayerPosition();
-            
-            System.out.println(map);
-            System.in.read();
-            
-            // Separate the box and player moves.
-            for(char a: moves.toCharArray())
-            {
-                System.out.println("Move done : " +a);
-                // Only Player moves in Upper case
-                    switch (a)
-                    {
-                        case 'u':   map.set(ECell.EMPTY_FLOOR, start_position);
-                                    map.setPlayerPosition(start_position.up(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'd':   map.set(ECell.EMPTY_FLOOR, start_position);
-                                    map.setPlayerPosition(start_position.down(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'l':   map.set(ECell.EMPTY_FLOOR, start_position);
-                                    map.setPlayerPosition(start_position.left(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'r':   map.set(ECell.EMPTY_FLOOR, start_position);
-                                    map.setPlayerPosition(start_position.right(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'U':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
-                                    map.setPlayerPosition(start_position.up(map));
-                                    map.set(Cell.ECell.BOX,start_position.clone().up(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'D':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
-                                    map.setPlayerPosition(start_position.down(map));
-                                    map.set(Cell.ECell.BOX,start_position.clone().down(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'L':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
-                                    map.setPlayerPosition(start_position.left(map));
-                                    map.set(Cell.ECell.BOX,start_position.clone().left(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                        case 'R':   map.set(ECell.EMPTY_FLOOR, start_position);                                    
-                                    map.setPlayerPosition(start_position.right(map));
-                                    map.set(Cell.ECell.BOX,start_position.clone().right(map));
-                                    map.set(ECell.PLAYER, start_position);
-                                    break;
-                    
-                    }                    
-                    System.out.println(map);
-                    System.in.read();
-            }
         
         
-        }
-        
-        /**
-         * 
-         * Solve a given Map by returning the right string sequence
-         * 
-         * @author arthur
-         * @param map
-         * @return
-         * @throws CloneNotSupportedException
-         * @throws IOException
-         */
-        public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException {
-        
-			String result = "";
-    	    Map init = map.clone();
-			for(String s : getBoxToGoalPaths(map)) {
-				result += s;
-			}
-
-			return result;
+    /**
+     * 
+     * Solve a given Map by returning the right string sequence
+     * 
+     * @author arthur
+     * @param map
+     * @return
+     * @throws CloneNotSupportedException
+     * @throws IOException
+     */
+    public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException {
+    
+		String result = "";
+	    
+		for(String s : getBoxToGoalPaths(map)) {
+			result += s;
 		}
 
-		public AStarSearch getAstar() {
-			return astar;
-		}
+		return result;
+	}
 
-		public void setAstar(AStarSearch astar) {
-			this.astar = astar;
-		}
+	public AStarSearch getAstar() {
+		return astar;
+	}
+
+	public void setAstar(AStarSearch astar) {
+		this.astar = astar;
+	}
 
 	
 	
