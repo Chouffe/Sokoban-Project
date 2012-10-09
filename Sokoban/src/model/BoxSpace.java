@@ -153,8 +153,10 @@ public class BoxSpace extends Box implements Cloneable {
         ArrayList<Box> sortH = sort(boxes,false);
         ArrayList<ArrayList<Box>> searchH = Search(sortH);        
         ArrayList<Box> sortV = sort(boxes,true);
-        ArrayList<ArrayList<Box>> searchV = Search(sortV);        
-        return groupBoxes(searchV,searchH);          
+        ArrayList<ArrayList<Box>> searchV = Search(sortV); 
+        ArrayList<ArrayList<Box>> solution = groupBoxes(searchV,searchH);
+        solution = TryToMergeV(solution);
+        return solution;          
     }
     
     public void print(ArrayList<ArrayList<Box>> result)
@@ -386,27 +388,7 @@ public class BoxSpace extends Box implements Cloneable {
             return lhashSet.add(""+ point.getI() +":"+ point.getJ());
             
         }
-        
-        /*
-         * @author Luis
-         * @description checks if two positions are considered adjacent or not.
-         * @param receives two positions to compare.
-         */
-//        public boolean isAdjacent(Position one, ArrayList<Box> solution)
-//        {   
-//            for (Box box: solution){
-//                Position two = box.getPosition();
-////                System.out.println("Comparing....:"+one + " and " + two);
-//                if (Math.abs(one.getI()-two.getI())<=SPACES)
-//                    if (Math.abs(one.getJ()-two.getJ())<=SPACES)
-//                        return true;
-//                if (Math.abs(one.getJ()-two.getJ())<=SPACES)
-//                    if (Math.abs(one.getI()-two.getI())<=SPACES)
-//                        return true;
-//            }
-//            return false;
-//        }
-        
+                
         public boolean isAdjacent(Box start, ArrayList<Box> solution) throws CloneNotSupportedException 
         {
             Box one = start.clone();
