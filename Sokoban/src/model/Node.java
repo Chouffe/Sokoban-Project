@@ -127,8 +127,6 @@ public class Node implements Comparable<Node>
 		return map.hashCode();
 	}
 
-	
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
