@@ -81,6 +81,11 @@ public class FindPathTest {
 		// Try to solve the map
 		assertEquals(true, SokobanChecker.mapIsSolved(map, astar.getFinalString().toString()));
 		
+	}
+	
+	@Test
+	public final void testFindPathDifficult() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	{
 		// Test 3
 		br = new BufferedReader(new FileReader("src/tests/maps/findpath/difficult/map1.txt"));
 		map = new Map(br);
@@ -93,10 +98,7 @@ public class FindPathTest {
 		
 		astar.findPath(map, map.getBoxes().get(0).getPosition(), map.getGoals().get(0), ECell.BOX);
 		assertEquals(true, SokobanChecker.mapIsSolved(map, astar.getFinalString().toString()));
-		
-		
-		
-		
+				
 	}
 	
 	
