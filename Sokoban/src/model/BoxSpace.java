@@ -147,15 +147,25 @@ public class BoxSpace extends Box implements Cloneable {
         
     }
     
-    public ArrayList<ArrayList<Box>> getBoxSpaces(ArrayList<Box> BoxesInMap) throws CloneNotSupportedException
+    public ArrayList<ArrayList<Box>> getBoxSpaces() throws CloneNotSupportedException
     {
         
-        ArrayList<Box> sortH = sort(boxes,false);
-        ArrayList<ArrayList<Box>> searchH = Search(sortH);        
+//        ArrayList<Box> sortH = sort(boxes,false);
+        ArrayList<ArrayList<Box>> searchH = Search(boxes);        
         ArrayList<Box> sortV = sort(boxes,true);
         ArrayList<ArrayList<Box>> searchV = Search(sortV); 
         ArrayList<ArrayList<Box>> solution = groupBoxes(searchV,searchH);
-        solution = TryToMergeV(solution);
+        print(solution);
+//        System.out.println(boxCount+"*********SIZE**********");
+//        if (boxCount<20)
+        int oldsolutionSize = 0;      
+        int count=0;
+        solution = TryToMergeV(solution);            
+        while (oldsolutionSize!=solution.size())
+            oldsolutionSize = solution.size();
+//            System.out.println("old"+oldsolutionSize + "c"+ count++);
+            solution = TryToMergeV(solution);            
+//            System.out.println("new"+solution.size());
         return solution;          
     }
     
@@ -435,136 +445,150 @@ public class BoxSpace extends Box implements Cloneable {
         } 
         
         public ArrayList<ArrayList<Box>> TryToMergeV(ArrayList<ArrayList<Box>> Allboxes) throws CloneNotSupportedException
-        {
+        {            
+            // To save the not Grouped/Merged ones.
             ArrayList<ArrayList<Box>> solution = new ArrayList<ArrayList<Box>>();
-            ArrayList<ArrayList<Box>> notGroup = new ArrayList<ArrayList<Box>>();
-            ArrayList<Box> solutionTest = new ArrayList<Box>();
-            ArrayList<Box> notGroupTest = new ArrayList<Box>();
-            LinkedHashSet solutionKeepOut = new LinkedHashSet(); 
+            // To save the cloned <Arraylistboxes
             ArrayList<ArrayList<Box>> boxes = new ArrayList<ArrayList<Box>>();
+            
+            LinkedHashSet solutionKeepOut = new LinkedHashSet();
+            
+            // Clone Allboxes
             for (ArrayList<Box> b: Allboxes){
                 boxes.add((ArrayList<Box>)b.clone());
-            }        
-        
+            }                 
+            boolean merged = false;
             // To return the BoxSpaces.
             ArrayList<ArrayList<Box>> BoxGroups = new ArrayList<ArrayList<Box>>();            
 
             // Continue while there are still boxes to look.
-            while (!boxes.isEmpty())
+            if (!boxes.isEmpty())
             {
                 // Get new box.
                 ArrayList<Box> b = boxes.remove(0);
-
-                if (solution.isEmpty()){
-                    for (Box i: b)
+                ArrayList<Box> a = new ArrayList<Box>();
+                // Take b and compare it with every single ArrayList of Boxes
+                for (int i=0;i<boxes.size();i++){
+                    ArrayList<Box> other = new ArrayList<Box>();
+                    if (!boxes.isEmpty())
+                        other= boxes.get(i);
+                    else
+                        other = solution.get(0);
+                    if (isAdjacentV(b,other))
                     {
-                        addBox(i,solutionKeepOut,solutionTest);
-                    }
-                    solution.add(b);
-                }
-                else
-                {
-                    ///**************************************
-                    ///**************************************
-                    ///**************************************
-                    ///**************************************
-                    if (isAdjacentV(b,solution.get(0)))
-                    {
-                        for (Box i: b)
+//                        System.out.println("Can be merged.");
+                        // Remove other from boxes.
+                        //boxes.remove(other);
+                        // Merge both ArrayLists
+                        
+                        for (Box one: b)
                         {
-                            addBox(i,solutionKeepOut,solutionTest);
+                            addBox(one,solutionKeepOut,a);
                         }
-                        solution.add(b);
+//                        System.out.println("Merging: "+b.get(0).getPosition()+"S"+b.size());
+                        for (Box two: other)
+                        {
+                            addBox(two,solutionKeepOut,a);
+                        }
+                        // Add so it can be merged again.
+//                        System.out.println("AND "+other.get(0).getPosition()+"S"+other.size() + "="+a.size());
+                        
+                        
+                        merged=true;       
+//                        break;
                     }
                     else
                     {
-                        for (Box i: b)
-                        {
-                            addBox(i,solutionKeepOut,notGroupTest);
-                        }
-                        notGroup.add(b);
-                    }
-                    ///**************************************
-                    ///**************************************
-                    ///**************************************
-                    ///**************************************
-                }                                
+                        // Add the non merged ones to another ArrayList
+                        solution.add(other);
+                    }                    
+                }
+                
+                if (!merged)
+                    solution.add(b);
+                else{
+                    solution.add(a);
+//                        System.out.println("New size:"+ solution.size());
+                }
             }
             
-            // When you finish checking all ... Add the last group.
-            if (!solution.isEmpty())
-                BoxGroups.add(solutionTest);
-            if (!solution.isEmpty()){            
-                ArrayList<ArrayList<Box>> temp = TryToMergeV(notGroup);
-                for (ArrayList<Box> b: temp)
-                {
-                    BoxGroups.add(b);
-                }
-            }            
-            for (Box b: notGroupTest)
-            {
-                ArrayList<Box> temp = new ArrayList<Box>();
-                if (wasVisited(b.getPosition(),solutionKeepOut)){
-                    temp.add(b);
-                    BoxGroups.add(temp);
-                }
-            }
-            return BoxGroups;
+            // If you merged a group. Check if it can be merged with the next ones.
+            if (merged && solution.size()>=2)
+                solution = TryToMergeV(solution);            
+            return solution;
         }
         
         public boolean isAdjacentV(ArrayList<Box> one, ArrayList<Box> two) throws CloneNotSupportedException 
         {
             int length = Math.min(one.size(), two.size());
-            boolean group = true;
-            if (one.size()==length){
-//                int j =0;
-                for (int i=0; i<length;i++)
-                {                    
+            boolean group = true;            
+            for (int i =0; i<one.size();i++){
+                for (int j=0; j<two.size();j++)
+                {       
+//                    System.out.println("Inside");
                     if (group){
-//                        while (one.get(0).getPosition().getJ()!=two.get(j).getPosition().getJ()){
-//                            if (j<two.size()-1)
-//                                j++; 
-//                        }
-                        group = group && isAdjacentV(one.get(i),two.get(i));
+                            if (one.get(i).getPosition().getI()!=two.get(j).getPosition().getI())
+                                group = group && isAdjacentV(one.get(i),two.get(j));
+                            else 
+                               return false;
                     }
                     else
                         return false;
                 }
 //                System.out.println("Group"+group);    
-                return group;
+                
             }
-            else{
-//                int j=0;
-                for (int i=0; i<length;i++)
-                {
-
+//            System.out.println("Trying other side");
+            for (int j =0; j<two.size();j++){
+                for (int i=0; i<one.size();i++)
+                {       
+//                    System.out.println("Inside2");
                     if (group){
-//                        while (one.get(j).getPosition().getJ()!=two.get(0).getPosition().getJ())
-//                            if (j<one.size()-1)
-//                                j++; 
-                        group = group || isAdjacentV(one.get(i),two.get(i));
+                        if (one.get(i).getPosition().getI()!=two.get(j).getPosition().getI())
+                            group = group && isAdjacentV(two.get(j),one.get(i));
+                        else
+                            return false;
                     }
                     else
                         return false;
                 }
-                return group;
+//                System.out.println("Group"+group);    
+                
             }
+            return group;
+//            else{
+////                int j=0;
+//                for (int i=0; i<length;i++)
+//                {
+//
+//                    if (group){
+////                        while (one.get(j).getPosition().getJ()!=two.get(0).getPosition().getJ())
+////                            if (j<one.size()-1)
+////                                j++; 
+//                        group = group && isAdjacentV(one.get(i),two.get(i));
+//                    }
+//                    else
+//                        return false;
+//                }
+//                return group;
+//            }
         }
         
         public boolean isAdjacentV(Box start, Box stop) throws CloneNotSupportedException 
         {
             Box one = start.clone();
             boolean group = true;
-            if (stop.getPosition().equals(one.getPosition()))
+//            System.out.println("Just getting here!!");
+            if (stop.getPosition().getI()==one.getPosition().getI())
                 return true;
-
-            Position two = stop.getPosition();
             
-
-                    if (one.getPosition().getI()-two.getI()<=0){
+            Position two = stop.getPosition();
+//            System.out.println("Inside"+one.getPosition());
+            
+                    if (one.getPosition().getI()-two.getI()>=0){
                         group = LookUp(one);
                         if (group){
-//                                System.out.println("moving ..."+ one.clone().getPosition().up(board));
+//                                System.out.println("moving up..."+ one.clone().getPosition().up(board));
                             one.getPosition().up(board);
                             group = isAdjacentV(one, stop);
                         }
@@ -572,7 +596,7 @@ public class BoxSpace extends Box implements Cloneable {
                     else{
                         group = LookDown(one);
                         if (group){
-//                                System.out.println("moving ..."+ one.clone().getPosition().down(board));
+//                                System.out.println("moving down..."+ one.clone().getPosition().down(board));
                             one.getPosition().down(board);
                             group = isAdjacentV(one,stop);
                         }
