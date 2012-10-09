@@ -72,13 +72,10 @@ public class AStarSearch
 	 */
 	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
 	{
-		
 		PositionFinder pf = new PositionFinder();
-		
 		
 		while(!openedList.isEmpty())
 		{
-			
 			Collections.sort(openedList);
 			Node current = (Node) ((LinkedList<Node>) openedList).getFirst();
 			
@@ -99,28 +96,18 @@ public class AStarSearch
 				n.parent = current;
 				
 				// We update the map
-				Moves m = new Moves();
-				m.addMove(n.parent.getPosition(), n.getPosition());
 				Map mapCopy = n.parent.getMap().clone();
 				
 				try
 				{	
-					if(n.getBoxMove().getPlayerPath().equals("") || n.getBoxMove().getPlayerPath() == null)
-					{
-						mapCopy.applyMoves(m.toString());
-					}
-					else
-					{
-						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
-					}	
+					mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
+					n.setMap(mapCopy);
 				}
 				catch(IllegalMoveException ill)
 				{
 					System.out.println("FAILLLLLL");
+					continue;
 				}
-				
-				// We store the map in the node
-				n.setMap(mapCopy);
 				
 				if(closedTable.containsKey(n.hashCode()))
 				{
@@ -143,32 +130,19 @@ public class AStarSearch
 					n.setF(n.getG() + n.getH());
 					
 					// We update the map
-					m = new Moves();
-					m.addMove(n.parent.getPosition(), n.getPosition());
 					mapCopy = n.parent.getMap().clone();
 					
 					try
-					{	
-						if(n.getBoxMove().getPlayerPath().equals("") || n.getBoxMove().getPlayerPath() == null)
-						{
-							mapCopy.applyMoves(m.toString());
-						}
-						else
-						{
-							mapCopy.applyMoves(n.getBoxMove().getPlayerPath());
-						}
-						
-						
-						//if(n.getBoxMove().getPlayerPath() == null || n.getBoxMove().getPlayerPath().equals(""))
-							
+					{
+						mapCopy.applyMoves(n.getBoxMove().getPlayerPath());	
+						// We store the map in the node
+						n.setMap(mapCopy);
 					}
 					catch(IllegalMoveException ill)
 					{
 						System.out.println("FAILLLLLL");
+						continue;
 					}
-					
-					// We store the map in the node
-					n.setMap(mapCopy);
 				}
 			}
 		}
@@ -248,26 +222,23 @@ public class AStarSearch
 	 */
 	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
 	{
-
+		// We clean all the variables before doing the search
 		clean();
 		finalString = new StringBuffer();
 		
+		// We bound the map and the positions to the AstarSearch
 		setMap(map.clone());
-		setStartAndGoalNode(new Node(position1), new Node(position2));
-                
-        {
-	        try
-	        {
-	       
-	        	search(cellType).toString();
-				return finalString.toString();
+		setStartAndGoalNode(new Node(position1), new Node(position2));         
 
-	        }
-	        catch(IllegalMoveException e)
-	        {
-	        	System.out.println("Illegal Move !!!!");
-	        	throw new IllegalMoveException();
-	        }
+        try
+        {
+        	search(cellType).toString();
+			return finalString.toString();
+        }
+        catch(IllegalMoveException e)
+        {
+        	System.out.println("Illegal Move !!!!");
+        	throw new IllegalMoveException();
         }
 	}
         

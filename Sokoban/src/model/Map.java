@@ -463,20 +463,6 @@ public class Map implements Cloneable
 		char lastMove = boxPath.charAt(boxPath.length()-1);
 		Position playerPos = goal.unboundMove(PositionFinder.getOppositeDirection(lastMove));
 		ECell playerPosType = getCellFromPosition(playerPos).getType();
-//                if (!boxPath.isEmpty())
-//                {
-//                    switch (boxPath.charAt(boxPath.length()-1)) {
-//
-//                    case 'U':
-//                            playerPos.down(this);
-//                    case 'D':
-//                            playerPos.up(this);
-//                    case 'L':
-//                            playerPos.right(this);
-//                    case 'R':
-//                            playerPos.left(this);
-//                    }
-//                }
 		set(BOX_ON_GOAL, goal);
 
 		if (boxCellType == BOX_ON_GOAL)
