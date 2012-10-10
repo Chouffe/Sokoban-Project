@@ -110,7 +110,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
         
     }
     
-    public ArrayList<ArrayList<Position>> getGoalSpaces() throws CloneNotSupportedException
+    public ArrayList<GoalSpace> getGoalSpaces() throws CloneNotSupportedException
     {
         
 //        ArrayList<Box> sortH = sort(boxes,false);
@@ -128,12 +128,12 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 
         while (oldsolutionSize!=solution.size()){
             oldsolutionSize = solution.size();
-//            System.out.println(solution.size()+"********* OLD SIZE**********"); 
+            System.out.println(solution.size()+"********* OLD SIZE**********"); 
             ArrayList<ArrayList<Position>> singles = getSingles(solution);                
             solution = TryToMergeV(singles);
-//            System.out.println(solution.size()+"*********NEW SIZE**********");   
+            System.out.println(solution.size()+"*********NEW SIZE**********");   
         }
-//        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
+        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
 //        ArrayList<ArrayList<Box>> singles = getSingles(solution);                
 //        solution = TryToMergeV(solution);
 //        System.out.println(solution.size()+"*********SIZE**********");
@@ -143,7 +143,13 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 //        singles = getSingles(solution);                
 //        solution = TryToMergeV(singles);
 //        System.out.println(solution.size()+"*********SIZE**********");
-        return solution;          
+        ArrayList<GoalSpace> gS = new ArrayList<GoalSpace>();
+        for (ArrayList<Position> s: solution)
+        {
+            GoalSpace temp = new GoalSpace(s);
+            gS.add(temp);
+        }
+        return gS;          
     }
     
     public ArrayList<ArrayList<Position>> getSingles(ArrayList<ArrayList<Position>> solution)
@@ -191,19 +197,18 @@ public class GoalSpaceSearch extends Box implements Cloneable {
     
     
     // TODO ¿Implement GoalSpace?
-    public void printBS(ArrayList<BoxSpace> result)
+    public void printGS(ArrayList<GoalSpace> result)
     {
         System.out.println("Return:");
         if (result.isEmpty())
             System.out.print("FAIL");
         else{
             System.out.println("Size"+result.size());
-            for (int t=0;t<result.size();t++){
-                
-                BoxSpace temp = result.get(t);
-                System.out.println("Group:"+(t+1) + " size of group:"+ temp.getBoxCount());
-                for (int r=0; r<temp.getBoxCount();r++){                    
-                    System.out.println(temp.getPosition(r));
+            for (int t=0;t<result.size();t++){                
+                GoalSpace temp = result.get(t);
+                System.out.println("Group:"+(t+1) + " size of group:"+ temp.getGoalCount());
+                for (int r=0; r<temp.getGoalCount();r++){                    
+                    System.out.println(temp.getGoal(r));
                 }
             }
         }
@@ -540,7 +545,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                                 group = group && isAdjacentV(one.get(i),two.get(j));
                             else{
                                 
-//                                System.out.println("Inside for "+ one.get(i).getPosition() + "and"+two.get(j).getPosition());                                
+                                System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
                                return false;
                             }
                     }
@@ -550,7 +555,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 //                System.out.println("Group"+group);    
                 
             }
-//            System.out.println("Trying other side");
+            System.out.println("Trying other side");
             for (int j =0; j<two.size();j++){
                 for (int i=0; i<one.size();i++)
                 {       
@@ -559,7 +564,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                         if (one.get(i).getI()!=two.get(j).getI())
                             group = group && isAdjacentV(two.get(j),one.get(i));
                         else{
-//                            System.out.println("Inside for "+ one.get(i).getPosition() + "and"+two.get(j).getPosition());                                
+                            System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
                             return false;
                         }
                     }
@@ -600,14 +605,14 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 
 // ******************************************************************************************************            
 // ******************************************************************************************************            
-                    if (one.getI()-two.getI()>=0 && one.getI()-two.getI()<=1){
+                    if (one.getI()-two.getI()>=0 ){//&& one.getI()-two.getI()<=1){
 // ******************************************************************************************************
 // ******************************************************************************************************
                         // Possible Bug.
 // ******************************************************************************************************                        
                         group = LookUp(one);
                         if (group){
-//                                System.out.println("moving up..."+ one.clone().getPosition().up(board));
+                                System.out.println("moving up..."+ one.clone().up(board));
                             one.up(board);
                             group = isAdjacentV(one, two);
                         }
@@ -615,13 +620,13 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                     else{
                         group = LookDown(one);
                         if (group){
-//                                System.out.println("moving down..."+ one.clone().getPosition().down(board));
+                                System.out.println("moving down..."+ one.clone().down(board));
                             one.down(board);
                             group = isAdjacentV(one,two);
                         }
                     }
 
-//                    System.out.println("Group:"+group);
+                    System.out.println("Group:"+group);
                 return group;                           
         }
         

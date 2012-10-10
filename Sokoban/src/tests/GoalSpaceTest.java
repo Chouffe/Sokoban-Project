@@ -12,6 +12,7 @@ import model.Box;
 import model.BoxSpace;
 import model.BoxSpaceSearch;
 import model.Goal;
+import model.GoalSpace;
 import model.GoalSpaceSearch;
 import model.Map;
 import model.Position;
@@ -73,19 +74,27 @@ public class GoalSpaceTest {
     
     @Test
     public void testSearch() throws Exception {
-        BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/map13.txt"));
-        Map map = new Map(br);
-	System.out.println(map);
-        
-        ArrayList<Position> goals = map.getGoals();  
-        
-        GoalSpaceSearch instance = new GoalSpaceSearch(goals, map);    
-        
-        ArrayList<ArrayList<Position>> result = instance.getGoalSpaces();        
-        instance.print(result);
+//        int [] map_num = {94,93,88,87,82,81,79,77,76,70,68,66,64,60,59,58,57};
+        int [] map_num = {3};
+//        for (int i =1;i<112;i++){
+        for (int i: map_num){
+            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map"+i+".txt"));
+    //        System.out.println(mapas.length);
+    //        String [] mapa_lineas = mapas[0].split("\n");
+    //        ArrayList<String> mapa = new ArrayList<String>();
+    //        for (String s: mapa_lineas)
+    //            mapa.add(s);
+            System.out.println("MAP"+i);
+            Map map = new Map(br);
+            System.out.println(map);  
+            
+            GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(),map);
+            
+            ArrayList<GoalSpace> result = instance.getGoalSpaces();        
+            instance.printGS(result);
 
 //        assertEquals(boxes,result);
-        
+        }
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -110,31 +119,29 @@ public class GoalSpaceTest {
 //            assertEquals(false,result);
 //        }
     
-//    @Test
-//    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
-//        {            
-//            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/map13.txt"));
-//            Map map = new Map(br);
-//            System.out.println(map);
-//        
-//            ArrayList<Box> boxes = map.getBoxes(); 
-//            
-//            BoxSpace instance = new BoxSpace(boxes, map);
-//            ArrayList<ArrayList<Box>> tests = instance.getBoxSpaces();
-////            ArrayList<Box> a = new ArrayList<Box>();
-//            ArrayList<Box> a = tests.get(2);
-////            for (Box t: tests.get(0))
-////            {
-////                a.add(t);
-////            }
-////            for (Box t: tests.get(1))
-////            {
-////                a.add(t);
-////            }
-//            ArrayList<Box> b = tests.get(3);
-//                    
-//            boolean result = instance.isAdjacentV(b, a);             
-//            System.out.println("A"+result);
-//            assertEquals(false,result);
-//        }
+    @Test
+    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
+        {            
+            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map3.txt"));
+            Map map = new Map(br);
+            System.out.println(map);
+        
+            GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(), map);
+            ArrayList<GoalSpace> tests = instance.getGoalSpaces();
+//            ArrayList<Box> a = new ArrayList<Box>();
+            GoalSpace a = tests.get(0);
+//            for (Box t: tests.get(0))
+//            {
+//                a.add(t);
+//            }
+//            for (Box t: tests.get(1))
+//            {
+//                a.add(t);
+//            }
+            GoalSpace b = tests.get(1);
+                    
+            boolean result = instance.isAdjacentV(b.getGoalsAL(), a.getGoalsAL());             
+            System.out.println("A"+result);
+            assertEquals(true,result);
+        }
 }
