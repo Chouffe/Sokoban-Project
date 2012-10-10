@@ -3,6 +3,7 @@ package model;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import exception.IllegalMoveException;
@@ -704,6 +705,20 @@ public class Map implements Cloneable
 		} else if (!player.equals(other.player))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Shuffles the boxes
+	 */
+	public void shuffleArrayListBoxes() {
+		Collections.shuffle(boxes);	
+	}
+	
+	/**
+	 * Shuffles the goals
+	 */
+	public void shuffleArrayListGoals() {
+		Collections.shuffle(goals);	
 	}
 	
 }

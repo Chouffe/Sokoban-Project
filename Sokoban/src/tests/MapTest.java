@@ -605,5 +605,38 @@ public class MapTest
 		map2.setPlayer(new Player(new Position(1, 1), false));
 		assertFalse(map2.hashCode() == map.hashCode());
 	}
+	
+	@Test
+	public final void testShuffleBoxes() throws FileNotFoundException, CloneNotSupportedException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/map/map1.txt"));
+		Map map = new Map(br);
+		Map mapCopie = map.clone();
+		
+		map.shuffleArrayListBoxes();
+		
+		assertEquals(map.getBoxes().size(), mapCopie.getBoxes().size());
+		for(int i = 0; i < map.getBoxes().size(); i++)
+		{
+			assertTrue(mapCopie.getBoxes().contains(map.getBoxes().get(i)));
+		}
+	}
+	
+	@Test
+	public final void testShuffleGoals() throws FileNotFoundException, CloneNotSupportedException
+	{
+		br = new BufferedReader(new FileReader("src/tests/maps/map/map2.txt"));
+		Map map = new Map(br);
+		Map mapCopie = map.clone();
+		
+		
+		map.shuffleArrayListGoals();
+		assertEquals(map.getGoals().size(), mapCopie.getGoals().size());
+		for(int i = 0; i < map.getGoals().size(); i++)
+		{
+			assertTrue(mapCopie.getGoals().contains(map.getGoals().get(i)));
+		}
+
+	}
 
 }
