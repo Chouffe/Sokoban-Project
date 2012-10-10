@@ -32,7 +32,7 @@ public class Agent {
 	protected HashMap<BoxToGoalPath, String> pathMap = new HashMap<BoxToGoalPath, String>();
 	int hashedUsed = 0;
 	
-	protected static int millisecondsAllowedForTheFirstAttempt = 100;
+	protected static int millisecondsAllowedForTheFirstAttempt = 4000;
 		
 	
 	public Agent()
@@ -445,16 +445,18 @@ public class Agent {
     {
     	Date date = new Date();
 	
-		System.out.println("Time allowed : " + millisecondsAllowedForSolvingTheBoardGivenTheNumberOfIterations(numberIterations));
-		date.setTime(date.getTime() + (long) millisecondsAllowedForSolvingTheBoardGivenTheNumberOfIterations(numberIterations));
+		//System.out.println("Time allowed : " + millisecondsAllowedForSolvingTheBoardGivenTheNumberOfIterations(numberIterations));
+		date.setTime(date.getTime() + millisecondsAllowedForTheFirstAttempt);
 		
 		Deadline due = new Deadline(date);
 		
+		System.out.println("Time left " + due.TimeUntil());
 		System.out.println("Number of iterations : " + numberIterations);
     	
     	try
     	{
     		String result = solveWithDeadline(map, due);
+    		System.out.println("String solution : " + result);
     		return result;
     	}
     	catch(DeadlineException e)
@@ -473,9 +475,9 @@ public class Agent {
     {
     	// exp(-t/tau) + delta, t = numberOfIterations
     	double tau = (30. * 1000. / Math.log(2));
-    	double delta = 4000.;
+    	double delta = 1000.;
     	
-    	System.out.println("Exponential : " + Math.exp(-((double) numberOfIterations)/tau));
+    	//System.out.println("Exponential : " + Math.exp(-((double) numberOfIterations)/tau));
     	
     	return millisecondsAllowedForTheFirstAttempt * Math.exp(-((double) numberOfIterations)/tau) + delta;
     }

@@ -5,11 +5,14 @@ import static org.junit.Assert.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 
 import model.Map;
 import model.SokobanChecker;
 
 import org.junit.Test;
+
+import exception.IllegalMoveException;
 
 public class SokobanCheckerTest 
 {
@@ -51,5 +54,14 @@ public class SokobanCheckerTest
 		assertEquals(false, SokobanChecker.mapIsSolved(map.clone(), "D"));
 		assertEquals(false, SokobanChecker.mapIsSolved(map.clone(), "DULLD"));
 		assertEquals(true, SokobanChecker.mapIsSolved(map.clone(), "DULLDURRRRD"));
+	}
+	
+	@Test
+	public final void testShowSolution() throws IllegalMoveException, CloneNotSupportedException, IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/checker/map5.txt"));
+		Map map = new Map(br);
+		
+		SokobanChecker.showMapSolving(map, "llUUUluRRRRRurDDDDDDDldRRRurDDDDrdLLLLLLdlUruLLLuuullldddrRRRRurDldRRRRRdrUUUUruLLLdlUUUUUUUruLLLLLulDDDD");
 	}
 }
