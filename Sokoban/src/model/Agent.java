@@ -317,7 +317,7 @@ public class Agent {
 		{
 			throw new DeadlineException();
 		}
-		
+
 		if (!pathMap.containsKey(boxToGoalPath))
 			return false;
 		else {
@@ -333,10 +333,10 @@ public class Agent {
 			}
 			catch (PathNotFoundException e) {
 				System.out.println("Path not found");
-			return false;
-		}
-		catch (IllegalMoveException il) {
-			System.out.println("String no longer valid");
+				return false;
+			}
+			catch (IllegalMoveException il) {
+				System.out.println("String no longer valid");
 				return false;
 			}
 			
