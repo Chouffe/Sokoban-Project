@@ -7,12 +7,12 @@ public class Deadline {
    
     private Date mDate;
 	
-    Deadline(Date pDate)
+    public Deadline(Date pDate)
     {
         mDate = pDate;
     }
 
-    long TimeUntil()
+    public long TimeUntil()
     {
         return mDate.getTime()-(new Date()).getTime();
     }     

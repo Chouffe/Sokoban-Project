@@ -4,17 +4,14 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import model.AStarSearch;
 import model.Agent;
 import model.Cell;
 import model.Map;
 import model.Position;
-import model.Cell.ECell;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -302,16 +302,20 @@ public class Map implements Cloneable
 							addGoal(new Position(i,j));
 							break;
 						case PLAYER:
+							setPlayer(new Player(new Position(i,j), false));
 							setPlayerPosition(new Position(i,j));
 							break;
 						case PLAYER_ON_GOAL_SQUARE:
+							setPlayer(new Player(new Position(i,j), true));
 							setPlayerPosition(new Position(i,j));
+							addGoal(new Position(i,j));
 							break;
 						case BOX:
 							addBox(new Position(i,j), false);
 							break;
 						case BOX_ON_GOAL:
 							addBox(new Position(i,j), true);
+							addGoal(new Position(i,j));
 							break;
 					}
 				
@@ -362,12 +366,14 @@ public class Map implements Cloneable
 							case PLAYER_ON_GOAL_SQUARE:
 								setPlayer(new Player(new Position(i,j), true));
 								setPlayerPosition(new Position(i,j));
+								addGoal(new Position(i,j));
 								break;
 							case BOX:
 								addBox(new Position(i, j), false);
 								break;
 							case BOX_ON_GOAL:
 								addBox(new Position(i, j), true);
+								addGoal(new Position(i, j));
 								break;
 						}
 					
