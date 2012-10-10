@@ -7,6 +7,8 @@ package model;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
+import exception.OffOfMapException;
+
 /**
  *
  * @author lfreina
@@ -63,7 +65,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         return sortedBoxes;
     }            
     
-    public ArrayList<ArrayList<Box>> groupBoxes(ArrayList<ArrayList<Box>> Vertical, ArrayList<ArrayList<Box>> Horizontal ) throws CloneNotSupportedException
+    public ArrayList<ArrayList<Box>> groupBoxes(ArrayList<ArrayList<Box>> Vertical, ArrayList<ArrayList<Box>> Horizontal ) throws CloneNotSupportedException, OffOfMapException
     {
         LinkedHashSet solutionTest = new LinkedHashSet(); 
         ArrayList<ArrayList<Box>> solution = new ArrayList<ArrayList<Box>>();
@@ -113,7 +115,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         
     }
     
-    public ArrayList<BoxSpace> getBoxSpaces() throws CloneNotSupportedException
+    public ArrayList<BoxSpace> getBoxSpaces() throws CloneNotSupportedException, OffOfMapException
     {
         
 //        ArrayList<Box> sortH = sort(boxes,false);
@@ -217,7 +219,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         }
     }
     
-    public ArrayList<ArrayList<Box>> Search(ArrayList<Box> Allboxes) throws CloneNotSupportedException
+    public ArrayList<ArrayList<Box>> Search(ArrayList<Box> Allboxes) throws CloneNotSupportedException, OffOfMapException
     {
 //        if (Allboxes.size()>20)
 //            SPACES = 3;
@@ -305,7 +307,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         //
         // @autor: Luis 
         // @note: unboundMove is not working ... :S
-        public boolean [] LookAround (Box boxInSquare) throws CloneNotSupportedException
+        public boolean [] LookAround (Box boxInSquare) throws CloneNotSupportedException, OffOfMapException
         {
             
             // Always initialize as he can go no where.
@@ -322,7 +324,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return directions;
         }  
         
-        public boolean LookRight (Box boxInSquare) throws CloneNotSupportedException
+        public boolean LookRight (Box boxInSquare) throws CloneNotSupportedException, OffOfMapException
         {
             
             Position box = boxInSquare.getPosition();            
@@ -345,7 +347,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookLeft (Box boxInSquare) throws CloneNotSupportedException
+        public boolean LookLeft (Box boxInSquare) throws CloneNotSupportedException, OffOfMapException
         {           
             
             Position box = boxInSquare.getPosition();            
@@ -369,7 +371,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookUp (Box boxInSquare) throws CloneNotSupportedException
+        public boolean LookUp (Box boxInSquare) throws CloneNotSupportedException, OffOfMapException
         {           
             
             Position box = boxInSquare.getPosition();            
@@ -393,7 +395,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookDown (Box boxInSquare) throws CloneNotSupportedException
+        public boolean LookDown (Box boxInSquare) throws CloneNotSupportedException, OffOfMapException
         {           
             
             Position box = boxInSquare.getPosition();            
@@ -433,7 +435,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             
         }
                 
-        public boolean isAdjacent(Box start, ArrayList<Box> solution) throws CloneNotSupportedException 
+        public boolean isAdjacent(Box start, ArrayList<Box> solution) throws CloneNotSupportedException, OffOfMapException 
         {
             Box one = start.clone();
             boolean group = true;
@@ -443,7 +445,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             }
             return group;
         }
-        public boolean isAdjacent(Box start, Box solution) throws CloneNotSupportedException
+        public boolean isAdjacent(Box start, Box solution) throws CloneNotSupportedException, OffOfMapException
         {
             Box one = start.clone();
             boolean group = true;
@@ -478,7 +480,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return false;
         } 
         
-        public ArrayList<ArrayList<Box>> TryToMergeV(ArrayList<ArrayList<Box>> Allboxes) throws CloneNotSupportedException
+        public ArrayList<ArrayList<Box>> TryToMergeV(ArrayList<ArrayList<Box>> Allboxes) throws CloneNotSupportedException, OffOfMapException
         {            
             // To save the not Grouped/Merged ones.
             ArrayList<ArrayList<Box>> solution = new ArrayList<ArrayList<Box>>();
@@ -552,7 +554,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             return solution;
         }
         
-        public boolean isAdjacentV(ArrayList<Box> one, ArrayList<Box> two) throws CloneNotSupportedException 
+        public boolean isAdjacentV(ArrayList<Box> one, ArrayList<Box> two) throws CloneNotSupportedException, OffOfMapException 
         {            
             boolean group = true;            
             for (int i =0; i<one.size();i++){
@@ -612,7 +614,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
 //            }
         }
         
-        public boolean isAdjacentV(Box start, Box stop) throws CloneNotSupportedException 
+        public boolean isAdjacentV(Box start, Box stop) throws CloneNotSupportedException, OffOfMapException 
         {
             Box one = start.clone();
             boolean group = true;
@@ -656,7 +658,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
                 return group;                           
         }
         
-        private ArrayList<ArrayList<Box>> tryToGroup (ArrayList<Box> Allboxes) throws CloneNotSupportedException
+        private ArrayList<ArrayList<Box>> tryToGroup (ArrayList<Box> Allboxes) throws CloneNotSupportedException, OffOfMapException
         {
             ArrayList<Box> solution = new ArrayList<Box>();
             ArrayList<Box> notGroup = new ArrayList<Box>();

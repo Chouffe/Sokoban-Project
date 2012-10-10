@@ -8,8 +8,11 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.HashMap;
 
+import model.Cell.ECell;
+
 import exception.DeadlineException;
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 
 
@@ -98,8 +101,9 @@ public class Agent {
 	*
 	* @author Alden Coots <ialden.coots@gmail.com>
 	* @throws CloneNotSupportedException 
+	 * @throws OffOfMapException 
 	*/
-	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
+	public String[] getBoxToGoalPaths(Map map) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException {
 		String[] paths = new String[map.getNumberOfBoxes()];
 		ArrayList<Box> orderedBoxes = new ArrayList<Box>();
 		findBoxToGoalPaths(orderedBoxes, map, paths);
@@ -108,7 +112,7 @@ public class Agent {
 	}
 	
 
-	public boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
+	public boolean findBoxToGoalPaths(ArrayList<Box> orderedBoxes, Map map, String[] paths) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException {
 		if (map.getNumberOfBoxes() == 0) {
 			map.setBoxes(orderedBoxes);
 			return (findSequentialBoxToGoalPaths(map, paths, 0));
@@ -142,8 +146,9 @@ public class Agent {
 	* @param paths String array where box-to-goal paths are stored
 	* @param boxIndx index of initial box in map's box array (should be 0 initially)
 	* @throws CloneNotSupportedException 
+	 * @throws OffOfMapException 
 	*/
-	public boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException {
+	public boolean findSequentialBoxToGoalPaths(Map map, String[] paths, int boxIndx) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException {
 		if (map.getBoxes().isEmpty()) return true;
 		else {
 			boolean isSolved = false;
@@ -174,7 +179,7 @@ public class Agent {
 			}
 		}
 
-	public boolean perturbedPathExists(Map m, String[] paths, int boxIndx, Position pos) throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public boolean perturbedPathExists(Map m, String[] paths, int boxIndx, Position pos) throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 		Box b = m.getBoxes().get(0).clone();
 		Map ghostMap = m.getGhostMap(b.getPosition());		
 		StringBuffer workingPlayerPathToBox = new StringBuffer();
@@ -239,10 +244,11 @@ public class Agent {
 	* Encapsulates findPath() for first box in map's box array in a boolean function and stores its result in paths[boxIndx].
 	* @throws CloneNotSupportedException 
 	* @throws IllegalMoveException 
+	 * @throws OffOfMapException 
 	*
 	*
 	*/
-	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 			try {
 				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), Cell.ECell.BOX);
 				return true;
@@ -252,7 +258,7 @@ public class Agent {
 			}
 	}
 
-	public boolean playerPathExistsToPreviouslyExploredBox(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath) throws CloneNotSupportedException, IOException {
+	public boolean playerPathExistsToPreviouslyExploredBox(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath) throws CloneNotSupportedException, IOException, OffOfMapException {
 		if (!pathMap.containsKey(boxToGoalPath))
 			return false;
 		else {
@@ -287,8 +293,9 @@ public class Agent {
 	* @author Alden Coots <ialden.coots@gmail.com>
 	* @throws CloneNotSupportedException 
 	* @throws DeadlineException
+	 * @throws OffOfMapException 
 	*/
-	public String[] getBoxToGoalPathsWithDeadline(Map map, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException {
+	public String[] getBoxToGoalPathsWithDeadline(Map map, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException, OffOfMapException {
 		
 		if(due.TimeUntil() <= 0)
 		{
@@ -302,7 +309,7 @@ public class Agent {
 		return paths;
 	}
 	
-	public boolean findBoxToGoalPathsWithDeadline(ArrayList<Box> orderedBoxes, Map map, String[] paths, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException {
+	public boolean findBoxToGoalPathsWithDeadline(ArrayList<Box> orderedBoxes, Map map, String[] paths, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException, OffOfMapException {
 		
 		if(due.TimeUntil() <= 0)
 		{
@@ -328,7 +335,7 @@ public class Agent {
 		}
 	}
 	
-	public boolean findSequentialBoxToGoalPathsWithDeadline(Map map, String[] paths, int boxIndx, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException {
+	public boolean findSequentialBoxToGoalPathsWithDeadline(Map map, String[] paths, int boxIndx, Deadline due) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, DeadlineException, OffOfMapException {
 		
 		if(due.TimeUntil() <= 0)
 		{
@@ -358,7 +365,7 @@ public class Agent {
 			}
 		}
 	
-	public boolean boxPathExistsWithDeadline(Map m, String[] paths, int boxIndx, int g, Deadline due) throws CloneNotSupportedException, IOException, IllegalMoveException, DeadlineException {
+	public boolean boxPathExistsWithDeadline(Map m, String[] paths, int boxIndx, int g, Deadline due) throws CloneNotSupportedException, IOException, IllegalMoveException, DeadlineException, OffOfMapException {
 		
 		if(due.TimeUntil() <= 0)
 		{
@@ -374,7 +381,7 @@ public class Agent {
 		}
 	}
 
-	public boolean playerPathExistsToPreviouslyExploredBoxWithDeadline(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath, Deadline due) throws CloneNotSupportedException, IOException, DeadlineException {
+	public boolean playerPathExistsToPreviouslyExploredBoxWithDeadline(Map m, String[] paths, int boxIndx, BoxToGoalPath boxToGoalPath, Deadline due) throws CloneNotSupportedException, IOException, DeadlineException, OffOfMapException {
 		
 		if(due.TimeUntil() <= 0)
 		{
@@ -453,8 +460,9 @@ public class Agent {
      * @return
      * @throws CloneNotSupportedException
      * @throws IOException
+     * @throws OffOfMapException 
      */
-    public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException {
+    public String solve(Map map) throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException, OffOfMapException {
     
 		String result = "";
 	    
@@ -481,8 +489,9 @@ public class Agent {
      * @throws PathNotFoundException
      * @throws IOException
      * @throws IllegalMoveException
+     * @throws OffOfMapException 
      */
-    public String solveWithDeadline(Map map, Deadline due) throws DeadlineException, CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+    public String solveWithDeadline(Map map, Deadline due) throws DeadlineException, CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
     {
     	String result = "";
 	    
@@ -503,8 +512,9 @@ public class Agent {
      * @throws IOException 
      * @throws PathNotFoundException 
      * @throws CloneNotSupportedException 
+     * @throws OffOfMapException 
      */
-    public String solve2(Map map, int numberIterations) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+    public String solve2(Map map, int numberIterations) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
     {
     	Date date = new Date();
 	

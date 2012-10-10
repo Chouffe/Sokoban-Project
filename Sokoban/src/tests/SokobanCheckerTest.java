@@ -13,11 +13,12 @@ import model.SokobanChecker;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 public class SokobanCheckerTest 
 {
 	@Test
-	public final void testGoodPath() throws FileNotFoundException, CloneNotSupportedException
+	public final void testGoodPath() throws FileNotFoundException, CloneNotSupportedException, OffOfMapException
 	{
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/checker/map1.txt"));
 		Map map = new Map(br);
@@ -37,7 +38,7 @@ public class SokobanCheckerTest
 	}
 	
 	@Test
-	public final void testIllegalMoves() throws FileNotFoundException, CloneNotSupportedException
+	public final void testIllegalMoves() throws FileNotFoundException, CloneNotSupportedException, OffOfMapException
 	{
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/checker/map3.txt"));
 		Map map = new Map(br);
@@ -57,7 +58,7 @@ public class SokobanCheckerTest
 	}
 	
 	@Test
-	public final void testShowSolution() throws IllegalMoveException, CloneNotSupportedException, IOException
+	public final void testShowSolution() throws IllegalMoveException, CloneNotSupportedException, IOException, OffOfMapException
 	{
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/checker/map5.txt"));
 		Map map = new Map(br);

@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import exception.DeadlineException;
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 
 public class SolveWithDeadlineTest {
@@ -37,7 +38,7 @@ public class SolveWithDeadlineTest {
 	}
 	
 	@Test
-	public final void testSolveWithDeadline() throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException, DeadlineException {
+	public final void testSolveWithDeadline() throws CloneNotSupportedException, IOException, PathNotFoundException, IllegalMoveException, DeadlineException, OffOfMapException {
 		
 		br = new BufferedReader(new FileReader("src/tests/maps/deadline/map1.txt"));
 		Map map = new Map(br);
@@ -71,7 +72,7 @@ public class SolveWithDeadlineTest {
 	}
 	
 	@Test
-	public final void testSolve2() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	public final void testSolve2() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/deadline/map2.txt"));
 		Map map = new Map(br);

@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 public class PositionFinderTest {
 	PositionFinder pf;
@@ -21,7 +22,7 @@ public class PositionFinderTest {
 
 
 	@Test
-	public final void testPlayerInOpenSpace() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testPlayerInOpenSpace() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map1.txt"));
 		Map map = new Map(br);
@@ -35,7 +36,7 @@ public class PositionFinderTest {
 	}
 	
 	@Test
-	public final void testPlayerByWall() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testPlayerByWall() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map2.txt"));
 		Map map = new Map(br);
@@ -47,7 +48,7 @@ public class PositionFinderTest {
 	}
 
 	@Test
-	public final void testPlayerInGoals() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testPlayerInGoals() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map1.txt"));
 		Map map = new Map(br);
@@ -62,7 +63,7 @@ public class PositionFinderTest {
 	}
 
 	@Test
-	public final void testBoxAtCrossroads() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxAtCrossroads() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map1.txt"));
 		Map map = new Map(br);
@@ -73,7 +74,7 @@ public class PositionFinderTest {
 	}
 
 	@Test
-	public final void testBlockedBox() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBlockedBox() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map6.txt"));
 		Map map = new Map(br);
@@ -85,7 +86,7 @@ public class PositionFinderTest {
 	}
 		
 	@Test
-	public final void testBoxInTunnel() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxInTunnel() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map7.txt"));
 		Map map = new Map(br);
 		System.out.println(map);
@@ -95,7 +96,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxInGoalTunnel() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxInGoalTunnel() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map8.txt"));
 		Map map = new Map(br);
@@ -106,7 +107,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearTwoOtherBoxes() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearTwoOtherBoxes() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map10.txt"));
 		Map map = new Map(br);
@@ -120,7 +121,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearThreeOtherBoxes() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearThreeOtherBoxes() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map11.txt"));
 		Map map = new Map(br);
@@ -133,7 +134,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearDeadlockCorner() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearDeadlockCorner() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map30.txt"));
 		Map map = new Map(br);
@@ -150,7 +151,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearDeadlockTop() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearDeadlockTop() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map31.txt"));
 		Map map = new Map(br);
@@ -165,8 +166,26 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 		assertEquals(pos.unboundMove('L'), moves.get(1).getNewPosition());
 		assertEquals(pos.unboundMove('R'), moves.get(2).getNewPosition());
 	}
+
 	@Test
-	public final void testBoxNearACorner() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearLikeDeadlockTop() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
+
+		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map32.txt"));
+		Map map = new Map(br);
+		System.out.println(map);
+		Position pos = map.getBoxes().get(0).getPosition();
+		ArrayList<BoxMove> moves = pf.findEmptySpacesAround(pos, map, Cell.ECell.BOX);
+
+		for (BoxMove move : moves)
+		System.out.println(move);
+
+		assertEquals(pos.unboundMove('U'), moves.get(0).getNewPosition());
+		assertEquals(pos.unboundMove('D'), moves.get(1).getNewPosition());
+		assertEquals(pos.unboundMove('L'), moves.get(2).getNewPosition());
+		assertEquals(pos.unboundMove('R'), moves.get(3).getNewPosition());
+	}
+	@Test
+	public final void testBoxNearACorner() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map12.txt"));
 		Map map = new Map(br);
@@ -179,7 +198,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearAStickyWall() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearAStickyWall() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map13.txt"));
 		Map map = new Map(br);
@@ -192,7 +211,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearTwoStickyWalls() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearTwoStickyWalls() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map14.txt"));
 		Map map = new Map(br);
@@ -204,7 +223,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearGoalWall() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearGoalWall() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map15.txt"));
 		Map map = new Map(br);
@@ -217,7 +236,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearPlayer() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearPlayer() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map16.txt"));
 		Map map = new Map(br);
@@ -241,7 +260,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxInAlcove() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxInAlcove() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map17.txt"));
 		Map map = new Map(br);
@@ -253,7 +272,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxNearGoalCorner() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxNearGoalCorner() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map18.txt"));
 		Map map = new Map(br);
@@ -265,7 +284,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testCorneredBox() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testCorneredBox() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map19.txt"));
 		Map map = new Map(br);
@@ -277,7 +296,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 	
 	@Test
-	public final void testBoxNearWall() throws CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testBoxNearWall() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map21.txt"));
 		Map map = new Map(br);
@@ -291,7 +310,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling1() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShuffling1() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map20.txt"));
 		Map map = new Map(br);
@@ -306,7 +325,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling2() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShuffling2() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map23.txt"));
 		Map map = new Map(br);
@@ -321,7 +340,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling3() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShuffling3() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map24.txt"));
 		Map map = new Map(br);
@@ -336,7 +355,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling5() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShuffling5() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map25.txt"));
 		Map map = new Map(br);
@@ -351,7 +370,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShuffling10() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShuffling10() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map26.txt"));
 		Map map = new Map(br);
@@ -366,7 +385,7 @@ BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/
 	}
 
 	@Test
-	public final void testBoxShufflingXtreme() throws CloneNotSupportedException, IOException, IllegalMoveException {
+	public final void testBoxShufflingXtreme() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException {
 
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/posfinder/map27.txt"));
 		Map map = new Map(br);

@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 public class PositionTest 
 {
@@ -207,7 +208,7 @@ public class PositionTest
 	}
 	
 	@Test
-	public final void testMovingPositionWithPlayer() throws IllegalMoveException, CloneNotSupportedException
+	public final void testMovingPositionWithPlayer() throws IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		
 		BufferedReader br = null;

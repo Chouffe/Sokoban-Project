@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 public class Map implements Cloneable
 {
@@ -275,9 +276,10 @@ public class Map implements Cloneable
 	 * @return
 	 * @throws IllegalMoveException
 	 * If we try to move an element to a wall, or to an other box ...
+	 * @throws OffOfMapException 
 	 * @see set(Cell.ECell cell, Position position)
 	 */
-	public Map set(Element e, Position p, boolean isFinal) throws IllegalMoveException
+	public Map set(Element e, Position p, boolean isFinal) throws IllegalMoveException, OffOfMapException
 	{
 		Cell oldCell = getCellFromPosition(e.getPosition());
 		Cell newCell = getCellFromPosition(p);
@@ -566,7 +568,7 @@ public class Map implements Cloneable
 				&& position.getJ() < width);
 	}
 
-	public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException 
+	public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException, OffOfMapException 
 	{
 		Position boxPos = box.getPosition();
 		Cell.ECell boxCellType = getCellFromPosition(boxPos).getType();
@@ -594,7 +596,7 @@ public class Map implements Cloneable
 	}
 
 	
-	public Cell getCellFromPosition(Position position)
+	public Cell getCellFromPosition(Position position) throws OffOfMapException
 	{
 		if(isPositionOnTheMap(position))
 		{
@@ -602,7 +604,7 @@ public class Map implements Cloneable
 		}
 		else
 		{
-			return null;
+			throw new OffOfMapException();
 		}
 	}
 	
@@ -711,8 +713,9 @@ public class Map implements Cloneable
 	 * @param moves
 	 * @throws IllegalMoveException
 	 * @throws CloneNotSupportedException 
+	 * @throws OffOfMapException 
 	 */
-	public void applyMoves(String moves) throws IllegalMoveException, CloneNotSupportedException
+	public void applyMoves(String moves) throws IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		moves = moves.toUpperCase();
 		Moves m = new Moves(moves);
@@ -723,7 +726,7 @@ public class Map implements Cloneable
 		}
 	}
 
-	public void applyMoves(String moves, boolean endsOnGoal) throws IllegalMoveException, CloneNotSupportedException
+	public void applyMoves(String moves, boolean endsOnGoal) throws IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		if (!endsOnGoal) applyMoves(moves);
 		else {
@@ -739,7 +742,7 @@ public class Map implements Cloneable
 		}
 	}
 	
-	public void applyOneMove(EMove emove, boolean isFinalGoal) throws IllegalMoveException, CloneNotSupportedException
+	public void applyOneMove(EMove emove, boolean isFinalGoal) throws IllegalMoveException, CloneNotSupportedException, OffOfMapException
 		{
 			Position newLocation = Moves.getPositionFromInitialPositionAndMove(player.getPosition(), emove);
 			

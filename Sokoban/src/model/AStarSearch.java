@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 import java.io.IOException;
 
@@ -67,8 +68,9 @@ public class AStarSearch
 	 * @throws PathNotFoundException
 	 * @throws CloneNotSupportedException 
 	 * @throws IllegalMoveException 
+	 * @throws OffOfMapException 
 	 */
-	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public Moves search(Cell.ECell cellType) throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		PositionFinder pf = new PositionFinder();
 		
@@ -199,8 +201,9 @@ public class AStarSearch
 	 * @throws CloneNotSupportedException 
 	 * @throws PathNotFoundException 
      * @throws IllegalMoveException 
+     * @throws OffOfMapException 
 	 */
-    public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+    public String findPath(Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{	
 		return findPath(map, position1, position2, cellType);
 	}
@@ -216,8 +219,9 @@ public class AStarSearch
 	 * @throws CloneNotSupportedException
 	 * @throws PathNotFoundException
 	 * @throws IllegalMoveException 
+	 * @throws OffOfMapException 
 	 */
-	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	public String findPath(Map map, Position position1, Position position2, Cell.ECell cellType) throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{
 		// We clean all the variables before doing the search
 		clean();

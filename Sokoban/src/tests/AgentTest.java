@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 
 
@@ -150,7 +151,7 @@ public class AgentTest {
 	
 		
 	@Test
-	public final void testFindPath() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException
+	public final void testFindPath() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException, OffOfMapException
 	{
 		try
 		{
@@ -239,7 +240,7 @@ public class AgentTest {
 
 	
 	@Test
-	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/pathExist/map1.txt"));
 		Map map = new Map(br);
@@ -253,7 +254,7 @@ public class AgentTest {
 	}
 	
 	@Test
-	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException
+	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException, OffOfMapException
 	{
 		try
 		{

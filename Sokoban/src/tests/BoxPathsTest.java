@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 
 public class BoxPathsTest {
@@ -22,7 +23,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPath() throws FileNotFoundException, IllegalMoveException{
+	public final void TestSequentialBoxPath() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map1.txt"));
 	Map map = new Map(br);
@@ -45,7 +46,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPaths() throws FileNotFoundException, IllegalMoveException{
+	public final void TestSequentialBoxPaths() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map3.txt"));
 	Map map = new Map(br);
@@ -71,7 +72,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSequentialBoxPathsFailure() throws FileNotFoundException, IllegalMoveException{
+	public final void TestSequentialBoxPathsFailure() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map2.txt"));
 	Map map = new Map(br);
@@ -97,7 +98,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestFindBoxToGoalPaths() throws FileNotFoundException, IllegalMoveException{
+	public final void TestFindBoxToGoalPaths() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 
 	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map2.txt"));
 	Map map = new Map(br);
@@ -124,7 +125,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestSimplePerturbedPaths() throws FileNotFoundException, IllegalMoveException{
+	public final void TestSimplePerturbedPaths() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 	
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map4.txt"));
 		Map map = new Map(br);
@@ -152,7 +153,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void BestFuckingTestYet() throws FileNotFoundException, IllegalMoveException{
+	public final void BestFuckingTestYet() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 	
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map8.txt"));
 		Map map = new Map(br);
@@ -180,7 +181,7 @@ public class BoxPathsTest {
 	}
 
 	@Test
-	public final void TestPerturbedPaths() throws FileNotFoundException, IllegalMoveException{
+	public final void TestPerturbedPaths() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 	
 		BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map7.txt"));
 		Map map = new Map(br);
@@ -208,7 +209,7 @@ public class BoxPathsTest {
 	}
 
 //	@Test
-//	public final void TestHashPaths() throws FileNotFoundException, IllegalMoveException{
+//	public final void TestHashPaths() throws FileNotFoundException, IllegalMoveException, OffOfMapException {
 //
 //	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map6.txt"));
 //	Map map = new Map(br);

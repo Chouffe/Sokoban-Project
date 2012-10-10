@@ -7,6 +7,8 @@ package model;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
+import exception.OffOfMapException;
+
 /**
  *
  * @author lfreina
@@ -62,7 +64,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
         return sortedGoals;
     }            
     
-    public ArrayList<ArrayList<Position>> groupGoals(ArrayList<ArrayList<Position>> Vertical, ArrayList<ArrayList<Position>> Horizontal ) throws CloneNotSupportedException
+    public ArrayList<ArrayList<Position>> groupGoals(ArrayList<ArrayList<Position>> Vertical, ArrayList<ArrayList<Position>> Horizontal ) throws CloneNotSupportedException, OffOfMapException
     {
         LinkedHashSet solutionTest = new LinkedHashSet(); 
         ArrayList<ArrayList<Position>> solution = new ArrayList<ArrayList<Position>>();
@@ -110,7 +112,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
         
     }
     
-    public ArrayList<GoalSpace> getGoalSpaces() throws CloneNotSupportedException
+    public ArrayList<GoalSpace> getGoalSpaces() throws CloneNotSupportedException, OffOfMapException
     {
         
 //        ArrayList<Box> sortH = sort(boxes,false);
@@ -215,7 +217,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
     }
     
     
-    public ArrayList<ArrayList<Position>> Search(ArrayList<Position> AllGoals) throws CloneNotSupportedException
+    public ArrayList<ArrayList<Position>> Search(ArrayList<Position> AllGoals) throws CloneNotSupportedException, OffOfMapException
     {
 //        if (Allboxes.size()>20)
 //            SPACES = 3;
@@ -303,7 +305,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
         //
         // @autor: Luis 
         // @note: unboundMove is not working ... :S
-        public boolean [] LookAround (Position GoalSquare) throws CloneNotSupportedException
+        public boolean [] LookAround (Position GoalSquare) throws CloneNotSupportedException, OffOfMapException
         {
             
             // Always initialize as he can go no where.
@@ -320,7 +322,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return directions;
         }  
         
-        public boolean LookRight (Position goal) throws CloneNotSupportedException
+        public boolean LookRight (Position goal) throws CloneNotSupportedException, OffOfMapException
         {
                                  
             
@@ -341,7 +343,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookLeft (Position goal) throws CloneNotSupportedException
+        public boolean LookLeft (Position goal) throws CloneNotSupportedException, OffOfMapException
         {                                              
             Position left = goal.clone().left(board);
                         
@@ -360,7 +362,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookUp (Position goal) throws CloneNotSupportedException
+        public boolean LookUp (Position goal) throws CloneNotSupportedException, OffOfMapException
         {           
             Position up = goal.clone().up(board);
                         
@@ -380,7 +382,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return false;
         }
         
-        public boolean LookDown (Position goal) throws CloneNotSupportedException
+        public boolean LookDown (Position goal) throws CloneNotSupportedException, OffOfMapException
         {                                  
             Position down = goal.clone().down(board);
                         
@@ -415,7 +417,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             
         }
                 
-        public boolean isAdjacent(Position start, ArrayList<Position> solution) throws CloneNotSupportedException 
+        public boolean isAdjacent(Position start, ArrayList<Position> solution) throws CloneNotSupportedException, OffOfMapException 
         {
             Position one = start.clone();
             boolean group = true;
@@ -425,7 +427,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             }
             return group;
         }
-        public boolean isAdjacent(Position start, Position two) throws CloneNotSupportedException
+        public boolean isAdjacent(Position start, Position two) throws CloneNotSupportedException, OffOfMapException
         {
             Position one = start.clone();
             boolean group = true;
@@ -459,7 +461,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return false;
         } 
         
-        public ArrayList<ArrayList<Position>> TryToMergeV(ArrayList<ArrayList<Position>> Allboxes) throws CloneNotSupportedException
+        public ArrayList<ArrayList<Position>> TryToMergeV(ArrayList<ArrayList<Position>> Allboxes) throws CloneNotSupportedException, OffOfMapException
         {            
             // To save the not Grouped/Merged ones.
             ArrayList<ArrayList<Position>> solution = new ArrayList<ArrayList<Position>>();
@@ -533,7 +535,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             return solution;
         }
         
-        public boolean isAdjacentV(ArrayList<Position> one, ArrayList<Position> two) throws CloneNotSupportedException 
+        public boolean isAdjacentV(ArrayList<Position> one, ArrayList<Position> two) throws CloneNotSupportedException, OffOfMapException 
         {            
             boolean group = true;            
             for (int i =0; i<one.size();i++){
@@ -593,7 +595,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 //            }
         }
         
-        public boolean isAdjacentV(Position start, Position two) throws CloneNotSupportedException 
+        public boolean isAdjacentV(Position start, Position two) throws CloneNotSupportedException, OffOfMapException 
         {
             Position one = start.clone();
             boolean group = true;
@@ -636,7 +638,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                 return group;                           
         }
         
-        private ArrayList<ArrayList<Position>> tryToGroup (ArrayList<Position> AllGoals) throws CloneNotSupportedException
+        private ArrayList<ArrayList<Position>> tryToGroup (ArrayList<Position> AllGoals) throws CloneNotSupportedException, OffOfMapException
         {
             ArrayList<Position> solution = new ArrayList<Position>();
             ArrayList<Position> notGroup = new ArrayList<Position>();

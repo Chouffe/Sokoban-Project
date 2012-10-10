@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 import exception.PathNotFoundException;
 
 public class AStarTest 
@@ -104,7 +105,7 @@ public class AStarTest
 	
 	
 	@Test
-	public final void testSearchWithPlayer() throws PathNotFoundException, CloneNotSupportedException, IllegalMoveException, IOException
+	public final void testSearchWithPlayer() throws PathNotFoundException, CloneNotSupportedException, IllegalMoveException, IOException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath1.txt"));
 		Map map = new Map(br);
@@ -173,7 +174,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testSearchWithPlayerEdgeCases() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testSearchWithPlayerEdgeCases() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/map3.txt"));
 		Map map = new Map(br);
@@ -185,7 +186,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testSearchWithPlayerFailure() throws CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testSearchWithPlayerFailure() throws CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/path/test-findPath3.txt"));
 		Map map = new Map(br);
@@ -205,7 +206,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testEasyRightSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testEasyRightSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/easy/right/map1.txt"));
 		Map map = new Map(br);
@@ -242,7 +243,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testEasyLeftSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testEasyLeftSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/easy/left/map1.txt"));
@@ -280,7 +281,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testEasyUpSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testEasyUpSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/easy/up/map1.txt"));
 		Map map = new Map(br);
@@ -316,7 +317,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testEasyDownSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testEasyDownSearchWithBoxWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/easy/down/map1.txt"));
 		Map map = new Map(br);
@@ -352,7 +353,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testSearchWithBoxesWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testSearchWithBoxesWithoutShuffling() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/medium/map1.txt"));
 		Map map = new Map(br);
@@ -399,7 +400,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testSearchWithBoxEdgeCases() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException
+	public final void testSearchWithBoxEdgeCases() throws PathNotFoundException, CloneNotSupportedException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/edgecases/map1.txt"));
 		Map map = new Map(br);
@@ -412,7 +413,7 @@ public class AStarTest
 	
 	
 	@Test
-	public final void testSearchWithBoxPathNotFound() throws CloneNotSupportedException, IOException, IllegalMoveException, PathNotFoundException
+	public final void testSearchWithBoxPathNotFound() throws CloneNotSupportedException, IOException, IllegalMoveException, PathNotFoundException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/pathnotfound/map1.txt"));
 		Map map = new Map(br);
@@ -519,7 +520,7 @@ public class AStarTest
 	}
 	
 	@Test
-	public final void testSearchWithBoxWithShuffling() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	public final void testSearchWithBoxWithShuffling() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/astar/box/shuffling/map1.txt"));
 		Map map = new Map(br);

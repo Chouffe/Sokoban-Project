@@ -3,6 +3,7 @@ package model;
 import java.io.IOException;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 
 /**
@@ -14,7 +15,7 @@ import exception.IllegalMoveException;
 public class SokobanChecker 
 {
 	
-	public static boolean mapIsSolved(Map map, String solution) throws CloneNotSupportedException
+	public static boolean mapIsSolved(Map map, String solution) throws CloneNotSupportedException, OffOfMapException
 	{
 		try
 		{
@@ -34,7 +35,7 @@ public class SokobanChecker
 		}
 	}
 	
-	public static void showMapSolving(Map map, String solution) throws IllegalMoveException, CloneNotSupportedException, IOException
+	public static void showMapSolving(Map map, String solution) throws IllegalMoveException, CloneNotSupportedException, IOException, OffOfMapException
 	{
 		map = map.clone();
 		solution = solution.toUpperCase();

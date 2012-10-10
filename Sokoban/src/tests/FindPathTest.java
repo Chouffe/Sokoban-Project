@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;
+import exception.OffOfMapException;
 
 public class FindPathTest {
 
@@ -33,7 +34,7 @@ public class FindPathTest {
 	}
 	
 	@Test
-	public void testFindPathEasy() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException 
+	public void testFindPathEasy() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException 
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/findpath/easy/map1.txt"));
 		Map map = new Map(br);
@@ -62,7 +63,7 @@ public class FindPathTest {
 	}
 	
 	@Test
-	public void testFindPathMedium() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException 
+	public void testFindPathMedium() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException 
 	{
 		// Test 1
 		br = new BufferedReader(new FileReader("src/tests/maps/findpath/medium/map1.txt"));
@@ -84,7 +85,7 @@ public class FindPathTest {
 	}
 	
 	@Test
-	public final void testFindPathDifficult() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
+	public final void testFindPathDifficult() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException, OffOfMapException
 	{
 		// Test 3
 		br = new BufferedReader(new FileReader("src/tests/maps/findpath/difficult/map1.txt"));

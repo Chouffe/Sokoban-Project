@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import exception.IllegalMoveException;
+import exception.OffOfMapException;
 
 
 public class MapTest 
@@ -32,7 +33,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testCreationMap()
+	public final void testCreationMap() throws OffOfMapException
 	{
 		
 		// Empty Map
@@ -131,7 +132,7 @@ public class MapTest
 	}
 	
 	@Test 
-	public final void testMap()
+	public final void testMap() throws OffOfMapException
 	{
 		
 		try
@@ -255,7 +256,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testSettingMap() throws IllegalMoveException, CloneNotSupportedException
+	public final void testSettingMap() throws IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		try
 		{
@@ -366,7 +367,7 @@ public class MapTest
 		
 	
 	@Test
-	public final void testSet() throws FileNotFoundException, IllegalMoveException
+	public final void testSet() throws FileNotFoundException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
 		Map map1 = new Map(br);
@@ -383,7 +384,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testSetFailure() throws FileNotFoundException, IllegalMoveException
+	public final void testSetFailure() throws FileNotFoundException, IllegalMoveException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/setting/map2.txt"));
 		Map map1 = new Map(br);
@@ -438,7 +439,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testApplyOneMoveSuccess() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	public final void testApplyOneMoveSuccess() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		
 		// Test LEFT && RIGHT
@@ -507,7 +508,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testApplyOneMoveFailure() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	public final void testApplyOneMoveFailure() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		// Test LEFT && RIGHT
 		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map1.txt"));
@@ -582,7 +583,7 @@ public class MapTest
 	}
 	
 	@Test
-	public final void testApplyMoves() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException
+	public final void testApplyMoves() throws FileNotFoundException, IllegalMoveException, CloneNotSupportedException, OffOfMapException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map4.txt"));
 		Map map = new Map(br);
