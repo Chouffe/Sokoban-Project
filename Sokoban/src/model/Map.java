@@ -8,9 +8,6 @@ import java.util.HashMap;
 
 import exception.IllegalMoveException;
 
-import model.Cell.ECell;
-import static model.Cell.ECell.*;
-
 public class Map implements Cloneable
 {
 	protected ArrayList<ArrayList<Cell>> map = null;
@@ -196,11 +193,11 @@ public class Map implements Cloneable
 				switch(newCell.type)
 				{
 					case GOAL_SQUARE:
-						set(ECell.PLAYER_ON_GOAL_SQUARE, p);
+						set(Cell.ECell.PLAYER_ON_GOAL_SQUARE, p);
 						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
-						set(ECell.PLAYER, p);
+						set(Cell.ECell.PLAYER, p);
 						e.setOnGoal(false);
 					break;
 					default:
@@ -214,16 +211,16 @@ public class Map implements Cloneable
 					case GOAL_SQUARE:
 						moveBox(e.getPosition(), p);
 						if (isFinal) {
-							set(ECell.FINAL_BOX_ON_GOAL, p);
+							set(Cell.ECell.FINAL_BOX_ON_GOAL, p);
 							goals.remove(p);
 							removeBox((Box)e);
 						}
-						else set(ECell.BOX_ON_GOAL, p);
+						else set(Cell.ECell.BOX_ON_GOAL, p);
 						e.setOnGoal(true);
 					break;
 					case EMPTY_FLOOR:
 						moveBox(e.getPosition(), p);
-						set(ECell.BOX, p);
+						set(Cell.ECell.BOX, p);
 						e.setOnGoal(false);
 					break;
 					default:
@@ -240,10 +237,10 @@ public class Map implements Cloneable
 				switch(oldCell.type)
 				{
 					case PLAYER_ON_GOAL_SQUARE:
-						set(ECell.GOAL_SQUARE, oldPos);
+						set(Cell.ECell.GOAL_SQUARE, oldPos);
 					break;
 					case PLAYER:
-						set(ECell.EMPTY_FLOOR, oldPos);
+						set(Cell.ECell.EMPTY_FLOOR, oldPos);
 					break;
 					default:
 						throw new IllegalMoveException();
@@ -257,10 +254,10 @@ public class Map implements Cloneable
 				switch(oldCell.type)
 				{
 					case BOX_ON_GOAL:
-						set(ECell.GOAL_SQUARE, oldPos);
+						set(Cell.ECell.GOAL_SQUARE, oldPos);
 					break;
 					case BOX:
-						set(ECell.EMPTY_FLOOR, oldPos);
+						set(Cell.ECell.EMPTY_FLOOR, oldPos);
 					break;
 					default:
 						throw new IllegalMoveException();
@@ -468,23 +465,23 @@ public class Map implements Cloneable
 	public void putBoxOnGoal(Box box, Position goal, String boxPath) throws CloneNotSupportedException 
 	{
 		Position boxPos = box.getPosition();
-		ECell boxCellType = getCellFromPosition(boxPos).getType();
+		Cell.ECell boxCellType = getCellFromPosition(boxPos).getType();
 		char lastMove = boxPath.charAt(boxPath.length()-1);
 		Position playerPos = goal.unboundMove(PositionFinder.getOppositeDirection(lastMove));
-		ECell playerPosType = getCellFromPosition(playerPos).getType();
-		set(BOX_ON_GOAL, goal);
+		Cell.ECell playerPosType = getCellFromPosition(playerPos).getType();
+		set(Cell.ECell.BOX_ON_GOAL, goal);
 
-		if (boxCellType == BOX_ON_GOAL)
-			set(GOAL_SQUARE, boxPos);
-		else if (boxCellType == BOX)
-			set(EMPTY_FLOOR, boxPos);
+		if (boxCellType == Cell.ECell.BOX_ON_GOAL)
+			set(Cell.ECell.GOAL_SQUARE, boxPos);
+		else if (boxCellType == Cell.ECell.BOX)
+			set(Cell.ECell.EMPTY_FLOOR, boxPos);
 
-		if (playerPosType == GOAL_SQUARE) {
-			set(PLAYER_ON_GOAL_SQUARE, playerPos);
+		if (playerPosType == Cell.ECell.GOAL_SQUARE) {
+			set(Cell.ECell.PLAYER_ON_GOAL_SQUARE, playerPos);
 			player = new Player(playerPos, true);
 			}
-		else if (playerPosType == EMPTY_FLOOR || playerPosType == VISITED) {
-			set(PLAYER, playerPos);
+		else if (playerPosType == Cell.ECell.EMPTY_FLOOR || playerPosType == Cell.ECell.VISITED) {
+			set(Cell.ECell.PLAYER, playerPos);
 			player = new Player(playerPos, false);
 			}
 
@@ -642,11 +639,11 @@ public class Map implements Cloneable
 		{
 			Position newLocation = Moves.getPositionFromInitialPositionAndMove(player.getPosition(), emove);
 			
-			if(getCellFromPosition(newLocation).getType() == EMPTY_FLOOR || getCellFromPosition(newLocation).getType() == GOAL_SQUARE)
+			if(getCellFromPosition(newLocation).getType() == Cell.ECell.EMPTY_FLOOR || getCellFromPosition(newLocation).getType() == Cell.ECell.GOAL_SQUARE)
 			{
 				set(player, newLocation, false);
 			}
-			else if(getCellFromPosition(newLocation).getType() == BOX || getCellFromPosition(newLocation).getType() == BOX_ON_GOAL)
+			else if(getCellFromPosition(newLocation).getType() == Cell.ECell.BOX || getCellFromPosition(newLocation).getType() == Cell.ECell.BOX_ON_GOAL)
 			{
 
 				// we move first the box
