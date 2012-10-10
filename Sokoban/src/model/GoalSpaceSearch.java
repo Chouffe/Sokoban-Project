@@ -134,8 +134,8 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             System.out.println(solution.size()+"*********NEW SIZE**********");   
         }
         System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
-//        ArrayList<ArrayList<Position>> singles = getSingles(solution);                
-//        solution = TryToMergeV(solution);
+        ArrayList<ArrayList<Position>> singles = getSingles(solution);                
+        solution = TryToMergeV(singles);
 //        System.out.println(solution.size()+"*********SIZE**********");
 //        singles = getSingles(solution);                
 //        solution = TryToMergeV(singles);
@@ -614,7 +614,10 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                         if (group){
                                 System.out.println("moving up..."+ one.clone().up(board));
                             one.up(board);
-                            group = isAdjacentV(one, two);
+                            if (isAdjacent(one,two))
+                                group = isAdjacentV(one, two);
+                            else
+                                return false;
                         }
                     }
                     else{
@@ -622,7 +625,10 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                         if (group){
                                 System.out.println("moving down..."+ one.clone().down(board));
                             one.down(board);
-                            group = isAdjacentV(one,two);
+                            if (isAdjacent(one,two))
+                                group = isAdjacentV(one,two);
+                            else
+                                return false;
                         }
                     }
 

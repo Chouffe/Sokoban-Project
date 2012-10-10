@@ -137,9 +137,9 @@ public class BoxSpaceSearch extends Box implements Cloneable {
 //            System.out.println(solution.size()+"*********NEW SIZE**********");   
         }
 //        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
-//        ArrayList<ArrayList<Box>> singles = getSingles(solution);                
-//        solution = TryToMergeV(solution);
-//        System.out.println(solution.size()+"*********SIZE**********");
+        ArrayList<ArrayList<Box>> singles = getSingles(solution);                
+        solution = TryToMergeV(solution);
+        System.out.println(solution.size()+"*********SIZE**********");
 //        singles = getSingles(solution);                
 //        solution = TryToMergeV(singles);
 //        System.out.println(solution.size()+"*********SIZE**********");
@@ -633,16 +633,22 @@ public class BoxSpaceSearch extends Box implements Cloneable {
                         group = LookUp(one);
                         if (group){
 //                                System.out.println("moving up..."+ one.clone().getPosition().up(board));
-                            one.getPosition().up(board);
-                            group = isAdjacentV(one, stop);
+                            one.getPosition().up(board);                            
+                            if (isAdjacent(one,stop))
+                                group = isAdjacentV(one, stop);
+                            else
+                                return false;
                         }
                     }
                     else{
                         group = LookDown(one);
                         if (group){
 //                                System.out.println("moving down..."+ one.clone().getPosition().down(board));
-                            one.getPosition().down(board);
-                            group = isAdjacentV(one,stop);
+                            one.getPosition().down(board);                            
+                            if (isAdjacent(one,stop))
+                                group = isAdjacentV(one,stop);
+                            else
+                                return false;
                         }
                     }
 

@@ -71,8 +71,8 @@ public class BoxSpaceTest {
     
     @Test
     public void testSearch() throws Exception {
-//        int [] map_num = {94,93,88,87,82,81,79,77,76,70,68,66,64,60,59,58,57};
-        int [] map_num = {93};
+        int [] map_num = {94,93,88,87,82,81,79,77,76,70,68,66,64,60,59,58,57};
+//        int [] map_num = {93};
 //        for (int i =1;i<112;i++){
         for (int i: map_num){
         BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map"+i+".txt"));
@@ -118,32 +118,32 @@ public class BoxSpaceTest {
 //            assertEquals(false,result);
 //        }
     
-    @Test
-    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
-        {            
-            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map93.txt"));
-            Map map = new Map(br);
-            System.out.println(map);
-        
-            ArrayList<Box> boxes = map.getBoxes(); 
-            
-            BoxSpaceSearch instance = new BoxSpaceSearch(boxes, map);
-            ArrayList<BoxSpace> tests = instance.getBoxSpaces();
-//            ArrayList<Box> a = new ArrayList<Box>();
-            ArrayList<Box> a= tests.get(1).getBoxes();
-            instance.printBS(tests);
-//            for (Box t: tests.get(0))
-//            {
-//                a.add(t);
-//            }
-//            for (Box t: tests.get(1))
-//            {
-//                a.add(t);
-//            }
-            ArrayList<Box> b = tests.get(2).getBoxes();
-                    
-            boolean result = instance.isAdjacentV(b, a);             
-            System.out.println("A"+result);
-            assertEquals(true,result);
-        }
+//    @Test
+//    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
+//        {            
+//            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map93.txt"));
+//            Map map = new Map(br);
+//            System.out.println(map);
+//        
+//            ArrayList<Box> boxes = map.getBoxes(); 
+//            
+//            BoxSpaceSearch instance = new BoxSpaceSearch(boxes, map);
+//            ArrayList<BoxSpace> tests = instance.getBoxSpaces();
+////            ArrayList<Box> a = new ArrayList<Box>();
+//            ArrayList<Box> a= tests.get(1).getBoxes();
+//            instance.printBS(tests);
+////            for (Box t: tests.get(0))
+////            {
+////                a.add(t);
+////            }
+////            for (Box t: tests.get(1))
+////            {
+////                a.add(t);
+////            }
+//            ArrayList<Box> b = tests.get(2).getBoxes();
+//                    
+//            boolean result = instance.isAdjacentV(b, a);             
+//            System.out.println("A"+result);
+//            assertEquals(true,result);
+//        }
 }

@@ -119,29 +119,29 @@ public class GoalSpaceTest {
 //            assertEquals(false,result);
 //        }
     
-    @Test
-    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
-        {            
-            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map93.txt"));
-            Map map = new Map(br);
-            System.out.println(map);
-        
-            GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(), map);
-            ArrayList<GoalSpace> tests = instance.getGoalSpaces();
-//            ArrayList<Box> a = new ArrayList<Box>();
-            GoalSpace a = tests.get(1);
-//            for (Box t: tests.get(0))
-//            {
-//                a.add(t);
-//            }
-//            for (Box t: tests.get(1))
-//            {
-//                a.add(t);
-//            }
-            GoalSpace b = tests.get(2);
-                    
-            boolean result = instance.isAdjacentV(b.getGoalsAL(), a.getGoalsAL());             
-            System.out.println("A"+result);
-            assertEquals(true,result);
-        }
+//    @Test
+//    public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
+//        {            
+//            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map93.txt"));
+//            Map map = new Map(br);
+//            System.out.println(map);
+//        
+//            GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(), map);
+//            ArrayList<GoalSpace> tests = instance.getGoalSpaces();
+////            ArrayList<Box> a = new ArrayList<Box>();
+//            GoalSpace a = tests.get(1);
+////            for (Box t: tests.get(0))
+////            {
+////                a.add(t);
+////            }
+////            for (Box t: tests.get(1))
+////            {
+////                a.add(t);
+////            }
+//            GoalSpace b = tests.get(2);
+//                    
+//            boolean result = instance.isAdjacentV(b.getGoalsAL(), a.getGoalsAL());             
+//            System.out.println("A"+result);
+//            assertEquals(true,result);
+//        }
 }
