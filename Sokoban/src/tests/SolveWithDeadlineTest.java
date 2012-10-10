@@ -5,7 +5,10 @@ import static org.junit.Assert.assertEquals;
 import Agent;
 import Cell;
 import Deadline;
+import DeadlineException;
+import IllegalMoveException;
 import Map;
+import PathNotFoundException;
 import Position;
 import SokobanChecker;
 
@@ -20,9 +23,6 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.DeadlineException;
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 public class SolveWithDeadlineTest {
 

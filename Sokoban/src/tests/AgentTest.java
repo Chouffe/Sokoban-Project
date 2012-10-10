@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import Agent;
 import Cell;
+import IllegalMoveException;
 import Map;
+import PathNotFoundException;
 import Position;
 
 import java.io.BufferedReader;
@@ -16,8 +18,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 
 public class AgentTest {

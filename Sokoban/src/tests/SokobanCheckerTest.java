@@ -1,6 +1,7 @@
 package tests;
 
 import static org.junit.Assert.*;
+import IllegalMoveException;
 import Map;
 import SokobanChecker;
 
@@ -12,7 +13,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import exception.IllegalMoveException;
 
 public class SokobanCheckerTest 
 {

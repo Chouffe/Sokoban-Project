@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 
 public class PositionFinder {

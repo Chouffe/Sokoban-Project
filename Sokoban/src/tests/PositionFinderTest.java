@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 import BoxMove;
 import Cell;
+import IllegalMoveException;
 import Map;
 import Position;
 import PositionFinder;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.IllegalMoveException;
 
 public class PositionFinderTest {
 	PositionFinder pf;

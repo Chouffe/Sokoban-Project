@@ -2,7 +2,6 @@
 
 import java.io.IOException;
 
-import exception.IllegalMoveException;
 
 
 /**

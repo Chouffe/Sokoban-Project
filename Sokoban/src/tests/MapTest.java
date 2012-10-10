@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import Box;
 import Cell;
 import EMove;
+import IllegalMoveException;
 import Map;
 import Player;
 import Position;
@@ -19,7 +20,6 @@ import org.junit.Test;
 
 import Cell.ECell;
 
-import exception.IllegalMoveException;
 
 
 public class MapTest 

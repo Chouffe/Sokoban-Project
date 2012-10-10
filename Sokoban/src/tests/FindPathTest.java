@@ -2,7 +2,9 @@ package tests;
 
 import static org.junit.Assert.*;
 import AStarSearch;
+import IllegalMoveException;
 import Map;
+import PathNotFoundException;
 import SokobanChecker;
 
 import java.io.BufferedReader;
@@ -16,8 +18,6 @@ import org.junit.Test;
 
 import Cell.ECell;
 
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 public class FindPathTest {
 

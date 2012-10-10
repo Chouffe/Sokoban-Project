@@ -2,8 +2,10 @@ package tests;
 
 import static org.junit.Assert.*;
 import AStarSearch;
+import IllegalMoveException;
 import Map;
 import Node;
+import PathNotFoundException;
 import Position;
 import SokobanChecker;
 
@@ -21,8 +23,6 @@ import org.omg.PortableInterceptor.SUCCESSFUL;
 
 import Cell.ECell;
 
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 public class AStarTest 
 {

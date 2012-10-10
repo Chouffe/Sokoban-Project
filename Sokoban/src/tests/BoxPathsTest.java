@@ -3,7 +3,9 @@ package tests;
 import static org.junit.Assert.*;
 import Agent;
 import Box;
+import IllegalMoveException;
 import Map;
+import PathNotFoundException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,8 +15,6 @@ import model.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.IllegalMoveException;
-import exception.PathNotFoundException;
 
 public class BoxPathsTest {
 	Agent agent;

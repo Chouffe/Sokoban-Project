@@ -2,6 +2,7 @@ package tests;
 
 
 import static org.junit.Assert.*;
+import IllegalMoveException;
 import Map;
 import Position;
 
@@ -13,7 +14,6 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
-import exception.IllegalMoveException;
 
 public class PositionTest 
 {
