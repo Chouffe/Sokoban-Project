@@ -498,6 +498,12 @@ public class MapTest
 		
 		//System.out.println(map.getBoxes());
 		
+		br = new BufferedReader(new FileReader("src/tests/maps/applymove/map6.txt"));
+		map = new Map(br);
+		
+		map.applyOneMove(EMove.UP, false);
+		
+		
 	}
 	
 	@Test
