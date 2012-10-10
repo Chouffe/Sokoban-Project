@@ -45,7 +45,7 @@ public class PositionFinder {
 		cells[3] = getCellType(map, position.unboundMove('R'));
 		return cells;
 	}
-	
+
 	// Not used yet
 	private Cell.ECell[] getSurroundingCellTypes(Map map, Position position) throws CloneNotSupportedException {
 		char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
@@ -58,14 +58,34 @@ public class PositionFinder {
 		return surr;
 	}
 
-	private int countSurroundingInvalidSquares(Map map, Position pos) throws CloneNotSupportedException {
-		ECell[] surr = getSurroundingCellTypes(map, pos);
-		int count = 0;
-		for (int i=0; i<surr.length; i++) {
-			if (!isValidBoxAccessibleType(surr[i]))
-				count++;
-		}
-		return count;
+	private boolean isSquareDeadlock(Map m, Position box, char dir) throws CloneNotSupportedException {
+			Position dest = box.unboundMove(dir);
+			Map map = m.clone();
+			map.set(ECell.BOX, dest);
+			char[] orthos = getOrthogonals(dir);
+			if (isValidBoxSquare(map, dest.unboundMove(dir))) {
+				return isUnsafeCenter(map, dest.unboundMove(dir));
+			}
+			Position side1 = dest.unboundMove(orthos[0]);
+			Position side2 = dest.unboundMove(orthos[1]);
+			if (!isValidBoxSquare(map, side1))
+				return isUnsafeCenter(map, side1.unboundIncrement(dir));
+			if (!isValidBoxSquare(map, side2))
+				return isUnsafeCenter(map, side2.unboundIncrement(dir));
+			return false;
+	}
+
+	private boolean isUnsafeCenter(Map map, Position center) throws CloneNotSupportedException {
+		return (diagonalsAreUnsafe(map, center) && adjacentsAreUnsafe(map, center));
+	}
+
+	private boolean diagonalsAreUnsafe(Map map, Position center) throws CloneNotSupportedException {
+		return (!isValidBoxSquare(map, center.unboundMove('U').unboundIncrement('L')) && !isValidBoxSquare(map, center.unboundMove('D').unboundIncrement('R')))
+			|| (!isValidBoxSquare(map, center.unboundMove('U').unboundIncrement('R')) && !isValidBoxSquare(map, center.unboundMove('D').unboundIncrement('L')));
+	}
+
+	private boolean adjacentsAreUnsafe(Map map, Position center) throws CloneNotSupportedException {
+		return (!isValidBoxSquare(map, center.unboundMove('U')) && !isValidBoxSquare(map, center.unboundMove('D')) && !isValidBoxSquare(map, center.unboundMove('L')) && !isValidBoxSquare(map, center.unboundMove('R')));
 	}
 
 	private boolean isCorner(Map map, Position position) throws CloneNotSupportedException {
@@ -75,6 +95,9 @@ public class PositionFinder {
 
 	private boolean boxWillDeadlock(Map map, Position dest, char dir) throws CloneNotSupportedException {
 		Position twoAway = dest.unboundMove(dir);
+		Position boxPos = dest.unboundMove(getOppositeDirection(dir));
+		if (isSquareDeadlock(map, boxPos, dir))
+			return true;
 		if (!isBox(map, twoAway))
 			return false;
 		else {
@@ -195,14 +218,15 @@ public class PositionFinder {
 		if (!isValidBoxSquare(map, source) || !isValidBoxSquare(map, dest))
 			return false;
 
-		if (boxWillDeadlock(map, dest, dir))
-			return false;
-
 		if (!isGoal(map, dest)) {
 			if (isCorner(map, dest))
 			   	return false;
 			if (boxWillStickOnWall(map, source.unboundMove(dir), dir))
 			   	return false;
+
+		if (boxWillDeadlock(map, dest, dir))
+			return false;
+
 		}
 
 		return (playerCanPush(map, source, dir, playerPushPath));
