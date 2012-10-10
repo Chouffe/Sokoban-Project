@@ -65,7 +65,7 @@ public class Client {
             //we've found our solution
             Map map = new Map(bufferToString);
             System.out.println(map);
-            String lMySol = agent.solve(map);
+            String lMySol = agent.solve2(map,0);
 
             // send the solution to the server
             lOut.println(lMySol);

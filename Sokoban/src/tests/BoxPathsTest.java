@@ -123,30 +123,30 @@ public class BoxPathsTest {
 	assertEquals(true, success);
 	}
 
-	@Test
-	public final void TestHashPaths() throws FileNotFoundException, IllegalMoveException{
-
-	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map6.txt"));
-	Map map = new Map(br);
-
-	String[] paths = new String[map.getNumberOfBoxes()];
-	ArrayList<Box> ordering = new ArrayList<Box>();
-	boolean success = true;
-	try {
-		success = agent.findBoxToGoalPaths(ordering, map, paths);
-	} catch (CloneNotSupportedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (PathNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-
-	assertEquals("RR", paths[0]);
-	assertEquals("lllulldRRRR", paths[1]);
-	assertEquals(true, success);
-	}
+//	@Test
+//	public final void TestHashPaths() throws FileNotFoundException, IllegalMoveException{
+//
+//	BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/boxpaths/map6.txt"));
+//	Map map = new Map(br);
+//
+//	String[] paths = new String[map.getNumberOfBoxes()];
+//	ArrayList<Box> ordering = new ArrayList<Box>();
+//	boolean success = true;
+//	try {
+//		success = agent.findBoxToGoalPaths(ordering, map, paths);
+//	} catch (CloneNotSupportedException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	} catch (PathNotFoundException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	} catch (IOException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//
+//	assertEquals("RR", paths[0]);
+//	assertEquals("lllulldRRRR", paths[1]);
+//	assertEquals(true, success);
+//	}
 }
