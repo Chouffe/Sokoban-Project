@@ -75,7 +75,7 @@ public class GoalSpaceTest {
     @Test
     public void testSearch() throws Exception {
 //        int [] map_num = {94,93,88,87,82,81,79,77,76,70,68,66,64,60,59,58,57};
-        int [] map_num = {93};
+        int [] map_num = {1};
 //        for (int i =1;i<112;i++){
         for (int i: map_num){
             BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map"+i+".txt"));
@@ -84,14 +84,16 @@ public class GoalSpaceTest {
     //        ArrayList<String> mapa = new ArrayList<String>();
     //        for (String s: mapa_lineas)
     //            mapa.add(s);
-            System.out.println("MAP"+i);
+//            System.out.println("MAP"+i);
             Map map = new Map(br);
-            System.out.println(map);  
-            
+//            System.out.println(map+"Goals "+ map.getNumberOfGoals());  
+            ArrayList<ArrayList<Position>> t = new ArrayList<ArrayList<Position>>();
+            t.add(map.getGoals());
             GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(),map);
             
+//            instance.print(t);
             ArrayList<GoalSpace> result = instance.getGoalSpaces();        
-            instance.printGS(result);
+//            instance.printGS(result);
 
 //        assertEquals(boxes,result);
         }

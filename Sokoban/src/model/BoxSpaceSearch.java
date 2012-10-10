@@ -139,7 +139,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
 //        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
         ArrayList<ArrayList<Box>> singles = getSingles(solution);                
         solution = TryToMergeV(solution);
-        System.out.println(solution.size()+"*********SIZE**********");
+//        System.out.println(solution.size()+"*********SIZE**********");
 //        singles = getSingles(solution);                
 //        solution = TryToMergeV(singles);
 //        System.out.println(solution.size()+"*********SIZE**********");

@@ -128,12 +128,12 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 
         while (oldsolutionSize!=solution.size()){
             oldsolutionSize = solution.size();
-            System.out.println(solution.size()+"********* OLD SIZE**********"); 
+//            System.out.println(solution.size()+"********* OLD SIZE**********"); 
             ArrayList<ArrayList<Position>> singles = getSingles(solution);                
             solution = TryToMergeV(singles);
-            System.out.println(solution.size()+"*********NEW SIZE**********");   
+//            System.out.println(solution.size()+"*********NEW SIZE**********");   
         }
-        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
+//        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
         ArrayList<ArrayList<Position>> singles = getSingles(solution);                
         solution = TryToMergeV(singles);
 //        System.out.println(solution.size()+"*********SIZE**********");
@@ -545,7 +545,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                                 group = group && isAdjacentV(one.get(i),two.get(j));
                             else{
                                 
-                                System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
+//                                System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
                                return false;
                             }
                     }
@@ -555,7 +555,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 //                System.out.println("Group"+group);    
                 
             }
-            System.out.println("Trying other side");
+//            System.out.println("Trying other side");
             for (int j =0; j<two.size();j++){
                 for (int i=0; i<one.size();i++)
                 {       
@@ -564,7 +564,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                         if (one.get(i).getI()!=two.get(j).getI())
                             group = group && isAdjacentV(two.get(j),one.get(i));
                         else{
-                            System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
+//                            System.out.println("Inside for "+ one.get(i) + "and"+two.get(j));                                
                             return false;
                         }
                     }
@@ -612,7 +612,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
 // ******************************************************************************************************                        
                         group = LookUp(one);
                         if (group){
-                                System.out.println("moving up..."+ one.clone().up(board));
+//                                System.out.println("moving up..."+ one.clone().up(board));
                             one.up(board);
                             if (isAdjacent(one,two))
                                 group = isAdjacentV(one, two);
@@ -623,7 +623,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                     else{
                         group = LookDown(one);
                         if (group){
-                                System.out.println("moving down..."+ one.clone().down(board));
+//                                System.out.println("moving down..."+ one.clone().down(board));
                             one.down(board);
                             if (isAdjacent(one,two))
                                 group = isAdjacentV(one,two);
@@ -632,7 +632,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
                         }
                     }
 
-                    System.out.println("Group:"+group);
+//                    System.out.println("Group:"+group);
                 return group;                           
         }
         
