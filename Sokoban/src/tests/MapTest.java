@@ -55,7 +55,7 @@ public class MapTest
 			assertEquals(map2.getMap().get(2).get(2).getType(), Cell.ECell.BOX);
 			assertEquals(map2.getMap().get(2).get(3).getType(), Cell.ECell.BOX_ON_GOAL);
 			
-			assertEquals(map2.getGoals().size(), 2);
+			assertEquals(map2.getGoals().size(), 4);
 			
 			// Test on a more tricky map
 			br = new BufferedReader(new FileReader("src/tests/maps/map9.txt"));
