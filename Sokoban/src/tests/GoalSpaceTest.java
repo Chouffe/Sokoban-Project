@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import model.Box;
 import model.BoxSpace;
 import model.BoxSpaceSearch;
+import model.Goal;
+import model.GoalSpaceSearch;
 import model.Map;
 import model.Position;
 import org.junit.After;
@@ -24,9 +26,9 @@ import static org.junit.Assert.*;
  *
  * @author lfreina
  */
-public class BoxSpaceTest {
+public class GoalSpaceTest {
     
-    public BoxSpaceTest() {
+    public GoalSpaceTest() {
     }
     
     @BeforeClass
@@ -75,12 +77,12 @@ public class BoxSpaceTest {
         Map map = new Map(br);
 	System.out.println(map);
         
-        ArrayList<Element> goals = map.getGoals();  
+        ArrayList<Position> goals = map.getGoals();  
         
-        BoxSpaceSearch instance = new BoxSpaceSearch(goals, map);    
+        GoalSpaceSearch instance = new GoalSpaceSearch(goals, map);    
         
-        ArrayList<BoxSpace> result = instance.getBoxSpaces();        
-//        instance.print(result);
+        ArrayList<ArrayList<Position>> result = instance.getGoalSpaces();        
+        instance.print(result);
 
 //        assertEquals(boxes,result);
         

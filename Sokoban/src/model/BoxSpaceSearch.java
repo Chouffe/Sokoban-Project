@@ -12,13 +12,8 @@ import java.util.LinkedHashSet;
  * @author lfreina
  */
 public class BoxSpaceSearch extends Box implements Cloneable {
-    protected int maxX;
-    protected int minX;
-    protected int maxY;
-    protected int minY;
-    protected int boxCount;
+
     protected ArrayList<Box> boxes;
-    protected ArrayList<Position> Exits;
     protected Map board;
     protected LinkedHashSet boxPositions;
     protected int SPACES = 1;
@@ -27,37 +22,8 @@ public class BoxSpaceSearch extends Box implements Cloneable {
     public BoxSpaceSearch(ArrayList<Box> boxes, Map map) throws CloneNotSupportedException            
     {        
         board = map.clone();
-        this.boxes = map.getBoxes();
-        this.boxCount=this.boxes.size();        
+        this.boxes = map.getBoxes();       
     }
-    
-    // Returns true if was added or false if was already in the BoxSpace.
-    public boolean addBox(Box new_box)
-    {
-        boxCount++;
-        return isIncluded(new_box.getPosition());
-    }
-    
-    public Box removeBox(int index)
-    {
-        boxCount--;
-        // Remove from the boxSpace.
-        Box temp = this.boxes.remove(index);
-        // remove from the HashSet
-        boxPositions.remove(""+ temp.getPosition().getI() +":"+ temp.getPosition().getJ());        
-        return temp;
-    }
-    
-    public Box getBox(int index)
-    {
-        return this.boxes.get(index);
-    }
-    
-    private boolean isIncluded(Position point)
-        {            
-            return this.boxPositions.add(""+ point.getI() +":"+ point.getJ());
-            
-        }
     
     public ArrayList<Box> sort(ArrayList<Box> boxes, boolean Vertical)
     {
@@ -155,20 +121,32 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         ArrayList<Box> sortV = sort(boxes,true);
         ArrayList<ArrayList<Box>> searchV = Search(sortV); 
         ArrayList<ArrayList<Box>> solution = groupBoxes(searchV,searchH);
-        print(solution);
-//        System.out.println(boxCount+"*********SIZE**********");
+//        print(solution);
+//        System.out.println(solution.size()+"*********SIZE**********");
 //        if (boxCount<20)
-//        int oldsolutionSize = 0;      
-//        int count=0;
-//
-//        while (oldsolutionSize!=solution.size())
-//            oldsolutionSize = solution.size();
-//
-//            solution = TryToMergeV(solution);   
-        solution = TryToMergeV(solution);
+        
+        
+        int oldsolutionSize = 0;      
+        int count=0;
+
+        while (oldsolutionSize!=solution.size()){
+            oldsolutionSize = solution.size();
+//            System.out.println(solution.size()+"********* OLD SIZE**********"); 
+            ArrayList<ArrayList<Box>> singles = getSingles(solution);                
+            solution = TryToMergeV(singles);
+//            System.out.println(solution.size()+"*********NEW SIZE**********");   
+        }
+//        System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
+//        ArrayList<ArrayList<Box>> singles = getSingles(solution);                
 //        solution = TryToMergeV(solution);
-//        solution = TryToMergeV(solution);
-//        solution = TryToMergeV(solution);
+//        System.out.println(solution.size()+"*********SIZE**********");
+//        singles = getSingles(solution);                
+//        solution = TryToMergeV(singles);
+//        System.out.println(solution.size()+"*********SIZE**********");
+//        singles = getSingles(solution);                
+//        solution = TryToMergeV(singles);
+//        System.out.println(solution.size()+"*********SIZE**********");
+        
         ArrayList<BoxSpace> bS = new ArrayList<BoxSpace>();
         for (ArrayList<Box> s: solution)
         {
@@ -176,6 +154,31 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             bS.add(temp);
         }
         return bS;          
+    }
+    
+    public ArrayList<ArrayList<Box>> getSingles(ArrayList<ArrayList<Box>> solution)
+    {
+        ArrayList<ArrayList<Box>> newS = new ArrayList<ArrayList<Box>>();
+        ArrayList<Box> s = new ArrayList<Box>();
+        for (ArrayList<Box> b: solution)
+        {
+            if (b.size()==1)
+            {
+                s.add(b.get(0));
+            }
+            else
+                newS.add(b);
+                
+        }
+        s = sort(s,true);
+        for (Box b:s)
+        {
+            ArrayList<Box> temp = new ArrayList<Box> ();
+            temp.add(b); 
+            newS.add(temp);
+        }
+        
+        return newS;
     }
     
     public void print(ArrayList<ArrayList<Box>> result)
@@ -191,6 +194,24 @@ public class BoxSpaceSearch extends Box implements Cloneable {
                 System.out.println("Group:"+(t+1) + " size of group:"+ temp.size());
                 for (int r=0; r<temp.size();r++){                    
                     System.out.println(temp.get(r).getPosition());
+                }
+            }
+        }
+    }
+    
+    public void printBS(ArrayList<BoxSpace> result)
+    {
+        System.out.println("Return:");
+        if (result.isEmpty())
+            System.out.print("FAIL");
+        else{
+            System.out.println("Size"+result.size());
+            for (int t=0;t<result.size();t++){
+                
+                BoxSpace temp = result.get(t);
+                System.out.println("Group:"+(t+1) + " size of group:"+ temp.getBoxCount());
+                for (int r=0; r<temp.getBoxCount();r++){                    
+                    System.out.println(temp.getPosition(r));
                 }
             }
         }
@@ -528,8 +549,7 @@ public class BoxSpaceSearch extends Box implements Cloneable {
         }
         
         public boolean isAdjacentV(ArrayList<Box> one, ArrayList<Box> two) throws CloneNotSupportedException 
-        {
-            int length = Math.min(one.size(), two.size());
+        {            
             boolean group = true;            
             for (int i =0; i<one.size();i++){
                 for (int j=0; j<two.size();j++)
@@ -538,8 +558,11 @@ public class BoxSpaceSearch extends Box implements Cloneable {
                     if (group){
                             if (one.get(i).getPosition().getI()!=two.get(j).getPosition().getI())
                                 group = group && isAdjacentV(one.get(i),two.get(j));
-                            else 
+                            else{
+                                
+//                                System.out.println("Inside for "+ one.get(i).getPosition() + "and"+two.get(j).getPosition());                                
                                return false;
+                            }
                     }
                     else
                         return false;
@@ -555,8 +578,10 @@ public class BoxSpaceSearch extends Box implements Cloneable {
                     if (group){
                         if (one.get(i).getPosition().getI()!=two.get(j).getPosition().getI())
                             group = group && isAdjacentV(two.get(j),one.get(i));
-                        else
+                        else{
+//                            System.out.println("Inside for "+ one.get(i).getPosition() + "and"+two.get(j).getPosition());                                
                             return false;
+                        }
                     }
                     else
                         return false;
@@ -593,8 +618,14 @@ public class BoxSpaceSearch extends Box implements Cloneable {
             
             Position two = stop.getPosition();
 //            System.out.println("Inside"+one.getPosition());
-            
-                    if (one.getPosition().getI()-two.getI()>=0){
+
+// ******************************************************************************************************            
+// ******************************************************************************************************            
+                    if (one.getPosition().getI()-two.getI()>=0 && one.getPosition().getI()-two.getI()<=1){
+// ******************************************************************************************************
+// ******************************************************************************************************
+                        // Possible Bug.
+// ******************************************************************************************************                        
                         group = LookUp(one);
                         if (group){
 //                                System.out.println("moving up..."+ one.clone().getPosition().up(board));

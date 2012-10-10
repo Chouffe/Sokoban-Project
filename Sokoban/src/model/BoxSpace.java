@@ -21,10 +21,24 @@ public class BoxSpace extends Box implements Cloneable {
     protected ArrayList<Position> Positions;
     protected LinkedHashSet boxPositions;
     
+    public BoxSpace()
+    {
+        this.boxCount=-1;
+        this.boxPositions = null;
+        this.boxes = null;
+        this.Positions = null;
+        maxY=-1;
+        maxX=-1;
+        minX=Integer.MAX_VALUE;
+        minY=Integer.MAX_VALUE;
+    }
     
     public BoxSpace(ArrayList<Box> boxes) 
     {        
-        this.boxCount=this.boxes.size();
+        this.boxCount=boxes.size();
+        this.boxPositions = new LinkedHashSet();
+        this.boxes = new ArrayList<Box>();
+        this.Positions = new ArrayList<Position>();
         maxY=-1;
         maxX=-1;
         minX=Integer.MAX_VALUE;
@@ -75,9 +89,19 @@ public class BoxSpace extends Box implements Cloneable {
         return this.boxes.get(index);
     }
     
+    public ArrayList<Box> getBoxes()
+    {
+        return this.boxes;
+    }
+    
     public Position getPosition(Box box)
     {
         return this.Positions.get( this.boxes.indexOf(box) );
+    }
+    
+    public Position getPosition(int index)
+    {
+        return this.Positions.get( index);
     }
     
     public int getBoxCount()
@@ -86,10 +110,19 @@ public class BoxSpace extends Box implements Cloneable {
     }
     
     private boolean isIncluded(Position point)
-        {            
-            return this.boxPositions.add(""+ point.getI() +":"+ point.getJ());
-            
-        }
+    {            
+        return this.boxPositions.add(""+ point.getI() +":"+ point.getJ());
+
+    }
+    public BoxSpace clone() throws CloneNotSupportedException 
+    {
+		
+        BoxSpace copy = (BoxSpace)super.clone();
+        copy.boxes = (ArrayList<Box>) this.boxes.clone();
+        copy.Positions = (ArrayList<Position>) this.Positions.clone();
+        copy.boxPositions = (LinkedHashSet) this.boxPositions.clone();
+        return copy;
+    }
         
 }
     
