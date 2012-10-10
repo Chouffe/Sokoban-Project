@@ -132,6 +132,110 @@ public class Map implements Cloneable
 			
 		return copie;
 	}
+
+	public Map getGhostMap(Position pos) throws CloneNotSupportedException {
+		
+		
+		Map ghost = (Map)super.clone();
+		
+		// Clone the goals
+		ghost.goals = new ArrayList<Position>();
+		ghost.boxes = new ArrayList<Box>();
+		ghost.boxHashMap = new HashMap<Position, Box>();
+
+		ghost.player = player.clone();
+		
+		// Clone the map : deep cloning
+		ghost.map = new ArrayList<ArrayList<Cell>>();
+		ghost.map.clear();
+		
+		if (boxHashMap.containsKey(pos)) {
+			Box b = boxHashMap.get(pos).clone();
+			ghost.addBox(b.getPosition(), b.isOnGoal());
+		}
+		int i = pos.getI();
+		int j = pos.getJ();
+		int r = 0;
+		int c = 0;
+		
+		for(ArrayList<Cell> rowCells : map)
+		{
+			c = 0;
+			ArrayList<Cell> cloneRow = new ArrayList<Cell>();
+			for(Cell cell : rowCells)
+			{
+
+				if (c == j && r == i) {
+
+					switch(cell.getType()) {
+						case WALL:
+							cloneRow.add(new Cell(Cell.ECell.WALL));
+							break;
+						case PLAYER:
+							cloneRow.add(new Cell(Cell.ECell.PLAYER));
+							break;
+						case BOX:
+							cloneRow.add(new Cell(Cell.ECell.BOX));
+							break;
+						case BOX_ON_GOAL:
+							cloneRow.add(new Cell(Cell.ECell.BOX_ON_GOAL));
+							break;
+						case GOAL_SQUARE:
+							cloneRow.add(new Cell(Cell.ECell.GOAL_SQUARE));
+							break;
+						case EMPTY_FLOOR:
+							cloneRow.add(new Cell(Cell.ECell.EMPTY_FLOOR));
+							break;
+						case VISITED:
+							cloneRow.add(new Cell(Cell.ECell.VISITED));
+							break;
+						case PLAYER_ON_GOAL_SQUARE:
+							cloneRow.add(new Cell(Cell.ECell.PLAYER_ON_GOAL_SQUARE));
+							break;
+						case FINAL_BOX_ON_GOAL:
+							cloneRow.add(new Cell(Cell.ECell.FINAL_BOX_ON_GOAL));
+							break;
+					}
+				}
+				else {
+					switch(cell.getType()) {
+						case WALL:
+							cloneRow.add(new Cell(Cell.ECell.WALL));
+							break;
+						case PLAYER:
+							cloneRow.add(new Cell(Cell.ECell.PLAYER));
+							break;
+						case BOX:
+							cloneRow.add(new Cell(Cell.ECell.EMPTY_FLOOR));
+							break;
+						case BOX_ON_GOAL:
+							cloneRow.add(new Cell(Cell.ECell.GOAL_SQUARE));
+							break;
+						case GOAL_SQUARE:
+							cloneRow.add(new Cell(Cell.ECell.GOAL_SQUARE));
+							break;
+						case EMPTY_FLOOR:
+							cloneRow.add(new Cell(Cell.ECell.EMPTY_FLOOR));
+							break;
+						case VISITED:
+							cloneRow.add(new Cell(Cell.ECell.VISITED));
+							break;
+						case PLAYER_ON_GOAL_SQUARE:
+							cloneRow.add(new Cell(Cell.ECell.PLAYER_ON_GOAL_SQUARE));
+							break;
+						case FINAL_BOX_ON_GOAL:
+							cloneRow.add(new Cell(Cell.ECell.FINAL_BOX_ON_GOAL));
+							break;
+					}
+				}
+				c++;
+			}
+			ghost.map.add(cloneRow);
+			r++;
+		}
+			
+		return ghost;
+	}
 	
 	public String toString()
 	{

@@ -43,6 +43,19 @@ public class BoxToGoalPath implements Cloneable {
 		return findPath.substring(indexFirstUpperCase);
 	}
 
+	public static String getFirstPlayerMoves(String findPath) {
+		int indexFirstUpperCase = findPath.length();
+		int i = 0;
+		for(Character c : findPath.toCharArray()) {
+			if(c == 'U' || c == 'D' || c == 'L' || c == 'R') {
+				indexFirstUpperCase = i;
+				break;
+			}
+			i++;
+		}
+		return findPath.substring(0, indexFirstUpperCase+1);
+	}
+
 
 	public Position getBoxPosition() {
 		return boxPosition;

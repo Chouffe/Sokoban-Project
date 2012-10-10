@@ -26,6 +26,7 @@ public class Agent {
 	protected LinkedList<Node> nodes = new LinkedList<Node>();
 	protected AStarSearch astar = new AStarSearch();
 	protected HashMap<BoxToGoalPath, String> pathMap = new HashMap<BoxToGoalPath, String>();
+	protected HashMap<BoxToGoalPath, String> ghostPathMap = new HashMap<BoxToGoalPath, String>();
 	int hashedUsed = 0;
 	
 	protected static int millisecondsAllowedForTheFirstAttempt = 4000;
@@ -147,8 +148,8 @@ public class Agent {
 		else {
 			boolean isSolved = false;
 				for (int g = 0; g<map.getNumberOfGoals(); g++) {
-					Cell.ECell type = PositionFinder.getCellType(map, map.getGoals().get(g));
-					if (type != Cell.ECell.BOX_ON_GOAL && type != Cell.ECell.FINAL_BOX_ON_GOAL) {
+					Cell.ECell goalType = PositionFinder.getCellType(map, map.getGoals().get(g));
+					if (goalType != Cell.ECell.BOX_ON_GOAL && goalType != Cell.ECell.FINAL_BOX_ON_GOAL) {
 							Box box = map.getBoxes().get(0).clone();
 							Position goal = map.getGoals().get(g).clone();
 							BoxToGoalPath boxToGoalPath = new BoxToGoalPath(box, goal);
@@ -160,16 +161,82 @@ public class Agent {
 									isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
 									if (isSolved) break;
 							}
+							else if (perturbedPathExists(map, paths, boxIndx, goal)) {
+								System.out.println("Successful perturbation");
+								Map newMap = map.clone();
+								newMap.applyMoves(paths[boxIndx], true);
+								isSolved = isSolved || findSequentialBoxToGoalPaths(newMap, paths, boxIndx+1);
+								if (isSolved) break;
+							}
 					}
 				}
 				return isSolved;
 			}
 		}
 
+	public boolean perturbedPathExists(Map m, String[] paths, int boxIndx, Position pos) throws CloneNotSupportedException, IOException, IllegalMoveException {
+		Box b = m.getBoxes().get(0).clone();
+		Map ghostMap = m.getGhostMap(b.getPosition());		
+		StringBuffer workingPlayerPathToBox = new StringBuffer();
+		StringBuffer ghostPath = new StringBuffer();
+		try {
+			String ghostString = astar.findPath(ghostMap, ghostMap.getBoxes().get(0).getPosition(), pos, ECell.BOX);
+			String firstPlayerMoves = BoxToGoalPath.getFirstPlayerMoves(ghostString);
+			ghostPath.append(firstPlayerMoves.substring(0, firstPlayerMoves.length()-1));
+			PositionFinder pf = new PositionFinder();
+			Map alterable = m.clone();
+			Position playerDestinationByBox = b.getPosition().unboundMove(PositionFinder.getOppositeDirection(firstPlayerMoves.charAt(firstPlayerMoves.length()-1)));
+			Position pathScanner = m.getPlayerPosition().clone();
+			Position currentPos = m.getPlayerPosition().clone();
+			boolean boxInWay = false;
+			int i = 0;
+			while (i < ghostPath.length()) {
+				boolean pushed = false;
+				char move = ghostPath.charAt(i);
+				pathScanner.unboundIncrement(move);
+				if (!pf.isBox(alterable, pathScanner)) {
+					alterable.applyMoves(String.valueOf(move));	
+					workingPlayerPathToBox.append(Character.toLowerCase(move));
+					currentPos.unboundIncrement(move);
+					i++;
+				}
+				else {
+					char[] orthos = PositionFinder.getOrthogonals(move);
+					if (i == 0 || move == ghostPath.charAt(i-1)) {
+						Position ortho1 = pathScanner.unboundMove(orthos[0]);
+						Position ortho2 = pathScanner.unboundMove(orthos[1]);
+						pushed = (pf.isValidBoxMove(alterable, ortho1, ortho2, orthos[1], workingPlayerPathToBox) || pf.isValidBoxMove(alterable, ortho2, ortho1, orthos[0], workingPlayerPathToBox));
+					}
+					if (!pushed)
+						pf.isValidBoxMove(alterable, currentPos, pathScanner.unboundMove(move), move, workingPlayerPathToBox);
 
+					currentPos.unboundIncrement(move);
+					i++;
+
+					if (pf.isPlayerAccessible(alterable, currentPos.unboundMove(orthos[0])) || pf.isPlayerAccessible(alterable, currentPos.unboundMove(orthos[1]))) {
+						try {
+							String newPathToBox = astar.findPath(alterable, alterable.getPlayerPosition(), playerDestinationByBox, ECell.PLAYER).toLowerCase();
+							ghostPath.delete(i, ghostPath.length());
+							ghostPath.append(newPathToBox);
+						}
+						catch (PathNotFoundException e) {
+							
+						}
+					}
+				}
+				System.out.println(alterable);
+			}
+			String takeHerHome = astar.findPath(alterable, alterable.getBoxes().get(0).getPosition(), pos, ECell.BOX);
+			paths[boxIndx] = workingPlayerPathToBox.append(takeHerHome).toString();
+			return true;
+		}
+		catch (PathNotFoundException e) {
+			return false;
+		}
+	}
 
 	/**
-	* Encapsulates findPath() in a boolean function and stores its result in paths[boxIndx].
+	* Encapsulates findPath() for first box in map's box array in a boolean function and stores its result in paths[boxIndx].
 	* @throws CloneNotSupportedException 
 	* @throws IllegalMoveException 
 	*
