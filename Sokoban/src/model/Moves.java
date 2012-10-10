@@ -30,26 +30,10 @@ public class Moves implements Cloneable
 	public Moves(String m)
 	{
 		this.moves = new ArrayList<EMove>();
-		for(Character c : m.toCharArray())
-		{
-			if(c == 'U')
-			{
-				this.moves.add(EMove.UP);
-			}
-			else if(c == 'D')
-			{
-				this.moves.add(EMove.DOWN);
-			}
-			else if(c == 'L')
-			{
-				this.moves.add(EMove.LEFT);
-			}
-			else if(c == 'R')
-			{
-				this.moves.add(EMove.RIGHT);
-			}
-		}
+		addMoves(m);
 	}
+	
+	
 	
 	public void up()
 	{
@@ -73,6 +57,30 @@ public class Moves implements Cloneable
 		if(moves.size() != 0)
 		{
 			moves.remove(moves.size()-1);
+		}
+		return this;
+	}
+	
+	public Moves addMoves(String movesString)
+	{
+		for(Character c : movesString.toCharArray())
+		{
+			if(c == 'U')
+			{
+				this.moves.add(EMove.UP);
+			}
+			else if(c == 'D')
+			{
+				this.moves.add(EMove.DOWN);
+			}
+			else if(c == 'L')
+			{
+				this.moves.add(EMove.LEFT);
+			}
+			else if(c == 'R')
+			{
+				this.moves.add(EMove.RIGHT);
+			}
 		}
 		return this;
 	}

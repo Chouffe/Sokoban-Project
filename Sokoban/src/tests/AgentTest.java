@@ -201,62 +201,62 @@ public class AgentTest {
 	}
 
 	
-	@Test
-	public final void testSetCellAccessible()
-	{
-		try
-		{
-			
-			// TODO : add some assert
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
-			Map map = new Map(br);
-			//System.out.println(map);
-			
-			agent.setCellAccessible(map).toStringAccessible();
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
-			map = new Map(br);
-			//System.out.println(map);
-			
-			//agent.setCellAccessible(map).toStringAccessible();
-			
-			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
-			map = new Map(br);
-			//System.out.println(map);
-			
-			//agent.setCellAccessible(map).toStringAccessible();
-			
-			
-			//assertEquals("", "");
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
+//	@Test
+//	public final void testSetCellAccessible()
+//	{
+//		try
+//		{
+//			
+//			// TODO : add some assert
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map1.txt"));
+//			Map map = new Map(br);
+//			//System.out.println(map);
+//			
+//			agent.setCellAccessible(map).toStringAccessible();
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/map7.txt"));
+//			map = new Map(br);
+//			//System.out.println(map);
+//			
+//			//agent.setCellAccessible(map).toStringAccessible();
+//			
+//			br = new BufferedReader(new FileReader("src/tests/maps/path/test-server5.txt"));
+//			map = new Map(br);
+//			//System.out.println(map);
+//			
+//			//agent.setCellAccessible(map).toStringAccessible();
+//			
+//			
+//			//assertEquals("", "");
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if (br != null)br.close();
+//			} catch (IOException ex) {
+//				ex.printStackTrace();
+//			}
+//		}
+//	}
 
 	
 	@Test
-	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException
+	public final void testPathExist() throws CloneNotSupportedException, PathNotFoundException, IOException, IllegalMoveException
 	{
 		br = new BufferedReader(new FileReader("src/tests/maps/pathExist/map1.txt"));
 		Map map = new Map(br);
 		String[] paths = new String[2];
 	
-		assertEquals(false, agent.pathExists(map, paths, 0, 0));
-		assertEquals(true, agent.pathExists(map, paths, 1, 1));
+		assertEquals(false, agent.boxPathExists(map, paths, 0, 0));
+		assertEquals(true, agent.boxPathExists(map, paths, 1, 1));
 		
 		assertTrue(paths[1].length() > 0);
 		assertEquals(null, paths[0]);
 	}
 	
 	@Test
-	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException
+	public final void testSolving() throws CloneNotSupportedException, PathNotFoundException, IllegalMoveException
 	{
 		try
 		{

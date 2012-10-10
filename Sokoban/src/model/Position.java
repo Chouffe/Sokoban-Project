@@ -190,9 +190,10 @@ public class Position implements Cloneable
 	@Override
 	public int hashCode() {
 		final int prime = 31;
+		final int prime2 = 269;
 		int result = 1;
 		result = prime * result + i;
-		result = prime * result + j;
+		result = prime2 * result + j;
 		return result;
 	}
 

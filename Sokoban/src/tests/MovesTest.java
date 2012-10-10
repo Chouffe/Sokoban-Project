@@ -109,4 +109,19 @@ public class MovesTest
 		expected = new Position(0,2);
 		assertEquals(expected, Moves.getPositionFromInitialPositionAndMove(init, EMove.UP));
 	}
+	
+	@Test
+	public final void testAddMovesWithString()
+	{
+		String moves = "UUDLRU";
+		Moves m = new Moves();
+		m.addMoves(moves);
+		
+		assertEquals(6, m.getMoves().size());
+		
+		m = new Moves();
+		m.addMoves("");
+		
+		assertEquals(0, m.getMoves().size());
+	}
 }

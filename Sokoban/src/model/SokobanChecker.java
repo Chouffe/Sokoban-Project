@@ -1,5 +1,7 @@
 package model;
 
+import exception.IllegalMoveException;
+
 
 /**
  * 
@@ -10,22 +12,24 @@ package model;
 public class SokobanChecker 
 {
 	
-	public static boolean check(Map map, String solution)
+	public static boolean mapIsSolved(Map map, String solution) throws CloneNotSupportedException
 	{
-		for(char c : solution.toCharArray())
+		try
 		{
-			switch(c)
+			map.applyMoves(solution);
+			for(Box b : map.getBoxes())
 			{
-			case 'U':
-				break;
-			case 'D':
-				break;
-			case 'L':
-				break;
-			case 'R':
-				break;
+				if(!b.isOnGoal())
+				{
+					return false;
+				}
 			}
+			return true;
 		}
-		return false;
+		catch(IllegalMoveException e)
+		{
+			return false;
+		}
 	}
+	
 }

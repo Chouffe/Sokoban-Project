@@ -30,10 +30,10 @@ public class PositionFinder {
 
 	private boolean isPlayerAccessible(Map map, Position position) {
 		ECell cellType = getCellType(map, position);	
-		return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL));
+		return (!(cellType == WALL || cellType == BOX || cellType == BOX_ON_GOAL || cellType == FINAL_BOX_ON_GOAL));
 	}
 
-	private ECell getCellType(Map map, Position pos) {
+	public static ECell getCellType(Map map, Position pos) {
 		return map.getCellFromPosition(pos).getType();
 	}
 	
@@ -46,7 +46,8 @@ public class PositionFinder {
 		cells[3] = getCellType(map, position.unboundMove('R'));
 		return cells;
 	}
-
+	
+	// Not used yet
 	private ECell[] getSurroundingCellTypes(Map map, Position position) throws CloneNotSupportedException {
 		char[] dirs = {'U', 'R', 'D', 'D', 'L', 'L', 'U', 'U'};
 		ECell[] surr = new ECell[8];
@@ -63,15 +64,6 @@ public class PositionFinder {
 		return ((cells[0] == WALL || cells[1] == WALL) && (cells[2] == WALL || cells[3] == WALL));
 	}
 
-	private boolean boxWillDeadlock(Map map, Position pos) throws CloneNotSupportedException {
-		int numAdjBoxes = -1;
-		for (ECell c : getSurroundingCellTypes(map, pos)) {
-			if (c == BOX || c == BOX_ON_GOAL)
-				numAdjBoxes++;
-		}
-		return (numAdjBoxes > 2);
-	}
-
 	private boolean boxWillDeadlock(Map map, Position dest, char dir) throws CloneNotSupportedException {
 		Position twoAway = dest.unboundMove(dir);
 		if (!isBox(map, twoAway))
@@ -84,7 +76,7 @@ public class PositionFinder {
 	}
 
 	public static char[] getOrthogonals(char dir) {
-			char[] orthos = new char[2];
+			
 			if (dir == 'U' || dir == 'D') {
 				char[] lr = {'L', 'R'};
 				return lr;
@@ -107,7 +99,7 @@ public class PositionFinder {
 
 	private boolean isValidBoxSquare(Map map, Position pos) {
 		ECell type = getCellType(map, pos);
-		return (!(type == BOX || type == WALL || type == BOX_ON_GOAL));
+		return (!(type == BOX || type == WALL || type == BOX_ON_GOAL || type == FINAL_BOX_ON_GOAL));
 	}
 
 	private boolean boxWillStickOnWall(Map map, Position pos, char dir) throws CloneNotSupportedException {
@@ -154,14 +146,14 @@ public class PositionFinder {
 		if (dest.equals(map.getPlayerPosition())) {
 			path.append(dir);
 			map.applyMoves(""+dir);
-			System.out.println(map);
+			//System.out.println(map);
 			return true;
 		}
 		try {
 			String newPath = searcher.findPath(map, map.getPlayerPosition(), dest, Cell.ECell.PLAYER).toLowerCase() + dir;
 			path.append(newPath);
 			map.applyMoves(newPath);
-			System.out.println(map);
+			//System.out.println(map);
 			return true;
 		}
 		catch (PathNotFoundException e) {
@@ -200,6 +192,8 @@ public class PositionFinder {
 
 	private boolean clearSides(Map map, Position boxPos, char dir, StringBuffer path) throws CloneNotSupportedException, IOException, IllegalMoveException {
 		ECell type = getCellType(map, boxPos);
+		if (type == WALL || type == FINAL_BOX_ON_GOAL)
+			return false;
 		if (type != BOX && type != BOX_ON_GOAL)
 			return true;
 
@@ -227,11 +221,6 @@ public class PositionFinder {
 					}
 				}
 			}
-
-//			return
-//				((clearSides(map, newBoxPos1, orthos[0], path) || clearSides(map, newBoxPos1, orthos[1], path))
-//				&& (clearSides(map, newBoxPos2, orthos[0], path) || clearSides(map, newBoxPos2, orthos[1], path))
-//				&& isValidBoxMove(map, pushSource, dest, dir, path));
 		}
 		return false;
 	}
@@ -249,8 +238,10 @@ public class PositionFinder {
 			return false;
 		boolean isPlayer = (what == PLAYER || what == PLAYER_ON_GOAL_SQUARE);
 
-		if (isPlayer)
+		if (isPlayer) {
+			playerPushPath.append(dir);
 			return (isPlayerAccessible(map, dest));
+		}
 		
 		if (sourceIsWall(map, position, dir) || isWall(map, dest))
 			return false;
