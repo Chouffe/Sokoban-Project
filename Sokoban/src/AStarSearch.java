@@ -11,7 +11,6 @@ import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 import java.io.IOException;
 
-import Cell.ECell;
 
 /**
  * Class to handle the AStar Search on map
