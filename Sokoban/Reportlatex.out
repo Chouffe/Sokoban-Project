@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{ Abstract }{}% 1
+\BOOKMARK [1][-]{section.2}{ Introduction }{}% 2
+\BOOKMARK [1][-]{section.3}{ Problem formulation }{}% 3
+\BOOKMARK [1][-]{section.4}{Methods}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{ A* \(A star\) search algorithm}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{ Modifying search for boxes and players}{section.4}% 6
+\BOOKMARK [2][-]{subsection.4.3}{ Matching box to goals}{section.4}% 7
+\BOOKMARK [2][-]{subsection.4.4}{ Reducing the search tree}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Implementation}{}% 9
+\BOOKMARK [1][-]{section.6}{Analysis of experimental results}{}% 10
+\BOOKMARK [1][-]{section.7}{Reflection}{}% 11

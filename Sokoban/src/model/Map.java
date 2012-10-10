@@ -352,12 +352,14 @@ public class Map implements Cloneable
 							break;
 						case PLAYER_ON_GOAL_SQUARE:
 							setPlayerPosition(new Position(i,j));
+                                                        addGoal(new Position(i,j));
 							break;
 						case BOX:
 							addBox(new Position(i,j), false);
 							break;
 						case BOX_ON_GOAL:
 							addBox(new Position(i,j), true);
+                                                        addGoal(new Position(i,j));
 							break;
 					}
 				
@@ -408,6 +410,7 @@ public class Map implements Cloneable
 							case PLAYER_ON_GOAL_SQUARE:
 								setPlayer(new Player(new Position(i,j), true));
 								setPlayerPosition(new Position(i,j));
+                                                                addGoal(new Position(i,j));
 								break;
 							case BOX:
 								//System.out.println(i + " " + j);
@@ -415,7 +418,8 @@ public class Map implements Cloneable
 								//System.out.println(boxes);
 								break;
 							case BOX_ON_GOAL:
-								addBox(new Position(i, j), true);
+								addGoal(new Position(i,j));
+                                                                addBox(new Position(i, j), true);                                                                
 								break;
 						}
 					
