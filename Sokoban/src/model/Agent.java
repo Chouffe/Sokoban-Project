@@ -4,13 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.HashMap;
-
-import model.Cell.ECell;
 
 import exception.DeadlineException;
 import exception.IllegalMoveException;
@@ -181,7 +177,7 @@ public class Agent {
 	*/
 	public boolean boxPathExists(Map m, String[] paths, int boxIndx, int g) throws CloneNotSupportedException, IOException, IllegalMoveException {
 			try {
-				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), ECell.BOX);
+				paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), Cell.ECell.BOX);
 				return true;
 			} 
 			catch (PathNotFoundException e) {
@@ -197,7 +193,7 @@ public class Agent {
 			char firstPushDir = boxToGoalString.charAt(0);
 			Position playerPushStart = boxToGoalPath.getBoxPosition().unboundMove(PositionFinder.getOppositeDirection(firstPushDir));
 			try {
-				paths[boxIndx] = astar.findPath(m, m.getPlayerPosition(), playerPushStart, ECell.PLAYER).toLowerCase() + boxToGoalString;
+				paths[boxIndx] = astar.findPath(m, m.getPlayerPosition(), playerPushStart, Cell.ECell.PLAYER).toLowerCase() + boxToGoalString;
 				Map illegalMoveTestClone = m.clone();
 				illegalMoveTestClone.applyMoves(paths[boxIndx]);
 				hashedUsed++;
@@ -303,7 +299,7 @@ public class Agent {
 		}
 		
 		try {
-			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), ECell.BOX);
+			paths[boxIndx] = astar.findPath(m, m.getBoxes().get(0).getPosition(), m.getGoals().get(g), Cell.ECell.BOX);
 			return true;
 		} 
 		catch (PathNotFoundException e) {
@@ -325,7 +321,7 @@ public class Agent {
 			char firstPushDir = boxToGoalString.charAt(0);
 			Position playerPushStart = boxToGoalPath.getBoxPosition().unboundMove(PositionFinder.getOppositeDirection(firstPushDir));
 			try {
-				paths[boxIndx] = astar.findPath(m, m.getPlayerPosition(), playerPushStart, ECell.PLAYER).toLowerCase() + boxToGoalString;
+				paths[boxIndx] = astar.findPath(m, m.getPlayerPosition(), playerPushStart, Cell.ECell.PLAYER).toLowerCase() + boxToGoalString;
 				Map illegalMoveTestClone = m.clone();
 				illegalMoveTestClone.applyMoves(paths[boxIndx]);
 				hashedUsed++;
