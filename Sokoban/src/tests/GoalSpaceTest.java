@@ -75,7 +75,7 @@ public class GoalSpaceTest {
     @Test
     public void testSearch() throws Exception {
 //        int [] map_num = {94,93,88,87,82,81,79,77,76,70,68,66,64,60,59,58,57};
-        int [] map_num = {3};
+        int [] map_num = {93};
 //        for (int i =1;i<112;i++){
         for (int i: map_num){
             BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map"+i+".txt"));
@@ -122,14 +122,14 @@ public class GoalSpaceTest {
     @Test
     public void isAdjacentV2() throws CloneNotSupportedException, FileNotFoundException 
         {            
-            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map3.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("src/tests/maps/BoxSpace/map93.txt"));
             Map map = new Map(br);
             System.out.println(map);
         
             GoalSpaceSearch instance = new GoalSpaceSearch(map.getGoals(), map);
             ArrayList<GoalSpace> tests = instance.getGoalSpaces();
 //            ArrayList<Box> a = new ArrayList<Box>();
-            GoalSpace a = tests.get(0);
+            GoalSpace a = tests.get(1);
 //            for (Box t: tests.get(0))
 //            {
 //                a.add(t);
@@ -138,7 +138,7 @@ public class GoalSpaceTest {
 //            {
 //                a.add(t);
 //            }
-            GoalSpace b = tests.get(1);
+            GoalSpace b = tests.get(2);
                     
             boolean result = instance.isAdjacentV(b.getGoalsAL(), a.getGoalsAL());             
             System.out.println("A"+result);

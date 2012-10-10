@@ -134,7 +134,7 @@ public class GoalSpaceSearch extends Box implements Cloneable {
             System.out.println(solution.size()+"*********NEW SIZE**********");   
         }
         System.out.println(solution.size()+"*********STOP!!!!!!!!!!**********");
-//        ArrayList<ArrayList<Box>> singles = getSingles(solution);                
+//        ArrayList<ArrayList<Position>> singles = getSingles(solution);                
 //        solution = TryToMergeV(solution);
 //        System.out.println(solution.size()+"*********SIZE**********");
 //        singles = getSingles(solution);                
