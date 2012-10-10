@@ -1,4 +1,4 @@
-package model;
+
 
 /**
  * A node represents a state in the search

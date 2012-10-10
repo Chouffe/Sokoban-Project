@@ -1,4 +1,4 @@
-package model;
+
 
 public class Player extends Element implements Cloneable{
 

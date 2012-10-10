@@ -4,15 +4,16 @@
  */
 package tests;
 
+import Box;
+import BoxSpace;
+import BoxSpaceSearch;
+import Map;
+import Position;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import model.Box;
-import model.BoxSpace;
-import model.BoxSpaceSearch;
-import model.Map;
-import model.Position;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

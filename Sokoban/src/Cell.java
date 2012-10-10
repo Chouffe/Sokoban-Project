@@ -1,4 +1,4 @@
-package model;
+
 
 /**
  * Represents a cell on the board

@@ -1,6 +1,9 @@
 package tests; 
 
 import static org.junit.Assert.*;
+import Agent;
+import Box;
+import Map;
 
 import java.io.*;
 import java.util.ArrayList;

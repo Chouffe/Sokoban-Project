@@ -1,4 +1,4 @@
-package model;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,12 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
-import model.Cell.ECell;
 
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 import java.io.IOException;
+
+import Cell.ECell;
 
 /**
  * Class to handle the AStar Search on map

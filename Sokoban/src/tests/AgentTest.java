@@ -2,16 +2,16 @@ package tests;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import Agent;
+import Cell;
+import Map;
+import Position;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import model.Agent;
-import model.Cell;
-import model.Map;
-import model.Position;
 
 import org.junit.Before;
 import org.junit.Test;

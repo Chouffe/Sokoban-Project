@@ -1,13 +1,14 @@
-package model;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Cell.ECell;
+
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;
 
-import static model.Cell.ECell.*;
-import model.Cell.ECell;
+import static Cell.ECell.*;
 
 
 public class PositionFinder {

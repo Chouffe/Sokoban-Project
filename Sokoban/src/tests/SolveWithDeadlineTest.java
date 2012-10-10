@@ -2,6 +2,12 @@ package tests;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import Agent;
+import Cell;
+import Deadline;
+import Map;
+import Position;
+import SokobanChecker;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,12 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import model.Agent;
-import model.Cell;
-import model.Deadline;
-import model.Map;
-import model.Position;
-import model.SokobanChecker;
 
 import org.junit.Before;
 import org.junit.Test;

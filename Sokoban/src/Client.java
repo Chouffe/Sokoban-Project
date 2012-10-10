@@ -6,8 +6,6 @@ import java.net.Socket;
 //import java.util.Date;
 import java.util.ArrayList;
 
-import model.Agent;
-import model.Map;
 
 /**
  * Remote connection

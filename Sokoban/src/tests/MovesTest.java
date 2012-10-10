@@ -2,10 +2,10 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import EMove;
+import Moves;
+import Position;
 
-import model.EMove;
-import model.Moves;
-import model.Position;
 
 import org.junit.Before;
 import org.junit.Test;

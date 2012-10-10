@@ -1,6 +1,11 @@
 package tests;
 
 import static org.junit.Assert.*;
+import BoxMove;
+import Cell;
+import Map;
+import Position;
+import PositionFinder;
 
 import java.io.*;
 import model.*;

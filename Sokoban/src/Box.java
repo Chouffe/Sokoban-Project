@@ -1,4 +1,4 @@
-package model;
+
 
 public class Box extends Element implements Cloneable{
 

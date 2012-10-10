@@ -1,22 +1,23 @@
 package tests;
 
 import static org.junit.Assert.*;
+import Box;
+import Cell;
+import EMove;
+import Map;
+import Player;
+import Position;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.Box;
-import model.Cell;
-import model.EMove;
-import model.Map;
-import model.Player;
-import model.Position;
-import model.Cell.ECell;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Cell.ECell;
 
 import exception.IllegalMoveException;
 

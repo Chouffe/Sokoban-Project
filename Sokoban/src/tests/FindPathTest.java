@@ -1,19 +1,20 @@
 package tests;
 
 import static org.junit.Assert.*;
+import AStarSearch;
+import Map;
+import SokobanChecker;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.AStarSearch;
-import model.Cell.ECell;
-import model.Map;
-import model.SokobanChecker;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Cell.ECell;
 
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;

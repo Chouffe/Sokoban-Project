@@ -2,13 +2,13 @@ package tests;
 
 
 import static org.junit.Assert.*;
+import Map;
+import Position;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.Map;
-import model.Position;
 
 import org.junit.Before;
 import org.junit.Test;

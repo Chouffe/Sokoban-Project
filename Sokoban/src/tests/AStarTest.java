@@ -1,6 +1,11 @@
 package tests;
 
 import static org.junit.Assert.*;
+import AStarSearch;
+import Map;
+import Node;
+import Position;
+import SokobanChecker;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,16 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.AStarSearch;
-import model.Cell.ECell;
-import model.Map;
-import model.Node;
-import model.Position;
-import model.SokobanChecker;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.omg.PortableInterceptor.SUCCESSFUL;
+
+import Cell.ECell;
 
 import exception.IllegalMoveException;
 import exception.PathNotFoundException;

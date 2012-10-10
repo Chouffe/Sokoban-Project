@@ -1,10 +1,10 @@
 package tests;
 
 import static org.junit.Assert.*;
+import Box;
+import BoxToGoalPath;
+import Position;
 
-import model.Box;
-import model.BoxToGoalPath;
-import model.Position;
 
 import org.junit.Test;
 

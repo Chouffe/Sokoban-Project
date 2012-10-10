@@ -1,4 +1,4 @@
-package model;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
 
-import model.Cell.ECell;
 
 import exception.DeadlineException;
 import exception.IllegalMoveException;

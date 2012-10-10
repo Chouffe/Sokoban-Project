@@ -1,14 +1,14 @@
 package tests;
 
 import static org.junit.Assert.*;
+import Map;
+import SokobanChecker;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import model.Map;
-import model.SokobanChecker;
 
 import org.junit.Test;
 

@@ -4,18 +4,19 @@
  */
 package tests;
 
+import Box;
+import BoxSpace;
+import BoxSpaceSearch;
+import Goal;
+import GoalSpace;
+import GoalSpaceSearch;
+import Map;
+import Position;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import model.Box;
-import model.BoxSpace;
-import model.BoxSpaceSearch;
-import model.Goal;
-import model.GoalSpace;
-import model.GoalSpaceSearch;
-import model.Map;
-import model.Position;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
